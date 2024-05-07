@@ -19,9 +19,11 @@ o	Administración de medicamentos y suministros veterinarios
   Cliente:
 o	Acceso al chatbot
   Administrador:
-o	Configuración y administración completa del sistema
-o	Gestión de la seguridad del sistema
-o	Tareas relacionadas con la administración y mantenimiento del sistema clínico veterinario
+<ul>
+<li>Configuración y administración completa del sistema</li>
+<li>Gestión de la seguridad del sistema</li>
+<li>Tareas relacionadas con la administración y mantenimiento del sistema clínico veterinario</li>
+</ul>
 
 # Funcionalidades
 El sistema clínico veterinario en desarrollo tiene como principal objetivo optimizar la gestión de la información de los pacientes animales, agilizar los procesos clínicos y administrativos, y elevar la calidad de la atención veterinaria. Su alcance abarca desde la administración de historias clínicas electrónicas hasta la programación de citas veterinarias, seguimiento de tratamientos, facturación de servicios, generación de informes y estadísticas, y la gestión del inventario de medicamentos y suministros veterinarios.
