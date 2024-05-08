@@ -37,7 +37,6 @@ Dentro de las funciones clave del software se incluyen:
 <li>La gestión de historias clínicas electrónicas</li>
 <li>La programación de citas veterinarias</li>
 <li>El seguimiento de tratamientos y diagnósticos</li>
-<li>La facturación de servicios veterinarios</li>
 <li>La generación de informes y estadísticas</li>
 <li>La administración del inventario de medicamentos y suministros veterinarios</li>
 </ul>
