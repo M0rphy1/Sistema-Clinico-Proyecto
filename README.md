@@ -24,9 +24,8 @@ La justificación del proyecto radica en su capacidad para mejorar la calidad de
 </ul>
 ### Administrador:
 <ul>
-<li>Configuración y administración completa del sistema</li>
-<li>Gestión de la seguridad del sistema</li>
-<li>Tareas relacionadas con la administración y mantenimiento del sistema clínico veterinario</li>
+<li>Configuración y administración del sistema</li>
+<li>Tareas relacionadas con el mantenimiento del sistema clínico veterinario</li>
 </ul>
 
 # Funcionalidades
