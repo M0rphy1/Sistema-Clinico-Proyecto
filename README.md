@@ -25,7 +25,6 @@ La justificación del proyecto radica en su capacidad para mejorar la calidad de
 ### Administrador:
 <ul>
 <li>Configuración y administración del sistema</li>
-<li>Tareas relacionadas con el mantenimiento del sistema clínico veterinario</li>
 </ul>
 
 # Funcionalidades
@@ -34,9 +33,8 @@ El sistema clínico veterinario en desarrollo tiene como principal objetivo opti
 Dentro de las funciones clave del software se incluyen:
 <ul>
 <li>El registro de pacientes animales</li>
-<li>La gestión de historias clínicas electrónicas</li>
+<li>La gestión de historias clínicas y seguimiento de tratamientos</li>
 <li>La programación de citas veterinarias</li>
-<li>El seguimiento de tratamientos y diagnósticos</li>
 <li>La generación de informes y estadísticas o facturación</li>
 <li>La administración del inventario de medicamentos y suministros veterinarios</li>
 </ul>
