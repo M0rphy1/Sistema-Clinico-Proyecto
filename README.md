@@ -17,6 +17,7 @@ La justificación del proyecto radica en su capacidad para mejorar la calidad de
 <li>Registro de agenda de citas</li>
 <li>Generación de informes</li>
 <li>Administración de medicamentos y suministros veterinarios</li>
+<li>Chatbot</li>
 </ul>
 ### Cliente:
 <ul>
