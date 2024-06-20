@@ -2,11 +2,6 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../database/conexiones');
 
 const Usuario = sequelize.define('Usuario', {
-  idUsuario: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
   idEmpleado: {
     type: DataTypes.INTEGER,
     allowNull: false
@@ -14,7 +9,7 @@ const Usuario = sequelize.define('Usuario', {
   nombreUsuario: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
+    primaryKey: true
   },
   correo: {
     type: DataTypes.STRING,

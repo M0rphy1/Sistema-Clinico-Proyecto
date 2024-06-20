@@ -36,7 +36,7 @@ Inventario.belongsTo(Proveedor, { foreignKey: 'idProveedor' });
 Suministro.belongsTo(Proveedor, { foreignKey: 'idProveedor', onDelete: 'CASCADE' }); // Relación añadida
 
 // Sincronizar todos los modelos con la base de datos
-sequelize.sync({ force: false }) // force: true eliminará las tablas existentes y las volverá a crear
+sequelize.sync({ force: true }) // force: true eliminará las tablas existentes y las volverá a crear
   .then(() => {
     console.log('Tablas sincronizadas correctamente.');
   })

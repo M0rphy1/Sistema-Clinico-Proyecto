@@ -15,13 +15,14 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const pool = require('../config/config'); // Ajusta la ruta según tu estructura de proyecto
-
+const Usuario = require('../models/usuario'); // Asegúrate de que la ruta es correcta
+const sequelize = require('../database/conexiones');  // Asegúrate de importar sequelize
+const { Sequelize } = require('sequelize');  // Importar Sequelize
 const router = express.Router();
 
 // Generar token JWT
-const generateToken = (idUsuario) => {
-  return jwt.sign({ idUsuario }, process.env.JWT_SECRET, { expiresIn: '1h' });
+const generateToken = (nombreUsuario) => {
+  return jwt.sign({ nombreUsuario }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 
 // Ruta para registrar un nuevo usuario
@@ -30,29 +31,27 @@ router.post('/register', async (req, res) => {
 
   try {
     // Verificar si el usuario ya existe
-    console.log('Verificando si el usuario ya existe...');
-    const userExist = await pool.query('SELECT * FROM "Usuario" WHERE "nombreUsuario" = $1 OR correo = $2', [nombreUsuario, correo]);
+    const userExist = await Usuario.findOne({ where: { [Sequelize.Op.or]: [{ nombreUsuario }, { correo }] } });
 
-    if (userExist.rows.length > 0) {
-      console.log('El usuario ya existe.');
+    if (userExist) {
       return res.status(400).json({ message: 'El usuario ya existe' });
     }
 
     // Encriptar la contraseña
-    console.log('Encriptando la contraseña...');
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(contrasena, salt);
 
     // Insertar el nuevo usuario en la base de datos
-    console.log('Insertando el nuevo usuario en la base de datos...');
-    const newUser = await pool.query(
-      'INSERT INTO "Usuario" ("idEmpleado", "nombreUsuario", correo, contrasena, estado) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [idEmpleado, nombreUsuario, correo, hashedPassword, true]
-    );
+    const newUser = await Usuario.create({
+      idEmpleado,
+      nombreUsuario,
+      correo,
+      contrasena: hashedPassword,
+      estado: true,
+    });
 
     // Generar token JWT
-    console.log('Generando token JWT...');
-    const token = generateToken(newUser.rows[0].idUsuario);
+    const token = generateToken(newUser.nombreUsuario);
 
     res.json({ token });
   } catch (error) {

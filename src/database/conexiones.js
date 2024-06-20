@@ -19,3 +19,8 @@ try {
   process.exit(1);
 }
 
+const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
+  host: dbConfig.host,
+  port: dbConfig.port,
+  dialect: dbConfig.dialect,
+});
