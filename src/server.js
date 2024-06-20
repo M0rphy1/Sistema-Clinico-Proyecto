@@ -1,6 +1,7 @@
 const express = require('express');
-const sequelize = require('./database/conexiones');  // Asegúrate de importar sequelize
-const Usuario = require('./models/usuario');  // Importar el modelo Usuario
+const sequelize = require('./database/conexiones'); // asegúrate de tener la ruta correcta
+const Usuario = require('./models/usuario');
+const Rol = require('./models/rol');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
@@ -17,4 +18,3 @@ sequelize.sync().then(() => {
 }).catch(error => {
   console.error('Unable to connect to the database:', error);
 });
-

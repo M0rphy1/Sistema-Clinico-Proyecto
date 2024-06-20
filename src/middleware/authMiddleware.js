@@ -1,28 +1,18 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
 
-const protect = async (req, res, next) => {
-  let token;
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    try {
-      token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, 'your-secret-key');
+    if (token == null) return res.sendStatus(401); // Si no hay token, devuelve 401
 
-      req.user = await User.findUserById(decoded.id);
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403); // Si el token no es válido, devuelve 403
+        req.user = user;
+        next();
+    });
+}
 
-      next();
-    } catch (error) {
-      res.status(401).json({ message: 'No autorizado, token fallido' });
-    }
-  }
+module.exports = { authenticateToken };
 
-  if (!token) {
-    res.status(401).json({ message: 'No autorizado, sin token' });
-  }
-};
 
-module.exports = { protect };

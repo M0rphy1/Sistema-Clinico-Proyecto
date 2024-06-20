@@ -1,5 +1,5 @@
+// database/conexion.js
 require('dotenv').config();
-
 const { Sequelize } = require('sequelize');
 
 const dbConfig = {
@@ -11,16 +11,10 @@ const dbConfig = {
   dialect: 'postgres'
 };
 
-try {
-  const sequelize = new Sequelize(dbConfig);
-  module.exports = sequelize;
-} catch (error) {
-  console.error('Error connecting to database:', error);
-  process.exit(1);
-}
-
 const sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password, {
   host: dbConfig.host,
   port: dbConfig.port,
   dialect: dbConfig.dialect,
 });
+
+module.exports = sequelize;
