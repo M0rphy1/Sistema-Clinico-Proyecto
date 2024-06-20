@@ -17,8 +17,12 @@ const Medicamento = require('./medicamento');
 const Suministro = require('./suministro');
 
 // Definir relaciones entre modelos
-Usuario.belongsTo(Empleado, { foreignKey: 'idEmpleado' });
+// Usuario.belongsTo(Empleado, { foreignKey: 'idEmpleado' });
 Empleado.belongsTo(Rol, { foreignKey: 'idRol' });
+
+Rol.hasMany(Usuario, { foreignKey: 'idRol' });
+Usuario.belongsTo(Rol, { foreignKey: 'idRol' });
+
 Cliente.hasMany(Mascota, { foreignKey: 'idCliente' });
 Mascota.hasMany(HistoriaClinica, { foreignKey: 'idMascota' });
 Cita.belongsTo(Mascota, { foreignKey: 'idMascota' });
