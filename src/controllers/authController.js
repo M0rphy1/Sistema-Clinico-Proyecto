@@ -1,51 +1,62 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const Usuario = require('../models/usuario');
 const generateToken = require('../utils/generateToken');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
 
 const register = async (req, res) => {
-  const { nombreUsuario, correo, contrasena } = req.body;
+  const { nombreUsuario, correo, contrasena, idRol } = req.body;
 
-  // Verificar si el usuario ya existe
-  const userExists = await User.findUserByEmail(correo);
-  if (userExists) {
-    return res.status(400).json({ message: 'El usuario ya existe' });
-  }
+  try {
+    // Verificar si el usuario ya existe
+    const userExists = await Usuario.findOne({ where: { correo } });
+    if (userExists) {
+      return res.status(400).json({ message: 'El usuario ya existe' });
+    }
 
-  // Encriptar la contraseña
-  const hashedPassword = await bcrypt.hash(contrasena, 10);
+    // Encriptar la contraseña
+    const hashedPassword = await bcrypt.hash(contrasena, 10);
 
-  // Crear el usuario
-  const newUser = await User.createUser({ nombreUsuario, correo, contrasena: hashedPassword });
-
-  if (newUser) {
-    const token = generateToken(newUser.idUsuario);
-    res.status(201).json({
-      id: newUser.idUsuario,
-      nombreUsuario: newUser.nombreUsuario,
-      correo: newUser.correo,
-      token,
+    // Crear el usuario
+    const nuevoUsuario = await Usuario.create({
+      nombreUsuario,
+      correo,
+      contrasena: hashedPassword,
+      idRol,
     });
-  } else {
-    res.status(400).json({ message: 'Datos del usuario inválidos' });
-  }
-};
 
-const login = async (req, res) => {
-  const { correo, contrasena } = req.body;
+    // Generar token de confirmación
+    const confirmToken = crypto.randomBytes(32).toString('hex');
+    nuevoUsuario.codigoVerificacion = confirmToken;
+    await nuevoUsuario.save();
 
-  const user = await User.findUserByEmail(correo);
-
-  if (user && (await bcrypt.compare(contrasena, user.contrasena))) {
-    const token = generateToken(user.idUsuario);
-    res.json({
-      id: user.idUsuario,
-      nombreUsuario: user.nombreUsuario,
-      correo: user.correo,
-      token,
+    // Enviar correo de confirmación
+    const transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
     });
-  } else {
-    res.status(401).json({ message: 'Credenciales inválidas' });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: nuevoUsuario.correo,
+      subject: 'Confirmación de cuenta',
+      text: `Utiliza este enlace para confirmar tu cuenta: ${process.env.FRONTEND_URL}/confirm-email/${confirmToken}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res.status(500).json({ message: 'Error al enviar el correo de confirmación' });
+      }
+      res.status(201).json({ message: 'Usuario registrado exitosamente. Verifica tu correo para confirmar la cuenta.' });
+    });
+
+  } catch (error) {
+    console.error('Error al registrar el usuario:', error);
+    res.status(500).json({ message: 'Error al registrar el usuario' });
   }
 };
 
@@ -53,3 +64,43 @@ module.exports = {
   register,
   login,
 };
+///////////
+// inicio sesion
+const login = async (req, res) => {
+  const { correo, contrasena } = req.body;
+
+  try {
+    const user = await Usuario.findOne({ where: { correo } });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Usuario no encontrado' });
+    }
+
+    if (!user.codigoVerificacion) {
+      return res.status(400).json({ message: 'Por favor confirma tu correo electrónico.' });
+    }
+
+    const validPassword = await bcrypt.compare(contrasena, user.contrasena);
+    if (!validPassword) {
+      return res.status(400).json({ message: 'Contraseña incorrecta' });
+    }
+
+    const token = generateToken(user.idUsuario);
+    res.json({
+      id: user.idUsuario,
+      nombreUsuario: user.nombreUsuario,
+      correo: user.correo,
+      token,
+    });
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    res.status(500).json({ message: 'Error al iniciar sesión' });
+  }
+};
+
+module.exports = {
+  register,
+  login,
+};
+////////
+
