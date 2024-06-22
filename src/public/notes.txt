@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <title>Página de Inicio</title>
+</head>
+<body>
+    <section id="welcome">
+        <div class="container">
+            <h1>Bienvenido a nuestra clínica</h1>
+            <p>La mejor atención para tus mascotas</p>
+            <div>
+                <a href="resgistro.html" class="button">Registrarse</a>
+                <a href="login.html" class="button">Iniciar Sesión</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2>Contacto</h2>
+            <p>Puedes contactarnos a través de:</p>
+            <ul>
+                <li>Teléfono: 123-456-789</li>
+                <li>Email: contacto@clinicaveterinaria.com</li>
+                <li>Dirección: Av. Principal #123, Ciudad</li>
+            </ul>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+.section-cuatro {
+    background-color: #ffffff;
+    display: flex;
+    margin: 115px 0px;
+    justify-content: center;
+  }
+  .section-cuatro-right {
+    width: 530px;
+    display: flex;
+    flex-direction: column;
+  }
+  .section-cuatro-titulo,
+  .section-cuatro-parrafo {
+    color: #2c2f42;
+    text-align: right;
+  }
+  
+  .section-cuatro-titulo {
+    font-size: 40px;
+    line-height: 1;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .section-cuatro-parrafo {
+    font-size: 20px;
+    margin-bottom: 50px;
+  }
+  
+  a.section-cuatro-button {
+    color: #ffffff;
+    background-color: #ffc500;
+    padding: 15px 25px;
+    font-size: 20px;
+    border-radius: 3px;
+    align-self: flex-end;
+
+  }
+  
+  a.section-cuatro-button:hover {
+    font-size: 23px;
+    cursor: pointer;
+  }
+  
+  section.section-cuatro img.img-principal {
+    height: 300px;
+    width: 350px;
+    margin-right: 100px;
+  }
+  
+  section.section-cuatro img.img-principal:hover {
+    cursor: pointer;
+  }
+  
+  /*  celulares */
+  @media (max-width: 700px) {
+    .section-cuatro {
+      flex-direction: column;
+      margin: 80px 10% 80px 10%;
+    }
+  
+    
+    section.section-cuatro img.img-principal {
+      height: 250px;
+      width: 250px;
+      order: 1;
+      margin: 0 auto;
+      
+    }
+    .section-cuatro-right {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      order: 2;
+    }
+    .section-cuatro-titulo,
+    .section-cuatro-parrafo {
+      color: #2c2f42;
+      text-align: center;
+    }
+  
+    .section-cuatro-titulo {
+      font-size: 30px;
+      margin: 35px 0;
+  
+    }
+  
+    .section-cuatro-parrafo {
+      font-size: 25px;
+      margin-bottom: 40px;
+    }
+
+    a.section-cuatro-button {
+      
+      align-self: center;
+  
+    }
+  
+  }
+  /* tablet */
+  @media (min-width: 700px) and (max-width: 1000px) {
+    .section-cuatro {
+      margin: 115px 5% 115px 5%;
+      /* border: solid 1px red; */
+
+    }
+    .section-cuatro-right {
+      
+      margin: 0 0 0 0  ;
+      /* border: solid 1px red; */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    
+    .section-cuatro-titulo {
+      font-size: 40px;
+      line-height: 1;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+    
+    .section-cuatro-parrafo {
+      font-size: 20px;
+      margin-bottom: 50px;
+    }
+    
+    a.section-cuatro-button {
+    
+      padding: 18px 30px;
+      font-size: 20px;
+      border-radius: 3px;
+
+      
+    }
+
+
+    
+  }
+  

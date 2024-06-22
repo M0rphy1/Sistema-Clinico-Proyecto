@@ -1,0 +1,112 @@
+.section-seis {
+  background-color: #fff;
+  padding: 100px 0;
+}
+
+h2.section-seis-titulo,
+p.section-seis-parrafo {
+  text-align: center;
+  color: #2c2e49;
+  line-height: 1.3;
+  margin: 0 5%;
+}
+
+h2.section-seis-titulo {
+  font-size: 50px;
+  margin-bottom: 20px;
+  font-weight: bolder;
+}
+
+p.section-seis-parrafo {
+  font-size: 25px;
+  margin-bottom: 60px;
+}
+
+.section-seis-cajas {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.section-seis-caja1,
+.section-seis-caja2,
+.section-seis-caja3 {
+  width: 25.5%;
+}
+
+.section-seis-caja1 img,
+.section-seis-caja2 img,
+.section-seis-caja3 img {
+  width: 100%;
+}
+
+.section-seis-cajas .nombre,
+.section-seis-cajas .ocupacion {
+  color: #2d2e40;
+  text-align: center;
+}
+
+.section-seis-cajas .nombre {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 20px 0px 10px 0px;
+}
+
+.section-seis-cajas .ocupacion {
+  font-size: 20px;
+  margin: 10px 0px;
+}
+.redes-sociales{
+  display: flex;
+  justify-content: center;
+  
+  
+}
+
+.instagram,
+.facebook,
+.twitter,
+.whatsapp {
+  height: 30px;
+  width: 30px;
+  border-radius: 100%;
+  background-color: #EAAE00;
+  margin:0 5px;
+  cursor: pointer;
+  
+  }
+
+  .instagram:hover,
+  .facebook:hover,
+  .twitter:hover,
+  .whatsapp:hover {
+    height: 35px;
+    width: 35px;
+    border-radius: 100%;
+    background-color: #EAAE00;
+    
+    }
+
+
+/*  celulares */
+@media (max-width: 700px) {
+ 
+  .section-seis-caja1,
+  .section-seis-caja2,
+  .section-seis-caja3 {
+    width: 80%;
+  }
+
+  .redes-sociales{
+    margin-bottom: 100px;
+  }
+
+  .section-seis-caja3 .redes-sociales {
+    margin-bottom: 0px;
+  }
+
+  
+}
+/* tablet */
+@media (min-width: 700px) and (max-width: 1116px) {
+}

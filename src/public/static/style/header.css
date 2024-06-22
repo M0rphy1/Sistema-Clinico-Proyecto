@@ -1,0 +1,92 @@
+nav {
+  background-color: #eaae00;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 90px;
+  width: 100%;
+  position: fixed;
+}
+
+.logo-company {
+  height: 50px;
+  width: 210px;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-item {
+  color: #fefaf5;
+  text-decoration: none;
+  margin-right: 50px;
+  font-size: 25px;
+}
+
+.menu-item:hover {
+  font-size: 29px;
+  transition: 0.5s;
+}
+
+input.input-menu {
+  height: 30px;
+  padding-bottom: 5px;
+  padding-top: 10px;
+  padding-left: 10px;
+  background-color: #ffc400;
+  border: none;
+  color: #ffffff;
+  font-size: 19px;
+  box-shadow: 30px 30px 190px -1px #000000;
+}
+
+input.input-menu::placeholder {
+  color: #fff;
+  font-size: 19px;
+}
+
+input.input-menu:focus {
+  outline: none; /* quita el borde  cuandp hay  un focus */
+}
+
+.button-menu {
+  background-color: #00bfcc;
+  height: 45px;
+  width: 50px;
+  border: none;
+  box-shadow: 10px -20px 180px -10px #000;
+  margin-right: 10px;
+}
+
+.lupa-button {
+  height: 25px;
+  width: 25px;
+  margin-left: 13px;
+  margin-top: 10px;
+}
+
+/*  celulares */
+@media (max-width: 700px) {
+  nav {
+    background-color: #eaae00;
+    height: 60px;
+  }
+
+  .menu {
+    display: none;
+  }
+
+}
+/* tablet */
+@media (min-width: 700px) and (max-width: 1000px) {
+  .logo-company {
+    display: none;
+  }
+
+  .menu-item {
+    font-size: 20px;
+  }
+}

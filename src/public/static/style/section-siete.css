@@ -1,0 +1,79 @@
+.section-siete {
+  /* background-image: url(./static/image/image-section-7.png); */
+  min-height: 280px;
+  margin-bottom: 50px;
+}
+
+.section-siete-cajas {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.section-siete-caja1,
+.section-siete-caja2,
+.section-siete-caja3 {
+  width: 25.5%;
+  background-color: #ffc400;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 10px;
+}
+
+.section-siete-caja1 img,
+.section-siete-caja2 img,
+.section-siete-caja3 img {
+  margin-bottom: 30px;
+}
+img[src="/static/image/Icon-1.png"] {
+  width: 25%;
+}
+
+img[src="/static/image/Icon-2.png"] {
+  width: 20%;
+}
+
+img[src="/static/image/Icon-3.png"] {
+  width: 23%;
+}
+
+.section-siete-cajas .caja-cifra,
+.section-siete-cajas .caja-parrafo {
+  color: #fff;
+}
+
+.section-siete-cajas .caja-cifra {
+  font-size: 30px;
+}
+
+.section-siete-cajas .caja-parrafo {
+  font-size: 35px;
+  font-weight: bold;
+}
+
+/*  celulares */
+@media (max-width: 700px) {
+  .section-siete {
+    padding: 0;
+  }
+
+  .section-siete-caja1,
+  .section-siete-caja2,
+  .section-siete-caja3 {
+    width: 95%;
+  }
+
+  .section-siete-cajas .caja-cifra,
+  .section-siete-cajas .caja-parrafo {
+    font-size: 20px;
+  }
+}
+/* tablet */
+@media (min-width: 700px) and (max-width: 1116px) {
+
+  .section-siete-cajas .caja-cifra,
+  .section-siete-cajas .caja-parrafo {
+    font-size: 25px;
+  }
+}

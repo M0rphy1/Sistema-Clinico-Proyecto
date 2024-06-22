@@ -66,31 +66,31 @@ const login = async (req, res) => {
   const { correo, contrasena } = req.body;
 
   try {
-    const user = await Usuario.findOne({ where: { correo } });
+      const user = await Usuario.findOne({ where: { correo } });
 
-    if (!user) {
-      return res.status(400).json({ message: 'Usuario no encontrado' });
-    }
+      if (!user) {
+          return res.status(400).json({ message: 'Usuario no encontrado' });
+      }
 
-    if (!user.codigoVerificacion) {
-      return res.status(400).json({ message: 'Por favor confirma tu correo electrónico.' });
-    }
+      if (!user.codigoVerificacion) {
+          return res.status(400).json({ message: 'Por favor confirma tu correo electrónico.' });
+      }
 
-    const validPassword = await bcrypt.compare(contrasena, user.contrasena);
-    if (!validPassword) {
-      return res.status(400).json({ message: 'Contraseña incorrecta' });
-    }
+      const validPassword = await bcrypt.compare(contrasena, user.contrasena);
+      if (!validPassword) {
+          return res.status(400).json({ message: 'Contraseña incorrecta' });
+      }
 
-    const token = generateToken(user.idUsuario);
-    res.json({
-      id: user.idUsuario,
-      nombreUsuario: user.nombreUsuario,
-      correo: user.correo,
-      token,
-    });
+      const token = generateToken(user.idUsuario);
+      res.json({
+          id: user.idUsuario,
+          nombreUsuario: user.nombreUsuario,
+          correo: user.correo,
+          token,
+      });
   } catch (error) {
-    console.error('Error al iniciar sesión:', error);
-    res.status(500).json({ message: 'Error al iniciar sesión' });
+      console.error('Error al iniciar sesión:', error);
+      res.status(500).json({ message: 'Error al iniciar sesión' });
   }
 };
 

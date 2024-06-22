@@ -1,0 +1,152 @@
+footer {
+  background-color: #313131;
+  color: #fff;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 100px 20px;
+  justify-content: space-around;
+}
+
+footer h2.titulo {
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+.about > p:hover,
+.services > p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+footer p {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.contact h2 {
+  text-align: center;
+}
+
+.contact p {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.contenedor-buscar {
+  display: flex;
+  height: 52px;
+}
+
+.contenedor-button {
+  background-color: #01bfcb;
+  cursor: pointer;
+}
+
+img.enviar-button {
+  margin: 10px 10px;
+}
+
+.input-footer {
+  height: 50px;
+  width: 300px;
+  margin-bottom: 100px;
+  border: none;
+  background-color: #eaae00;
+  color: #fff;
+  font-size: 20px;
+  padding-left: 10px;
+}
+
+.input-footer:focus {
+  outline: none;
+}
+
+.footer-redes-sociales {
+  display: flex;
+  margin-top: 30px;
+  justify-content: center;
+  justify-content: space-around;
+ 
+}
+
+.footer-redes-sociales img {
+  height: 40px;
+  width: 40px;
+ 
+}
+
+.footer-redes-sociales img:hover {
+  height: 45px;
+  width: 45px;
+  cursor: pointer;
+}
+
+/*  celulares */
+@media (max-width: 700px) {
+  footer {
+    flex-direction: column;
+    padding: 100px 0;
+    text-align: center;
+  }
+
+  .about,
+  .contact,
+  .services {
+    margin: 0 auto;
+    margin-bottom: 50px;
+  }
+
+  .contenedor-buscar {
+    width: 80%;
+    height: 43px;
+    margin: 0 auto;
+  }
+
+  .input-footer {
+    height: 40px;
+    width: 95%;
+    margin-bottom: 100px;
+
+    background-color: #eaae00;
+  }
+
+  
+
+  .contenedor-button {
+    height: 42px;
+    width: 60px;
+  }
+
+  img.enviar-button {
+    margin: 10px 10px;
+    width: 20px;
+  }
+
+  /* .footer-redes-sociales {
+    display: flex;
+    margin-top: 50px;
+  } */
+
+  .footer-redes-sociales img {
+   
+    height: 10px;
+    width: 10px;
+    
+  }
+
+  .footer-redes-sociales img  {
+    height: 40px;
+    width: 40px;
+    
+
+  }
+
+  .footer-redes-sociales img:hover {
+    height: 45px;
+    width: 45px;
+  }
+
+}
+/* tablet */
+@media (min-width: 700px) and (max-width: 1000px) {
+}

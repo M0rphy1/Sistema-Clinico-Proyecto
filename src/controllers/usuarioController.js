@@ -1,6 +1,6 @@
 const Usuario = require('../models/usuario');
 
-exports.createUsuario = async (req, res) => {
+const createUsuario = async (req, res) => {
   try {
     const newUsuario = await Usuario.create(req.body);
     res.status(201).json(newUsuario);
@@ -9,7 +9,7 @@ exports.createUsuario = async (req, res) => {
   }
 };
 
-exports.getUsuarios = async (req, res) => {
+const getUsuarios = async (req, res) => {
   try {
     const usuarios = await Usuario.findAll();
     res.status(200).json(usuarios);
@@ -18,7 +18,7 @@ exports.getUsuarios = async (req, res) => {
   }
 };
 
-exports.getUsuarioById = async (req, res) => {
+const getUsuarioById = async (req, res) => {
   try {
     const usuario = await Usuario.findByPk(req.params.id);
     if (usuario) {
@@ -31,7 +31,24 @@ exports.getUsuarioById = async (req, res) => {
   }
 };
 
-exports.updateUsuario = async (req, res) => {
+const getUsuarioByNombreUsuario = async (req, res) => {
+  const { nombreUsuario } = req.params;
+
+  try {
+    const usuario = await Usuario.findOne({ where: { nombreUsuario } });
+
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.json(usuario);
+  } catch (error) {
+    console.error('Error al buscar usuario por nombre de usuario:', error);
+    res.status(500).json({ message: 'Error al buscar usuario' });
+  }
+};
+
+const updateUsuario = async (req, res) => {
   try {
     const usuario = await Usuario.findByPk(req.params.id);
     if (usuario) {
@@ -45,7 +62,7 @@ exports.updateUsuario = async (req, res) => {
   }
 };
 
-exports.deleteUsuario = async (req, res) => {
+const deleteUsuario = async (req, res) => {
   try {
     const usuario = await Usuario.findByPk(req.params.id);
     if (usuario) {
@@ -59,4 +76,12 @@ exports.deleteUsuario = async (req, res) => {
   }
 };
 
+module.exports = {
+  createUsuario,
+  getUsuarios,
+  getUsuarioById,
+  updateUsuario,
+  deleteUsuario,
+  getUsuarioByNombreUsuario,
+};
 

@@ -1,0 +1,104 @@
+.section-cinco {
+  background-color: #ffc400;
+  padding: 50px 0;
+}
+
+h2.section-cinco-titulo,
+p.section-cinco-parrafo {
+  text-align: center;
+  color: #ffffff;
+  line-height: 1.3;
+}
+
+h2.section-cinco-titulo {
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+p.section-cinco-parrafo {
+  font-size: 25px;
+  margin-bottom: 60px;
+}
+
+.section-cinco-cajas {
+  display: flex;
+  justify-content: space-between;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.section-cinco-caja1,
+.section-cinco-caja2,
+.section-cinco-caja3 {
+  width: 25.5%;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-cinco-caja1 img,
+.section-cinco-caja2 img,
+.section-cinco-caja3 img {
+  width: 100%;
+}
+
+.section-cinco-cajas .precio,
+.section-cinco-cajas .button-caja {
+  color: #ffffff;
+}
+
+.section-cinco-cajas .precio {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.section-cinco-cajas .precio .precio-tachado {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px px;
+  padding: 0 10px;
+  text-decoration: line-through;
+}
+
+a.button-caja {
+  background-color: #00bfcb;
+  padding: 10px 30px;
+  align-self: center;
+  border-radius: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+a.button-caja:hover {
+  background-color: #fff;
+  color: #00bfcb;
+  padding: 10px 30px;
+  align-self: center;
+  border-radius: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+/*  celulares */
+@media (max-width: 700px) {
+  .section-cinco-caja1,
+  .section-cinco-caja2,
+  .section-cinco-caja3 {
+    width: 80%;
+
+  }
+
+  a.button-caja {
+    margin-bottom: 100px;
+  }
+
+
+ 
+}
+/* tablet */
+@media (min-width: 700px) and (max-width: 1116px) {
+ 
+}
