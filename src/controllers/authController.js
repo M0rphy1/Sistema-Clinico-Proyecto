@@ -1,9 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/usuario');
-const generateToken = require('../utils/generateToken');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const generateToken = require('../utils/generateToken');
 
 const register = async (req, res) => {
   const { nombreUsuario, correo, contrasena, idRol } = req.body;
@@ -12,7 +12,7 @@ const register = async (req, res) => {
     // Verificar si el usuario ya existe
     const userExists = await Usuario.findOne({ where: { correo } });
     if (userExists) {
-      return res.status(400).json({ message: 'El usuario ya existe' });
+      return res.status(400).json({ message: 'El correo electrónico ya está en uso. Por favor, intenta con otro.' });
     }
 
     // Encriptar la contraseña
@@ -49,8 +49,10 @@ const register = async (req, res) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
+        console.error('Error al enviar el correo de confirmación:', error);
         return res.status(500).json({ message: 'Error al enviar el correo de confirmación' });
       }
+      console.log('Correo de confirmación enviado:', info.response);
       res.status(201).json({ message: 'Usuario registrado exitosamente. Verifica tu correo para confirmar la cuenta.' });
     });
 
@@ -60,12 +62,6 @@ const register = async (req, res) => {
   }
 };
 
-module.exports = {
-  register,
-  login,
-};
-///////////
-// inicio sesion
 const login = async (req, res) => {
   const { correo, contrasena } = req.body;
 
@@ -102,5 +98,8 @@ module.exports = {
   register,
   login,
 };
-////////
+
+
+
+
 

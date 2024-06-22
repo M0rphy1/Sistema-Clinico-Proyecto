@@ -8,6 +8,7 @@ exports.createUsuario = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 exports.getUsuarios = async (req, res) => {
   try {
     const usuarios = await Usuario.findAll();
@@ -16,6 +17,7 @@ exports.getUsuarios = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 exports.getUsuarioById = async (req, res) => {
   try {
     const usuario = await Usuario.findByPk(req.params.id);
@@ -56,3 +58,5 @@ exports.deleteUsuario = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+

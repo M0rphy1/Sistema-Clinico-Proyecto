@@ -1,39 +1,22 @@
 const express = require('express');
 const app = express();
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const routes = require('./routes/index');
-const authRoutes = require('./routes/authRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes');
 
-// Configuración de la aplicación
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// Middleware para manejar JSON en las solicitudes
+app.use(express.json());
 
-// Conectar a la base de datos
-const db = require('./database/conexiones');
-db.authenticate()
-  .then(() => {
-    console.log('Conectado a la base de datos');
-  })
-  .catch((error) => {
-    console.error('Error al conectar a la base de datos:', error);
-  });
+// Middleware para manejar las rutas de usuarios
+app.use('/api/usuarios', usuarioRoutes);
 
-// Rutas de la aplicación
-app.use('/api', routes);
-
-// Middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Rutas de autenticación
-app.use('/auth', authRoutes);
-
-// Iniciar servidor
-const port = process.env.PORT || 4000;
-app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+// Middleware para manejar errores
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Error en el servidor');
 });
 
-module.exports = app;
+// Iniciar el servidor
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
+});
+
