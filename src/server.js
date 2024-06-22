@@ -55,5 +55,16 @@ sequelize.authenticate()
   .catch((error) => {
     console.error('Error al conectar a la base de datos:', error);
   });
+///////////
+// Configurar Express para usar EJS como motor de plantillas
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
+
+// Definir una ruta de ejemplo y renderizar una vista EJS
+app.get('/', (req, res) => {
+  res.render('index', { title: 'Clínica Veterinaria', message: 'Bienvenido a nuestra clínica veterinaria!' });
+});
+////////////
+
 
 module.exports = app;
