@@ -17,9 +17,6 @@ const Usuario = sequelize.define('Usuario', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  codigoVerificacion: {
-    type: DataTypes.STRING,
-  },
   idRol: {
     type: DataTypes.INTEGER,
   },
