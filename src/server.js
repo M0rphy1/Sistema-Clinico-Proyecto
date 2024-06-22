@@ -44,7 +44,7 @@ app.use('/api', apiRoutes);
 sequelize.authenticate()
   .then(() => {
     console.log('Conectado a la base de datos');
-    return sequelize.sync(); // Sincronizar modelos
+    //return sequelize.sync(); // Sincronizar modelos
   })
   .then(() => {
     // Iniciar el servidor
