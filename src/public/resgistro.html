@@ -28,18 +28,18 @@
                     <i class='bx bx-unlink'></i>
                 </div>
                 <p>o usa tu email para registrarte</p>
-                <form class="form" action="/auth/register" method="POST">
+                <form id="registerForm">
                     <label>
                         <i class='bx bx-user'></i>
-                        <input type="text" name="username" placeholder="Nombre Completo" required>
+                        <input type="text" name="nombreUsuario" placeholder="Nombre Completo" required>
                     </label>
                     <label>
                         <i class='bx bx-envelope'></i>
-                        <input type="email" name="email" placeholder="Correo Electrónico" required>
+                        <input type="email" name="correo" placeholder="Correo Electrónico" required>
                     </label>
                     <label>
                         <i class='bx bxs-lock-alt'></i>
-                        <input type="password" name="password" placeholder="Contraseña" required>
+                        <input type="password" name="contrasena" placeholder="Contraseña" required>
                     </label>
                     <input type="submit" value="Registrarse">
                 </form>
@@ -47,7 +47,32 @@
         </div>
     </div>
 
-    <script src="registro.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const nombreUsuario = event.target.nombreUsuario.value;
+            const correo = event.target.correo.value;
+            const contrasena = event.target.contrasena.value;
+
+            const response = await fetch('/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nombreUsuario, correo, contrasena, idRol: 1 })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(`Registro exitoso, Bienvenido ${nombreUsuario}`);
+                // Redirigir a la página de inicio de sesión
+                window.location.href = 'login.html';
+            } else {
+                alert(data.message);
+            }
+        });
+    </script>
 </body>
 </html>
-

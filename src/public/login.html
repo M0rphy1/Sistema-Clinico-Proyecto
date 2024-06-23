@@ -28,15 +28,14 @@
                     <i class='bx bx-unlink'></i>
                 </div>
                 <p>o iniciar sesión con una cuenta</p>
-                <form class="form" action="/auth/login" method="POST">
+                <form id="loginForm">
                     <label>
                         <i class='bx bx-envelope'></i>
-                        <!-- <input type="email" name="username" placeholder="Nombre Usuario" required> -->
                         <input type="email" name="correo" placeholder="Correo Electrónico" required>
                     </label>
                     <label>
                         <i class='bx bxs-lock-alt'></i>
-                        <input type="password" name="password" placeholder="Contraseña" required>
+                        <input type="password" name="contrasena" placeholder="Contraseña" required>
                     </label>
                     <input type="submit" value="Iniciar Sesión">
                 </form>
@@ -44,6 +43,33 @@
         </div>
     </div>
 
-    <script src="login.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const correo = event.target.correo.value;
+            const contrasena = event.target.contrasena.value;
+
+            const response = await fetch('/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ correo, contrasena })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                localStorage.setItem('token', data.token);
+                alert(`Inicio de sesión exitoso, ${data.nombreUsuario}`);
+                // Redirigir a la página principal o realizar alguna acción
+                window.location.href = '/index.html';
+            } else {
+                alert(data.message);
+            }
+        });
+    </script>
 </body>
 </html>
+
