@@ -1,7 +1,6 @@
-// inventarioController.js
-
 const Inventario = require('../models/inventario');
 
+// Controlador para crear un nuevo inventario
 exports.createInventario = async (req, res) => {
   try {
     const nuevoInventario = await Inventario.create(req.body);
@@ -11,6 +10,7 @@ exports.createInventario = async (req, res) => {
   }
 };
 
+// Controlador para obtener todos los inventarios
 exports.getInventarios = async (req, res) => {
   try {
     const inventarios = await Inventario.findAll();
@@ -20,6 +20,7 @@ exports.getInventarios = async (req, res) => {
   }
 };
 
+// Controlador para obtener un inventario por su ID
 exports.getInventarioById = async (req, res) => {
   try {
     const inventario = await Inventario.findByPk(req.params.id);
@@ -33,6 +34,7 @@ exports.getInventarioById = async (req, res) => {
   }
 };
 
+// Controlador para actualizar un inventario
 exports.updateInventario = async (req, res) => {
   try {
     const inventario = await Inventario.findByPk(req.params.id);
@@ -47,6 +49,7 @@ exports.updateInventario = async (req, res) => {
   }
 };
 
+// Controlador para eliminar un inventario
 exports.deleteInventario = async (req, res) => {
   try {
     const inventario = await Inventario.findByPk(req.params.id);
@@ -60,3 +63,4 @@ exports.deleteInventario = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
