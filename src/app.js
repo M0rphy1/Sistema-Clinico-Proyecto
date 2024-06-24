@@ -13,6 +13,7 @@ const proveedorRoutes = require('./routes/proveedorRoutes');
 const suministroRoutes = require('./routes/suministroRoutes');
 const medicamentoRoutes = require('./routes/medicamentoRoutes');
 const inventarioRoutes = require('./routes/inventarioRoutes');
+const reporteRoutes = require('./routes/reporteRoutes');
 
 const app = express();
 
@@ -56,6 +57,9 @@ app.use('/api/medicamentos', medicamentoRoutes);
 
 // Middleware para manejar las rutas de inventarios
 app.use('/api/inventarios', inventarioRoutes);
+
+// Middleware para manejar las rutas de reportes
+app.use('/api/reportes', reporteRoutes);
 
 // Middleware para manejar errores
 app.use((err, req, res, next) => {
