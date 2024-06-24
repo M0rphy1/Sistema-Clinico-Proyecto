@@ -1,0 +1,210 @@
+<!-- registro_inventario.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Inventario</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Gestión de Inventario</h1>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#registroModal">Registrar Inventario</button>
+    <button class="btn btn-secondary" data-toggle="modal" data-target="#actualizarModal">Actualizar Inventario</button>
+    <button class="btn btn-info" data-toggle="modal" data-target="#buscarModal">Buscar Inventario</button>
+    <button class="btn btn-danger" data-toggle="modal" data-target="#eliminarModal">Eliminar Inventario</button>
+  </div>
+
+  <!-- Modal de Registro -->
+  <div class="modal fade" id="registroModal" tabindex="-1" role="dialog" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="registroModalLabel">Registrar Inventario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="registroInventarioForm">
+            <input type="number" id="idMedicamento" placeholder="ID Medicamento" required>
+            <input type="number" id="idSuministro" placeholder="ID Suministro" required>
+            <input type="number" id="cantidad" placeholder="Cantidad" required>
+            <input type="date" id="fecha" placeholder="Fecha" required>
+            <input type="number" id="idProveedor" placeholder="ID Proveedor" required>
+            <button type="submit">Registrar Inventario</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Actualización -->
+  <div class="modal fade" id="actualizarModal" tabindex="-1" role="dialog" aria-labelledby="actualizarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="actualizarModalLabel">Actualizar Inventario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="actualizarInventarioForm">
+            <input type="number" id="idInventarioActualizar" placeholder="ID Inventario" class="form-control mb-2" required>
+            <input type="number" id="idMedicamentoActualizar" placeholder="ID Medicamento" class="form-control mb-2" required>
+            <input type="number" id="idSuministroActualizar" placeholder="ID Suministro" class="form-control mb-2" required>
+            <input type="number" id="cantidadActualizar" placeholder="Cantidad" class="form-control mb-2" required>
+            <input type="date" id="fechaActualizar" placeholder="Fecha" class="form-control mb-2" required>
+            <input type="number" id="idProveedorActualizar" placeholder="ID Proveedor" class="form-control mb-2" required>
+            <button type="submit" class="btn btn-secondary">Actualizar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Búsqueda -->
+  <div class="modal fade" id="buscarModal" tabindex="-1" role="dialog" aria-labelledby="buscarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="buscarModalLabel">Buscar Inventario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="buscarInventarioForm">
+            <input type="number" id="idInventarioBuscar" placeholder="ID de Inventario" required>
+            <button type="submit">Buscar</button>
+          </form>
+          <div id="resultadoBusqueda"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Eliminación -->
+  <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="eliminarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eliminarModalLabel">Eliminar Inventario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="eliminarInventarioForm">
+            <input type="number" id="idInventarioEliminar" placeholder="ID de Inventario a Eliminar" required>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+    // Evento para enviar el formulario de registro
+    document.getElementById('registroInventarioForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const formData = {
+        idMedicamento: document.getElementById('idMedicamento').value,
+        idSuministro: document.getElementById('idSuministro').value,
+        cantidad: document.getElementById('cantidad').value,
+        fecha: document.getElementById('fecha').value,
+        idProveedor: document.getElementById('idProveedor').value
+      };
+      try {
+        const response = await fetch('/api/inventarios', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+        const data = await response.json();
+        alert('Inventario registrado correctamente');
+        console.log(data);
+        location.reload();
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error al registrar el inventario');
+      }
+    });
+
+    // Evento para enviar el formulario de actualización
+    document.getElementById('actualizarInventarioForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const idInventario = document.getElementById('idInventarioActualizar').value;
+      const formData = {
+        idMedicamento: document.getElementById('idMedicamentoActualizar').value,
+        idSuministro: document.getElementById('idSuministroActualizar').value,
+        cantidad: document.getElementById('cantidadActualizar').value,
+        fecha: document.getElementById('fechaActualizar').value,
+        idProveedor: document.getElementById('idProveedorActualizar').value
+      };
+      try {
+        const response = await fetch(`/api/inventarios/${idInventario}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+        const data = await response.json();
+        alert('Inventario actualizado correctamente');
+        console.log(data);
+        location.reload();
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error al actualizar el inventario');
+      }
+    });
+
+    // Evento para enviar el formulario de búsqueda
+    document.getElementById('buscarInventarioForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const idInventario = document.getElementById('idInventarioBuscar').value;
+      try {
+        const response = await fetch(`/api/inventarios/${idInventario}`);
+        if (!response.ok) {
+          throw new Error('Inventario no encontrado');
+        }
+        const data = await response.json();
+        const resultadoBusqueda = document.getElementById('resultadoBusqueda');
+        resultadoBusqueda.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error al buscar el inventario');
+      }
+    });
+
+    // Evento para enviar el formulario de eliminación
+    document.getElementById('eliminarInventarioForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+      const idInventario = document.getElementById('idInventarioEliminar').value;
+      try {
+        const response = await fetch(`/api/inventarios/${idInventario}`, {
+          method: 'DELETE'
+        });
+        if (!response.ok) {
+          throw new Error('Inventario no encontrado');
+        }
+        alert('Inventario eliminado correctamente');
+        console.log('Inventario eliminado');
+        location.reload();
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error al eliminar el inventario');
+      }
+    });
+  </script>
+</body>
+</html>

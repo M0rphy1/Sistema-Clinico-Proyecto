@@ -1,9 +1,11 @@
+// inventarioController.js
+
 const Inventario = require('../models/inventario');
 
 exports.createInventario = async (req, res) => {
   try {
-    const newInventario = await Inventario.create(req.body);
-    res.status(201).json(newInventario);
+    const nuevoInventario = await Inventario.create(req.body);
+    res.status(201).json(nuevoInventario);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -9,6 +9,7 @@ const authRoutes = require('./routes/authRoutes');
 const mascotaRoutes = require('./routes/mascotaRoutes');
 const clienteRoutes = require('./routes/clienteRoutes');
 const historiaClinicaRoutes = require('./routes/historiaClinicaRoutes');
+const proveedorRoutes = require('./routes/proveedorRoutes');
 
 const app = express();
 
@@ -40,6 +41,9 @@ app.use('/api/clientes', clienteRoutes);
 
 // Middleware para manejar las rutas de historia clínica
 app.use('/api/historiasClinicas', historiaClinicaRoutes);
+
+// Middleware para manejar las rutas de proveedores
+app.use('/api/proveedores', proveedorRoutes);
 
 // Middleware para manejar errores
 app.use((err, req, res, next) => {
