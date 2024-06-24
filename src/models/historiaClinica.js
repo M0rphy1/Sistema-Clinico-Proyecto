@@ -20,10 +20,6 @@ const HistoriaClinica = sequelize.define('HistoriaClinica', {
   },
   descripcion: {
     type: DataTypes.TEXT
-  },
-  estado: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
   }
 }, {
   tableName: 'HistoriaClinica',

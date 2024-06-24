@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Historiales Clínicos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1>Gestión de Historiales Clínicos</h1>
+
+        <!-- Formulario de Registro -->
+        <div class="mb-5">
+            <h2>Registrar Historial Clínico</h2>
+            <form id="registroHistorialForm">
+                <div class="form-group">
+                    <label for="idMascota">ID de la Mascota</label>
+                    <input type="number" class="form-control" id="idMascota" placeholder="ID de la Mascota" required>
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Fecha</label>
+                    <input type="datetime-local" class="form-control" id="fecha" required>
+                </div>
+                <div class="form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea class="form-control" id="descripcion" rows="3" placeholder="Descripción del historial clínico"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrar Historial Clínico</button>
+            </form>
+        </div>
+
+        <!-- Formulario de Modificación -->
+        <div class="mb-5">
+            <h2>Actualizar Historial Clínico</h2>
+            <form id="actualizarHistorialForm">
+                <div class="form-group">
+                    <label for="idHistorialActualizar">ID de Historial Clínico</label>
+                    <input type="number" class="form-control" id="idHistorialActualizar" placeholder="ID de Historial Clínico" required>
+                </div>
+                <div class="form-group">
+                    <label for="idMascotaActualizar">ID de la Mascota</label>
+                    <input type="number" class="form-control" id="idMascotaActualizar" placeholder="ID de la Mascota" required>
+                </div>
+                <div class="form-group">
+                    <label for="fechaActualizar">Fecha</label>
+                    <input type="datetime-local" class="form-control" id="fechaActualizar" required>
+                </div>
+                <div class="form-group">
+                    <label for="descripcionActualizar">Descripción</label>
+                    <textarea class="form-control" id="descripcionActualizar" rows="3" placeholder="Descripción del historial clínico"></textarea>
+                </div>
+                <button type="submit" class="btn btn-secondary">Actualizar Historial Clínico</button>
+            </form>
+        </div>
+
+        <!-- Formulario de Búsqueda -->
+        <div class="mb-5">
+            <h2>Buscar Historial Clínico</h2>
+            <form id="buscarHistorialForm">
+                <div class="form-group">
+                    <label for="idHistorialBuscar">ID de Historial Clínico</label>
+                    <input type="number" class="form-control" id="idHistorialBuscar" placeholder="ID de Historial Clínico" required>
+                </div>
+                <button type="submit" class="btn btn-info">Buscar Historial Clínico</button>
+            </form>
+            <div id="resultBuscar" class="mt-3"></div>
+        </div>
+
+        <!-- Formulario de Eliminación -->
+        <div>
+            <h2>Eliminar Historial Clínico</h2>
+            <form id="eliminarHistorialForm">
+                <div class="form-group">
+                    <label for="idHistorialEliminar">ID de Historial Clínico</label>
+                    <input type="number" class="form-control" id="idHistorialEliminar" placeholder="ID de Historial Clínico" required>
+                </div>
+                <button type="submit" class="btn btn-danger">Eliminar Historial Clínico</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        // Registro de Historial Clínico
+        document.getElementById('registroHistorialForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const idMascota = document.getElementById('idMascota').value;
+            const fecha = document.getElementById('fecha').value;
+            const descripcion = document.getElementById('descripcion').value;
+
+            try {
+                const response = await fetch('/api/historiasClinicas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idMascota, fecha, descripcion })
+                });
+
+                if (response.ok) {
+                    const historialCreado = await response.json();
+                    alert('Historial clínico registrado correctamente');
+                    document.getElementById('registroHistorialForm').reset();
+                } else {
+                    const errorMessage = await response.text();
+                    alert(`Error al registrar historial clínico: ${errorMessage}`);
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+                alert('Error en la solicitud. Por favor, revisa la consola para más detalles.');
+            }
+        });
+
+        // Actualización de Historial Clínico
+        document.getElementById('actualizarHistorialForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const idHistorial = document.getElementById('idHistorialActualizar').value;
+            const idMascota = document.getElementById('idMascotaActualizar').value;
+            const fecha = document.getElementById('fechaActualizar').value;
+            const descripcion = document.getElementById('descripcionActualizar').value;
+
+            try {
+                const response = await fetch(`/api/historiasClinicas/${idHistorial}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idMascota, fecha, descripcion })
+                });
+
+                if (response.ok) {
+                    const historialActualizado = await response.json();
+                    alert('Historial clínico actualizado correctamente');
+                    document.getElementById('actualizarHistorialForm').reset();
+                } else {
+                    const errorMessage = await response.text();
+                    alert(`Error al actualizar historial clínico: ${errorMessage}`);
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+                alert('Error en la solicitud. Por favor, revisa la consola para más detalles.');
+            }
+        });
+
+        // Búsqueda de Historial Clínico
+        document.getElementById('buscarHistorialForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const idHistorial = document.getElementById('idHistorialBuscar').value;
+
+            try {
+                const response = await fetch(`/api/historiasClinicas/${idHistorial}`);
+
+                if (response.ok) {
+                    const historial = await response.json();
+                    document.getElementById('resultBuscar').innerHTML = `
+                        <p>ID de Mascota: ${historial.idMascota}</p>
+                        <p>Fecha: ${historial.fecha}</p>
+                        <p>Descripción: ${historial.descripcion}</p>
+                    `;
+                } else {
+                    document.getElementById('resultBuscar').textContent = 'Historial clínico no encontrado';
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+                alert('Error en la solicitud. Por favor, revisa la consola para más detalles.');
+            }
+        });
+
+        // Eliminación de Historial Clínico
+        document.getElementById('eliminarHistorialForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const idHistorial = document.getElementById('idHistorialEliminar').value;
+
+            try {
+                const response = await fetch(`/api/historiasClinicas/${idHistorial}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert('Historial clínico eliminado correctamente');
+                    document.getElementById('eliminarHistorialForm').reset();
+                } else {
+                    const errorMessage = await response.text();
+                    alert(`Error al eliminar historial clínico: ${errorMessage}`);
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+                alert('Error en la solicitud. Por favor, revisa la consola para más detalles.');
+            }
+        });
+    </script>
+</body>
+
+</html>
+

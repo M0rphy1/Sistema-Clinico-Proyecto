@@ -32,10 +32,6 @@ const HorarioAtencion = sequelize.define('HorarioAtencion', {
     type: DataTypes.DATE,
     allowNull: false
   },
-  estado: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
-  },
   idDiaSemana: {
     type: DataTypes.INTEGER,
     references: {

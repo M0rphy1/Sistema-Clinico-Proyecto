@@ -31,10 +31,6 @@ const Inventario = sequelize.define('Inventario', {
     type: DataTypes.DATE,
     allowNull: false
   },
-  estado: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
-  },
   idProveedor: {
     type: DataTypes.INTEGER,
     references: {

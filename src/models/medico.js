@@ -13,10 +13,6 @@ const Medico = sequelize.define('Medico', {
       model: 'Empleado',
       key: 'idEmpleado'
     }
-  },
-  estado: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
   }
 }, {
   tableName: 'Medico',

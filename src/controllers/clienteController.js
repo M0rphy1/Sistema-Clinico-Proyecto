@@ -2,8 +2,8 @@ const Cliente = require('../models/cliente');
 
 exports.createCliente = async (req, res) => {
   try {
-    const newCliente = await Cliente.create(req.body);
-    res.status(201).json(newCliente);
+    const nuevoCliente = await Cliente.create(req.body);
+    res.status(201).json(nuevoCliente);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -58,3 +58,4 @@ exports.deleteCliente = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+

@@ -24,10 +24,6 @@ const Cliente = sequelize.define('Cliente', {
   },
   correo: {
     type: DataTypes.STRING(100)
-  },
-  estado: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
   }
 }, {
   timestamps: false,
@@ -35,3 +31,4 @@ const Cliente = sequelize.define('Cliente', {
 });
 
 module.exports = Cliente;
+

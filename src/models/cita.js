@@ -28,10 +28,6 @@ const Cita = sequelize.define('Cita', {
   motivo: {
     type: DataTypes.TEXT
   },
-  estado: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
-  },
   idInventario: {
     type: DataTypes.INTEGER,
     references: {

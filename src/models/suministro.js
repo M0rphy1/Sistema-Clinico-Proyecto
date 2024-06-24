@@ -20,10 +20,6 @@ const Suministro = sequelize.define('Suministro', {
   },
   descripcion: {
     type: DataTypes.TEXT
-  },
-  estado: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
   }
 }, {
   timestamps: false,

@@ -30,10 +30,6 @@ const Empleado = sequelize.define('Empleado', {
       model: 'Rol',
       key: 'idRol'
     }
-  },
-  estado: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false
   }
 }, {
   tableName: 'Empleado',

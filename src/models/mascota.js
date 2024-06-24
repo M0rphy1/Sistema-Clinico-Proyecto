@@ -30,7 +30,8 @@ const Mascota = sequelize.define('Mascota', {
   },
   estado: {
     type: DataTypes.BOOLEAN,
-    allowNull: false
+    allowNull: true,
+    defaultValue: true // Aquí establece el valor por defecto que necesites
   }
 }, {
   tableName: 'Mascota',
@@ -38,5 +39,6 @@ const Mascota = sequelize.define('Mascota', {
 });
 
 module.exports = Mascota;
+
 
 
