@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Índice de Suministros</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Índice de Suministros</h1>
+
+    <!-- Botón para abrir el modal de registro -->
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#registroModal">Registrar Suministro</button>
+
+    <!-- Tabla para mostrar la lista de suministros -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>ID Proveedor</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="suministrosList">
+        <!-- Aquí se añadirán dinámicamente los suministros -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal de Registro -->
+  <div class="modal fade" id="registroModal" tabindex="-1" role="dialog" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="registroModalLabel">Registrar Suministro</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="registroSuministroForm">
+            <input type="text" id="idProveedor" class="form-control mb-2" placeholder="ID Proveedor" required>
+            <input type="text" id="nombreSuministro" class="form-control mb-2" placeholder="Nombre" required>
+            <textarea id="descripcionSuministro" class="form-control mb-2" placeholder="Descripción" required></textarea>
+            <button type="submit" class="btn btn-primary">Registrar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript para interactuar con la API REST -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Función para cargar la lista de suministros al cargar la página
+      cargarSuministros();
+
+      // Evento para enviar el formulario de registro de suministro
+      document.getElementById('registroSuministroForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const formData = {
+          idProveedor: document.getElementById('idProveedor').value,
+          nombre: document.getElementById('nombreSuministro').value,
+          descripcion: document.getElementById('descripcionSuministro').value
+        };
+        try {
+          const response = await fetch('/api/suministros', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+          const data = await response.json();
+          alert('Suministro registrado correctamente');
+          console.log(data);
+          $('#registroModal').modal('hide'); // Cerrar modal después de registro exitoso
+          cargarSuministros(); // Recargar la lista de suministros
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error al registrar el suministro');
+        }
+      });
+    });
+
+    // Función para cargar la lista de suministros desde la API
+    async function cargarSuministros() {
+      try {
+        const response = await fetch('/api/suministros');
+        const data = await response.json();
+        const suministrosList = document.getElementById('suministrosList');
+        suministrosList.innerHTML = ''; // Limpiar lista actual
+        data.forEach(suministro => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${suministro.idSuministro}</td>
+            <td>${suministro.idProveedor}</td>
+            <td>${suministro.nombre}</td>
+            <td>${suministro.descripcion}</td>
+            <td>
+              <button class="btn btn-sm btn-info" onclick="editarSuministro(${suministro.idSuministro})">Editar</button>
+              <button class="btn btn-sm btn-danger" onclick="eliminarSuministro(${suministro.idSuministro})">Eliminar</button>
+            </td>
+          `;
+          suministrosList.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error al cargar la lista de suministros');
+      }
+    }
+
+    // Función para eliminar un suministro
+    async function eliminarSuministro(idSuministro) {
+      if (confirm('¿Estás seguro de eliminar este suministro?')) {
+        try {
+          const response = await fetch(`/api/suministros/${idSuministro}`, {
+            method: 'DELETE'
+          });
+          if (!response.ok) {
+            throw new Error('Suministro no encontrado');
+          }
+          alert('Suministro eliminado correctamente');
+          console.log('Suministro eliminado');
+          cargarSuministros(); // Recargar la lista de suministros
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error al eliminar el suministro');
+        }
+      }
+    }
+
+    // Función para editar un suministro (a implementar según necesidad)
+    async function editarSuministro(idSuministro) {
+      alert('Funcionalidad de edición de suministros aún no implementada');
+    }
+  </script>
+</body>
+</html>

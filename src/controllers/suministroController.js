@@ -58,3 +58,4 @@ exports.deleteSuministro = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+

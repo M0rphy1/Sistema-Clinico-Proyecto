@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD de Medicamentos</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>CRUD de Medicamentos</h1>
+
+    <!-- Botón para abrir la modal de registro -->
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#registroModal">Registrar Medicamento</button>
+
+    <!-- Modal de Registro -->
+    <div class="modal fade" id="registroModal" tabindex="-1" role="dialog" aria-labelledby="registroModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="registroModalLabel">Registrar Medicamento</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Formulario para crear un nuevo medicamento -->
+            <form id="crearMedicamentoForm">
+              <input type="text" id="nombre" class="form-control mb-2" placeholder="Nombre" required>
+              <textarea id="descripcion" class="form-control mb-2" placeholder="Descripción"></textarea>
+              <input type="number" id="precio" class="form-control mb-2" placeholder="Precio" step="0.01" required>
+              <input type="number" id="stock" class="form-control mb-2" placeholder="Stock" required>
+              <input type="date" id="fechaVencimiento" class="form-control mb-2" placeholder="Fecha de Vencimiento">
+              <input type="text" id="fabricante" class="form-control mb-2" placeholder="Fabricante">
+              <button type="submit" class="btn btn-primary">Crear Medicamento</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla para mostrar la lista de medicamentos -->
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Fecha de Vencimiento</th>
+          <th>Fabricante</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="medicamentosList">
+        <!-- Aquí se añadirán dinámicamente los medicamentos -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      cargarMedicamentos();
+
+      // Evento para enviar el formulario de registro de medicamento
+      document.getElementById('crearMedicamentoForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const formData = {
+          nombre: document.getElementById('nombre').value,
+          descripcion: document.getElementById('descripcion').value,
+          precio: parseFloat(document.getElementById('precio').value),
+          stock: parseInt(document.getElementById('stock').value),
+          fechaVencimiento: document.getElementById('fechaVencimiento').value,
+          fabricante: document.getElementById('fabricante').value
+        };
+        try {
+          const response = await fetch('/api/medicamentos', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+          const data = await response.json();
+          alert('Medicamento creado correctamente');
+          console.log(data);
+          $('#registroModal').modal('hide'); // Cerrar modal después de registro exitoso
+          document.getElementById('crearMedicamentoForm').reset();
+          cargarMedicamentos();
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error al crear el medicamento');
+        }
+      });
+    });
+
+    async function cargarMedicamentos() {
+      try {
+        const response = await fetch('/api/medicamentos');
+        const data = await response.json();
+        const medicamentosList = document.getElementById('medicamentosList');
+        medicamentosList.innerHTML = '';
+        data.forEach(medicamento => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${medicamento.idMedicamento}</td>
+            <td>${medicamento.nombre}</td>
+            <td>${medicamento.descripcion}</td>
+            <td>${medicamento.precio}</td>
+            <td>${medicamento.stock}</td>
+            <td>${medicamento.fechaVencimiento}</td>
+            <td>${medicamento.fabricante}</td>
+            <td>
+              <button class="btn btn-sm btn-info" onclick="editarMedicamento(${medicamento.idMedicamento})">Editar</button>
+              <button class="btn btn-sm btn-danger" onclick="eliminarMedicamento(${medicamento.idMedicamento})">Eliminar</button>
+            </td>
+          `;
+          medicamentosList.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error al cargar la lista de medicamentos');
+      }
+    }
+
+    async function editarMedicamento(idMedicamento) {
+      alert('Funcionalidad de edición de medicamentos aún no implementada');
+    }
+
+    async function eliminarMedicamento(idMedicamento) {
+      if (confirm('¿Estás seguro de eliminar este medicamento?')) {
+        try {
+          const response = await fetch(`/api/medicamentos/${idMedicamento}`, {
+            method: 'DELETE'
+          });
+          if (!response.ok) {
+            throw new Error('Medicamento no encontrado');
+          }
+          alert('Medicamento eliminado correctamente');
+          console.log('Medicamento eliminado');
+          cargarMedicamentos();
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error al eliminar el medicamento');
+        }
+      }
+    }
+  </script>
+</body>
+</html>
+

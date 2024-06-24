@@ -1,9 +1,10 @@
+// controllers/medicamentoController.js
 const Medicamento = require('../models/medicamento');
 
 exports.createMedicamento = async (req, res) => {
   try {
-    const nuevoMedicamento = await Medicamento.create(req.body);
-    res.status(201).json(nuevoMedicamento);
+    const newMedicamento = await Medicamento.create(req.body);
+    res.status(201).json(newMedicamento);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -58,3 +59,4 @@ exports.deleteMedicamento = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
