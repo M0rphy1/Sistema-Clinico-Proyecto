@@ -39,7 +39,7 @@ app.use('/auth', authRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 
 // Middleware para manejar las rutas de las citas
-app.use('/api/citass', citasRoutes);
+app.use('/api/citas', citasRoutes);
 
 // Middleware para manejar las rutas de mascotas
 app.use('/api/mascotas', mascotaRoutes);
