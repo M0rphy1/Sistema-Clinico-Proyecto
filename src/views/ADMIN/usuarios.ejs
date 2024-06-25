@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ADMINISTRADOR</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <!-- Nav tabs -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">VETERINARIA</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/admin"
+                >INICIO</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/usuarios">Usuarios</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin/productos">Reportes</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container mt-5">
+      <h1 class="my-5">ADMINISTRADOR DE USUARIOS</h1>
+      <div class="my-5">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#crearUsuarioModal"
+        >
+          Crear usuario
+        </button>
+      </div>
+
+      <!-- Modal Crear Usuario -->
+      <div
+        class="modal fade"
+        id="crearUsuarioModal"
+        tabindex="-1"
+        aria-labelledby="crearUsuarioModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="crearUsuarioModalLabel">
+                Crear Usuario
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <form id="crearUsuarioForm">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="nombreUsuario" class="form-label">Nombre</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nombreUsuario"
+                    name="nombreUsuario"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="correo" class="form-label">Correo</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="correo"
+                    name="correo"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="contrasena" class="form-label">Contraseña</label>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="contrasena"
+                    name="contrasena"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cerrar
+                </button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Modificar Usuario -->
+      <div
+        class="modal fade"
+        id="modificarUsuarioModal"
+        tabindex="-1"
+        aria-labelledby="modificarUsuarioModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modificarUsuarioModalLabel">
+                Modificar Usuario
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <form id="modificarUsuarioForm">
+              <div class="modal-body">
+                <input type="hidden" id="modificarUsuarioId" name="id" />
+                <div class="mb-3">
+                  <label for="modificarNombreUsuario" class="form-label"
+                    >Nombre</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="modificarNombreUsuario"
+                    name="nombreUsuario"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="modificarCorreo" class="form-label">Correo</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="modificarCorreo"
+                    name="correo"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cerrar
+                </button>
+                <button type="submit" class="btn btn-warning">Modificar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Eliminar Usuario -->
+      <div
+        class="modal fade"
+        id="eliminarUsuarioModal"
+        tabindex="-1"
+        aria-labelledby="eliminarUsuarioModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="eliminarUsuarioModalLabel">
+                Eliminar Usuario
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <form id="eliminarUsuarioForm">
+              <div class="modal-body">
+                <input type="hidden" id="eliminarUsuarioId" name="id" />
+                <p>¿Está seguro de que desea eliminar este usuario?</p>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cerrar
+                </button>
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">NOMBRE</th>
+              <th scope="col">CORREO</th>
+              <th scope="col">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (usuarios) { %> <% for (var i = 0; i < usuarios.length; i++) {
+            %>
+            <tr>
+              <td><%= usuarios[i].nombreUsuario %></td>
+              <td><%= usuarios[i].correo %></td>
+              <td>
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modificarUsuarioModal"
+                  onclick="populateModificarModal('<%= usuarios[i].idUsuario %>', '<%= usuarios[i].nombreUsuario %>', '<%= usuarios[i].correo %>')"
+                >
+                  Modificar
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#eliminarUsuarioModal"
+                  onclick="populateEliminarModal('<%= usuarios[i].idUsuario %>')"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+            <% } %> <% } %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <footer>
+      <!-- place footer here -->
+    </footer>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- LOGICA DEL CLIENTE -->
+    <script>
+      document
+        .getElementById("crearUsuarioForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const formData = {
+            nombreUsuario: document.getElementById("nombreUsuario").value,
+            correo: document.getElementById("correo").value,
+            contrasena: document.getElementById("contrasena").value,
+          };
+
+          const response = await fetch("/admin/usuarios", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          });
+
+          console.log(response);
+          if (response.ok) {
+            location.reload();
+          }
+        });
+
+      document
+        .getElementById("modificarUsuarioForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const id = document.getElementById("modificarUsuarioId").value;
+          const nombre = document.getElementById(
+            "modificarNombreUsuario"
+          ).value;
+          const correo = document.getElementById("modificarCorreo").value;
+
+          const formData = {
+            nombreUsuario: nombre,
+            correo: correo,
+          };
+
+          const response = await fetch(`/admin/usuarios/${id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          });
+
+          if (response.ok) {
+            location.reload();
+          }
+        });
+      document
+        .getElementById("eliminarUsuarioForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const id = document.getElementById("eliminarUsuarioId").value;
+
+          const response = await fetch(`/admin/usuarios/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (response.ok) {
+            location.reload();
+          }
+        });
+      function populateModificarModal(id, nombre, correo) {
+        document.getElementById("modificarUsuarioId").value = id;
+        document.getElementById("modificarNombreUsuario").value = nombre;
+        document.getElementById("modificarCorreo").value = correo;
+      }
+
+      function populateEliminarModal(id) {
+        document.getElementById("eliminarUsuarioId").value = id;
+      }
+    </script>
+  </body>
+</html>
