@@ -14,6 +14,7 @@ const suministroRoutes = require('./routes/suministroRoutes');
 const medicamentoRoutes = require('./routes/medicamentoRoutes');
 const inventarioRoutes = require('./routes/inventarioRoutes');
 const reporteRoutes = require('./routes/reporteRoutes');
+const citasRoutes = require('./routes/citaRoutes');
 
 const app = express();
 
@@ -36,6 +37,9 @@ app.use('/auth', authRoutes);
 
 // Middleware para manejar las rutas de usuarios
 app.use('/api/usuarios', usuarioRoutes);
+
+// Middleware para manejar las rutas de las citas
+app.use('/api/citass', citasRoutes);
 
 // Middleware para manejar las rutas de mascotas
 app.use('/api/mascotas', mascotaRoutes);
