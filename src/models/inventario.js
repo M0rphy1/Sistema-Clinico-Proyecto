@@ -1,8 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/conexiones');
 
-const Medicamento = require('./medicamento'); // Asegúrate de importar el modelo Medicamento correctamente
-
 const Inventario = sequelize.define('Inventario', {
   idInventario: {
     type: DataTypes.INTEGER,
@@ -12,14 +10,14 @@ const Inventario = sequelize.define('Inventario', {
   idMedicamento: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'Medicamento', // Nombre del modelo
+      model: 'Medicamento',
       key: 'idMedicamento'
     }
   },
   idSuministro: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'Suministro', // Nombre del modelo Suministro, ajusta según tu estructura
+      model: 'Suministro',
       key: 'idSuministro'
     }
   },
@@ -34,9 +32,13 @@ const Inventario = sequelize.define('Inventario', {
   idProveedor: {
     type: DataTypes.INTEGER,
     references: {
-      model: 'Proveedor', // Nombre del modelo Proveedor, ajusta según tu estructura
+      model: 'Proveedor',
       key: 'idProveedor'
     }
+  },
+  tipo: {
+    type: DataTypes.STRING, // Ajusta el tipo de dato según corresponda (VARCHAR, TEXT, etc.)
+    allowNull: true // Cambia a false si el tipo es obligatorio
   }
 }, {
   tableName: 'Inventario',
@@ -44,5 +46,6 @@ const Inventario = sequelize.define('Inventario', {
 });
 
 module.exports = Inventario;
+
 
 

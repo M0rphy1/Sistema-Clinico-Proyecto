@@ -7,30 +7,13 @@ const HorarioAtencion = sequelize.define('HorarioAtencion', {
     autoIncrement: true,
     primaryKey: true
   },
-  idHoraInicio: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'Hora',
-      key: 'idHora'
-    }
+  horaInicio: {
+       type: DataTypes.TIME,
+       allowNull: false
   },
-  idHoraFin: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'Hora',
-      key: 'idHora'
-    }
-  },
-  idMedico: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'Medico',
-      key: 'idMedico'
-    }
-  },
-  fecha: {
-    type: DataTypes.DATE,
-    allowNull: false
+  horaFin: {
+       type: DataTypes.TIME,
+       allowNull: false
   },
   idDiaSemana: {
     type: DataTypes.INTEGER,

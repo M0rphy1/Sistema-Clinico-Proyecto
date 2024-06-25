@@ -1,11 +1,52 @@
 const Cita = require('../models/cita');
+const Mascota = require('../models/mascota');
+const Empleado = require('../models/empleado');
+const DiaSemana = require('../models/diaSemana');
+const Hora = require('../models/hora');
+const HorarioAtencion = require('../models/horarioAtencion');
+const Inventario = require('../models/inventario');
 
 exports.createCita = async (req, res) => {
+  const { idMascota, idEmpleado, idDiaSemana, idHora, idHorarioAtencion, idInventario, fechaCita, motivo } = req.body;
+
   try {
-    const newCita = await Cita.create(req.body);
-    res.status(201).json(newCita);
+    // Verificar si existen los modelos relacionados
+    const mascota = await Mascota.findByPk(idMascota);
+    const empleado = await Empleado.findByPk(idEmpleado);
+    const diaSemana = await DiaSemana.findByPk(idDiaSemana);
+    const hora = await Hora.findByPk(idHora);
+    const horarioAtencion = await HorarioAtencion.findByPk(idHorarioAtencion);
+    const inventario = await Inventario.findByPk(idInventario);
+
+    if (!mascota || !empleado || !diaSemana || !hora || !horarioAtencion || !inventario) {
+      return res.status(404).json({ message: 'Uno o más datos de la cita no son válidos.' });
+    }
+
+    // Verificar si hay suficiente cantidad en el inventario
+    if (inventario.cantidad <= 0) {
+      return res.status(400).json({ message: 'No hay suficiente cantidad en el inventario.' });
+    }
+
+    // Crear la cita
+    const nuevaCita = await Cita.create({
+      idMascota,
+      idEmpleado,
+      idDiaSemana,
+      idHora,
+      idHorarioAtencion,
+      idInventario,
+      fechaCita,
+      motivo
+    });
+
+    // Reducir la cantidad en el inventario
+    inventario.cantidad -= 1; // Reducir en 1 la cantidad disponible
+    await inventario.save(); // Guardar el inventario actualizado
+
+    res.status(201).json(nuevaCita);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error al crear la cita:', error);
+    res.status(500).json({ error: 'Error al crear la cita' });
   }
 };
 

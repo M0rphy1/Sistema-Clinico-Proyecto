@@ -29,15 +29,18 @@ exports.obtenerInventarioPorId = async (req, res) => {
 
 // Crear un nuevo inventario
 exports.crearInventario = async (req, res) => {
-  const { idMedicamento, idSuministro, cantidad, fecha, idProveedor } = req.body;
+  const { idMedicamento, idSuministro, cantidad, fecha, idProveedor, tipo } = req.body; // Asegúrate de incluir 'tipo' aquí si es necesario
+
   try {
-    const nuevoInventario = await Inventario.create({ idMedicamento, idSuministro, cantidad, fecha, idProveedor });
+    const nuevoInventario = await Inventario.create({ idMedicamento, idSuministro, cantidad, fecha, idProveedor, tipo }); // Asegúrate de incluir 'tipo' aquí
+
     res.status(201).json(nuevoInventario);
   } catch (error) {
     console.error('Error al crear inventario:', error);
     res.status(500).json({ error: 'Error al crear inventario' });
   }
 };
+
 
 // Actualizar un inventario por ID
 exports.actualizarInventario = async (req, res) => {

@@ -1,4 +1,3 @@
-// controllers/medicamentoController.js
 const Medicamento = require('../models/medicamento');
 
 // Obtener todos los medicamentos
@@ -29,9 +28,9 @@ exports.obtenerMedicamentoPorId = async (req, res) => {
 
 // Crear un nuevo medicamento
 exports.crearMedicamento = async (req, res) => {
-  const { nombre, descripcion, precioUnitario, cantidadStock } = req.body;
+  const { nombre, descripcion, precio, stock, fecha_vencimiento, fabricante } = req.body;
   try {
-    const nuevoMedicamento = await Medicamento.create({ nombre, descripcion, precioUnitario, cantidadStock });
+    const nuevoMedicamento = await Medicamento.create({ nombre, descripcion, precio, stock, fecha_vencimiento, fabricante });
     res.status(201).json(nuevoMedicamento);
   } catch (error) {
     console.error('Error al crear medicamento:', error);
@@ -42,13 +41,13 @@ exports.crearMedicamento = async (req, res) => {
 // Actualizar un medicamento por ID
 exports.actualizarMedicamento = async (req, res) => {
   const { id } = req.params;
-  const { nombre, descripcion, precioUnitario, cantidadStock } = req.body;
+  const { nombre, descripcion, precio, stock, fecha_vencimiento, fabricante } = req.body;
   try {
     const medicamento = await Medicamento.findByPk(id);
     if (!medicamento) {
       return res.status(404).json({ error: 'Medicamento no encontrado' });
     }
-    await medicamento.update({ nombre, descripcion, precioUnitario, cantidadStock });
+    await medicamento.update({ nombre, descripcion, precio, stock, fecha_vencimiento, fabricante });
     res.status(200).json(medicamento);
   } catch (error) {
     console.error('Error al actualizar medicamento:', error);
@@ -71,4 +70,3 @@ exports.eliminarMedicamento = async (req, res) => {
     res.status(500).json({ error: 'Error al eliminar medicamento' });
   }
 };
-

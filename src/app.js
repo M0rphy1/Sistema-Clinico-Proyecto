@@ -1,4 +1,5 @@
-///////////
+// app.js
+
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
@@ -14,8 +15,8 @@ const suministroRoutes = require('./routes/suministroRoutes');
 const medicamentoRoutes = require('./routes/medicamentoRoutes');
 const inventarioRoutes = require('./routes/inventarioRoutes');
 const reporteRoutes = require('./routes/reporteRoutes');
-const citaRoutes = require('./routes/citaRoutes');
-const empleadoRoutes = require('./routes/empleadoRoutes');
+const citasRoutes = require('./routes/citaRoutes');
+const empleadoRoutes = require('./routes/empleadoRoutes'); // Importa las rutas de empleados
 
 const app = express();
 
@@ -40,7 +41,7 @@ app.use('/auth', authRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 
 // Middleware para manejar las rutas de las citas
-app.use('/api/citas', citaRoutes);
+app.use('/api/citas', citasRoutes);
 
 // Middleware para manejar las rutas de mascotas
 app.use('/api/mascotas', mascotaRoutes);
@@ -67,7 +68,7 @@ app.use('/api/inventarios', inventarioRoutes);
 app.use('/api/reportes', reporteRoutes);
 
 // Middleware para manejar las rutas de empleados
-app.use('/api/empleados', empleadoRoutes);
+app.use('/api/empleados', empleadoRoutes); // Agrega las rutas de empleados
 
 // Middleware para manejar errores
 app.use((err, req, res, next) => {
@@ -91,3 +92,5 @@ sequelize.sync()
   .catch(err => {
     console.error('Error al sincronizar la base de datos:', err);
   });
+
+module.exports = app;
