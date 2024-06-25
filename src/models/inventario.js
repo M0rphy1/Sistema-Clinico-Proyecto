@@ -36,9 +36,16 @@ const Inventario = sequelize.define('Inventario', {
       key: 'idProveedor'
     }
   },
+  // tipo: {
+  //   type: DataTypes.STRING, // Ajusta el tipo de dato según corresponda (VARCHAR, TEXT, etc.)
+  //   allowNull: true // Cambia a false si el tipo es obligatorio
+  // }
   tipo: {
-    type: DataTypes.STRING, // Ajusta el tipo de dato según corresponda (VARCHAR, TEXT, etc.)
-    allowNull: true // Cambia a false si el tipo es obligatorio
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    validate: {
+      isIn: [['Medicamento', 'Suministro']]
+    }
   }
 }, {
   tableName: 'Inventario',

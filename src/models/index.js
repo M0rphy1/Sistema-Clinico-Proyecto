@@ -34,6 +34,19 @@ Cita.belongsTo(Inventario, { foreignKey: 'idInventario' });
 // Relación HorarioAtencion con DiaSemana
 HorarioAtencion.belongsTo(DiaSemana, { foreignKey: 'idDiaSemana' });
 
+// Definir relaciones entre modelos
+Proveedor.hasMany(Suministro, { foreignKey: 'idProveedor' });
+Suministro.belongsTo(Proveedor, { foreignKey: 'idProveedor' });
+
+Proveedor.hasMany(Inventario, { foreignKey: 'idProveedor' });
+Inventario.belongsTo(Proveedor, { foreignKey: 'idProveedor' });
+
+Inventario.belongsTo(Medicamento, { foreignKey: 'idMedicamento' });
+Medicamento.hasMany(Inventario, { foreignKey: 'idMedicamento' });
+
+Inventario.belongsTo(Suministro, { foreignKey: 'idSuministro' });
+Suministro.hasMany(Inventario, { foreignKey: 'idSuministro' });
+
 // Sincronizar todos los modelos con la base de datos
 sequelize.sync({ force: true }) // force: true eliminará las tablas existentes y las volverá a crear
   .then(() => {

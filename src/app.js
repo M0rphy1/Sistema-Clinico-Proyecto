@@ -81,6 +81,17 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
+// Ruta para el inventario
+app.get('/api/inventario', async (req, res) => {
+  try {
+    const result = await sequelize.query('SELECT * FROM vista_inventario');
+    res.json(result[0]); // Sequelize devuelve los resultados en un array, el primer elemento es el array de filas
+  } catch (error) {
+    console.error('Error fetching inventory:', error);
+    res.status(500).json({ error: 'Error fetching inventory' });
+  }
+});
+
 // Sincronización de la base de datos y inicio del servidor
 sequelize.sync()
   .then(() => {

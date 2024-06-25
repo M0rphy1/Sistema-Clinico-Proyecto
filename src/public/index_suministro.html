@@ -20,8 +20,8 @@
           <th>ID</th>
           <th>Nombre</th>
           <th>Descripción</th>
-          <th>Cantidad</th>
-          <th>Precio Unitario</th>
+          <!-- <th>Cantidad</th>
+          <th>Precio Unitario</th> -->
           <th>ID Proveedor</th>
           <th>Acciones</th>
         </tr>
@@ -71,8 +71,8 @@
         const formData = {
           nombre: document.getElementById('nombre').value,
           descripcion: document.getElementById('descripcion').value,
-          cantidad: document.getElementById('cantidad').value,
-          precioUnitario: document.getElementById('precioUnitario').value,
+          // cantidad: document.getElementById('cantidad').value,
+          // precioUnitario: document.getElementById('precioUnitario').value,
           idProveedor: document.getElementById('idProveedor').value
         };
         try {
@@ -120,8 +120,6 @@
             <td>${suministro.idSuministro}</td>
             <td>${suministro.nombre}</td>
             <td>${suministro.descripcion}</td>
-            <td>${suministro.cantidad}</td>
-            <td>${suministro.precioUnitario}</td>
             <td>${suministro.idProveedor}</td>
             <td>
               <button class="btn btn-sm btn-info" onclick="editarSuministro(${suministro.idSuministro})">Editar</button>
@@ -164,8 +162,8 @@
         document.getElementById('suministroId').value = data.idSuministro;
         document.getElementById('nombre').value = data.nombre;
         document.getElementById('descripcion').value = data.descripcion;
-        document.getElementById('cantidad').value = data.cantidad;
-        document.getElementById('precioUnitario').value = data.precioUnitario;
+        // document.getElementById('cantidad').value = data.cantidad;
+        // document.getElementById('precioUnitario').value = data.precioUnitario;
         document.getElementById('idProveedor').value = data.idProveedor;
         $('#registroModal').modal('show');
       } catch (error) {
