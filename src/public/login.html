@@ -22,22 +22,34 @@
         <div class="form-information">
             <div class="form-information-childs">
                 <h2>Iniciar Sesión</h2>
-                <div class="icons">
+                <!-- <div class="icons">
                     <i class='bx bxl-google'></i>
                     <i class='bx bxl-github'></i>
                     <i class='bx bx-unlink'></i>
-                </div>
-                <p>o iniciar sesión con una cuenta</p>
+                </div> -->
+                <p>como USUARIO</p>
                 <form id="loginForm">
                     <label>
                         <i class='bx bx-envelope'></i>
-                        <input type="email" name="correo" placeholder="Correo Electrónico" required>
-                    </label>
+                        <input type="email" name="correo" placeholder="Correo Electrónico" required><br>
+                    </label><br>
                     <label>
                         <i class='bx bxs-lock-alt'></i>
-                        <input type="password" name="contrasena" placeholder="Contraseña" required>
-                    </label>
+                        <input type="password" name="contrasena" placeholder="Contraseña" required><br>
+                    </label><br>
                     <input type="submit" value="Iniciar Sesión">
+                </form>
+                <form id="adminLoginForm" style="margin-top: 20px;">
+                    <p>como ADMINISTRADOR</p>
+                    <label>
+                        <i class='bx bx-envelope'></i>
+                        <input type="email" name="correoAdmin" placeholder="Correo Electrónico" required><br>
+                    </label><br>
+                    <label>
+                        <i class='bx bxs-lock-alt'></i>
+                        <input type="password" name="contrasenaAdmin" placeholder="Contraseña" required><br>
+                    </label><br>
+                    <input type="submit" value="Iniciar Admin">
                 </form>
             </div>
         </div>
@@ -64,8 +76,33 @@
                 localStorage.setItem('token', data.token);
                 alert(`Inicio de sesión exitoso, ${data.nombreUsuario}`);
                 // Redirigir a la página principal o realizar alguna acción
-                //window.location.href = '/index.html';
                 window.location.href = '/vet_index.html';
+            } else {
+                alert(data.message);
+            }
+        });
+
+        document.getElementById('adminLoginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const correoAdmin = event.target.correoAdmin.value;
+            const contrasenaAdmin = event.target.contrasenaAdmin.value;
+
+            const response = await fetch('/auth/admin/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ correo: correoAdmin, contrasena: contrasenaAdmin })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                localStorage.setItem('adminToken', data.token);
+                alert(`Inicio de sesión como administrador exitoso, ${data.nombreUsuario}`);
+                // Redirigir a la página de administrador o realizar alguna acción
+                window.location.href = '/admin_index.html';
             } else {
                 alert(data.message);
             }
@@ -73,4 +110,3 @@
     </script>
 </body>
 </html>
-
