@@ -30,6 +30,11 @@ Cita.belongsTo(Empleado, { foreignKey: 'idEmpleado' });
 Cita.belongsTo(Inventario, { foreignKey: 'idInventario' });
 Medico.belongsTo(Empleado, { foreignKey: 'idEmpleado' });
 
+// Relación Cita
+// Cita.belongsTo(DiaSemana, { foreignKey: 'idDiaSemana' });
+// Cita.belongsTo(Hora, { foreignKey: 'idHora' });
+// Cita.belongsTo(HorarioAtencion, { foreignKey: 'idHorarioAtencion' });
+
 HorarioAtencion.belongsTo(Medico, { foreignKey: 'idMedico' });
 HorarioAtencion.belongsTo(Hora, { as: 'HoraInicio', foreignKey: 'idHoraInicio' });
 HorarioAtencion.belongsTo(Hora, { as: 'HoraFin', foreignKey: 'idHoraFin' });
