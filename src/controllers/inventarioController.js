@@ -1,66 +1,74 @@
+// controllers/inventarioController.js
 const Inventario = require('../models/inventario');
 
-// Controlador para crear un nuevo inventario
-exports.createInventario = async (req, res) => {
-  try {
-    const nuevoInventario = await Inventario.create(req.body);
-    res.status(201).json(nuevoInventario);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-// Controlador para obtener todos los inventarios
-exports.getInventarios = async (req, res) => {
+// Obtener todos los inventarios
+exports.obtenerInventarios = async (req, res) => {
   try {
     const inventarios = await Inventario.findAll();
     res.status(200).json(inventarios);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error al obtener inventarios:', error);
+    res.status(500).json({ error: 'Error al obtener inventarios' });
   }
 };
 
-// Controlador para obtener un inventario por su ID
-exports.getInventarioById = async (req, res) => {
+// Obtener un inventario por ID
+exports.obtenerInventarioPorId = async (req, res) => {
+  const { id } = req.params;
   try {
-    const inventario = await Inventario.findByPk(req.params.id);
-    if (inventario) {
-      res.status(200).json(inventario);
-    } else {
-      res.status(404).json({ error: 'Inventario not found' });
+    const inventario = await Inventario.findByPk(id);
+    if (!inventario) {
+      return res.status(404).json({ error: 'Inventario no encontrado' });
     }
+    res.status(200).json(inventario);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error al obtener inventario por ID:', error);
+    res.status(500).json({ error: 'Error al obtener inventario por ID' });
   }
 };
 
-// Controlador para actualizar un inventario
-exports.updateInventario = async (req, res) => {
+// Crear un nuevo inventario
+exports.crearInventario = async (req, res) => {
+  const { idMedicamento, idSuministro, cantidad, fecha, idProveedor } = req.body;
   try {
-    const inventario = await Inventario.findByPk(req.params.id);
-    if (inventario) {
-      await inventario.update(req.body);
-      res.status(200).json(inventario);
-    } else {
-      res.status(404).json({ error: 'Inventario not found' });
-    }
+    const nuevoInventario = await Inventario.create({ idMedicamento, idSuministro, cantidad, fecha, idProveedor });
+    res.status(201).json(nuevoInventario);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error al crear inventario:', error);
+    res.status(500).json({ error: 'Error al crear inventario' });
   }
 };
 
-// Controlador para eliminar un inventario
-exports.deleteInventario = async (req, res) => {
+// Actualizar un inventario por ID
+exports.actualizarInventario = async (req, res) => {
+  const { id } = req.params;
+  const { idMedicamento, idSuministro, cantidad, fecha, idProveedor } = req.body;
   try {
-    const inventario = await Inventario.findByPk(req.params.id);
-    if (inventario) {
-      await inventario.destroy();
-      res.status(200).json({ message: 'Inventario deleted' });
-    } else {
-      res.status(404).json({ error: 'Inventario not found' });
+    const inventario = await Inventario.findByPk(id);
+    if (!inventario) {
+      return res.status(404).json({ error: 'Inventario no encontrado' });
     }
+    await inventario.update({ idMedicamento, idSuministro, cantidad, fecha, idProveedor });
+    res.status(200).json(inventario);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error al actualizar inventario:', error);
+    res.status(500).json({ error: 'Error al actualizar inventario' });
+  }
+};
+
+// Eliminar un inventario por ID
+exports.eliminarInventario = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const inventario = await Inventario.findByPk(id);
+    if (!inventario) {
+      return res.status(404).json({ error: 'Inventario no encontrado' });
+    }
+    await inventario.destroy();
+    res.status(200).json({ mensaje: 'Inventario eliminado correctamente' });
+  } catch (error) {
+    console.error('Error al eliminar inventario:', error);
+    res.status(500).json({ error: 'Error al eliminar inventario' });
   }
 };
 

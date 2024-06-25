@@ -1,62 +1,74 @@
 // controllers/medicamentoController.js
 const Medicamento = require('../models/medicamento');
 
-exports.createMedicamento = async (req, res) => {
-  try {
-    const newMedicamento = await Medicamento.create(req.body);
-    res.status(201).json(newMedicamento);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-exports.getMedicamentos = async (req, res) => {
+// Obtener todos los medicamentos
+exports.obtenerMedicamentos = async (req, res) => {
   try {
     const medicamentos = await Medicamento.findAll();
     res.status(200).json(medicamentos);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error al obtener medicamentos:', error);
+    res.status(500).json({ error: 'Error al obtener medicamentos' });
   }
 };
 
-exports.getMedicamentoById = async (req, res) => {
+// Obtener un medicamento por ID
+exports.obtenerMedicamentoPorId = async (req, res) => {
+  const { id } = req.params;
   try {
-    const medicamento = await Medicamento.findByPk(req.params.id);
-    if (medicamento) {
-      res.status(200).json(medicamento);
-    } else {
-      res.status(404).json({ error: 'Medicamento not found' });
+    const medicamento = await Medicamento.findByPk(id);
+    if (!medicamento) {
+      return res.status(404).json({ error: 'Medicamento no encontrado' });
     }
+    res.status(200).json(medicamento);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error al obtener medicamento por ID:', error);
+    res.status(500).json({ error: 'Error al obtener medicamento por ID' });
   }
 };
 
-exports.updateMedicamento = async (req, res) => {
+// Crear un nuevo medicamento
+exports.crearMedicamento = async (req, res) => {
+  const { nombre, descripcion, precioUnitario, cantidadStock } = req.body;
   try {
-    const medicamento = await Medicamento.findByPk(req.params.id);
-    if (medicamento) {
-      await medicamento.update(req.body);
-      res.status(200).json(medicamento);
-    } else {
-      res.status(404).json({ error: 'Medicamento not found' });
-    }
+    const nuevoMedicamento = await Medicamento.create({ nombre, descripcion, precioUnitario, cantidadStock });
+    res.status(201).json(nuevoMedicamento);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error al crear medicamento:', error);
+    res.status(500).json({ error: 'Error al crear medicamento' });
   }
 };
 
-exports.deleteMedicamento = async (req, res) => {
+// Actualizar un medicamento por ID
+exports.actualizarMedicamento = async (req, res) => {
+  const { id } = req.params;
+  const { nombre, descripcion, precioUnitario, cantidadStock } = req.body;
   try {
-    const medicamento = await Medicamento.findByPk(req.params.id);
-    if (medicamento) {
-      await medicamento.destroy();
-      res.status(200).json({ message: 'Medicamento deleted' });
-    } else {
-      res.status(404).json({ error: 'Medicamento not found' });
+    const medicamento = await Medicamento.findByPk(id);
+    if (!medicamento) {
+      return res.status(404).json({ error: 'Medicamento no encontrado' });
     }
+    await medicamento.update({ nombre, descripcion, precioUnitario, cantidadStock });
+    res.status(200).json(medicamento);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error al actualizar medicamento:', error);
+    res.status(500).json({ error: 'Error al actualizar medicamento' });
+  }
+};
+
+// Eliminar un medicamento por ID
+exports.eliminarMedicamento = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const medicamento = await Medicamento.findByPk(id);
+    if (!medicamento) {
+      return res.status(404).json({ error: 'Medicamento no encontrado' });
+    }
+    await medicamento.destroy();
+    res.status(200).json({ mensaje: 'Medicamento eliminado correctamente' });
+  } catch (error) {
+    console.error('Error al eliminar medicamento:', error);
+    res.status(500).json({ error: 'Error al eliminar medicamento' });
   }
 };
 
