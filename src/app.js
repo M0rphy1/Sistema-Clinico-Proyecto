@@ -16,7 +16,7 @@ const medicamentoRoutes = require('./routes/medicamentoRoutes');
 const inventarioRoutes = require('./routes/inventarioRoutes');
 const reporteRoutes = require('./routes/reporteRoutes');
 const citasRoutes = require('./routes/citaRoutes');
-const empleadoRoutes = require('./routes/empleadoRoutes'); // Importa las rutas de empleados
+// const empleadoRoutes = require('./routes/empleadoRoutes'); // Importa las rutas de empleados
 
 const app = express();
 
@@ -68,7 +68,7 @@ app.use('/api/inventarios', inventarioRoutes);
 app.use('/api/reportes', reporteRoutes);
 
 // Middleware para manejar las rutas de empleados
-app.use('/api/empleados', empleadoRoutes); // Agrega las rutas de empleados
+// app.use('/api/empleados', empleadoRoutes); // Agrega las rutas de empleados
 
 // Middleware para manejar errores
 app.use((err, req, res, next) => {

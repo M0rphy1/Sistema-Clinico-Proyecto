@@ -1,24 +1,25 @@
 const Cita = require('../models/cita');
 const Mascota = require('../models/mascota');
-const Empleado = require('../models/empleado');
+// const Empleado = require('../models/empleado');
+const Usuario = require('../models/usuario');
 const DiaSemana = require('../models/diaSemana');
 const Hora = require('../models/hora');
 const HorarioAtencion = require('../models/horarioAtencion');
 const Inventario = require('../models/inventario');
 
 exports.createCita = async (req, res) => {
-  const { idMascota, idEmpleado, idDiaSemana, idHora, idHorarioAtencion, idInventario, fechaCita, motivo } = req.body;
+  const { idMascota, idUsuario, idDiaSemana, idHora, idHorarioAtencion, idInventario, fechaCita, motivo } = req.body;
 
   try {
     // Verificar si existen los modelos relacionados
     const mascota = await Mascota.findByPk(idMascota);
-    const empleado = await Empleado.findByPk(idEmpleado);
+    const usuario = await Usuario.findByPk(idUsuario);
     const diaSemana = await DiaSemana.findByPk(idDiaSemana);
     const hora = await Hora.findByPk(idHora);
     const horarioAtencion = await HorarioAtencion.findByPk(idHorarioAtencion);
     const inventario = await Inventario.findByPk(idInventario);
 
-    if (!mascota || !empleado || !diaSemana || !hora || !horarioAtencion || !inventario) {
+    if (!mascota || !usuario || !diaSemana || !hora || !horarioAtencion || !inventario) {
       return res.status(404).json({ message: 'Uno o más datos de la cita no son válidos.' });
     }
 
@@ -30,7 +31,7 @@ exports.createCita = async (req, res) => {
     // Crear la cita
     const nuevaCita = await Cita.create({
       idMascota,
-      idEmpleado,
+      idUsuario,
       idDiaSemana,
       idHora,
       idHorarioAtencion,
