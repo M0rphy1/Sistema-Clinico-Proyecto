@@ -7,7 +7,7 @@ const Medicamento = sequelize.define('Medicamento', {
     primaryKey: true,
     autoIncrement: true
   },
-  nombre: {
+  nombreMedicamento: {
     type: DataTypes.STRING,
     allowNull: false,
   },

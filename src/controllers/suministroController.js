@@ -28,9 +28,9 @@ exports.obtenerSuministroPorId = async (req, res) => {
 
 // Crear un nuevo suministro
 exports.crearSuministro = async (req, res) => {
-  const { idProveedor, nombre, descripcion, precio, stock, fabricante } = req.body;
+  const { idProveedor, nombreSuministro, descripcion, precio, stock, fabricante } = req.body;
   try {
-    const nuevoSuministro = await Suministro.create({ idProveedor, nombre, descripcion, precio, stock, fabricante });
+    const nuevoSuministro = await Suministro.create({ idProveedor, nombreSuministro, descripcion, precio, stock, fabricante });
     res.status(201).json(nuevoSuministro);
   } catch (error) {
     console.error('Error al crear suministro:', error);
@@ -41,13 +41,13 @@ exports.crearSuministro = async (req, res) => {
 // Actualizar un suministro por ID
 exports.actualizarSuministro = async (req, res) => {
   const { id } = req.params;
-  const { idProveedor, nombre, descripcion, precio, stock, fabricante } = req.body;
+  const { idProveedor, nombreSuministro, descripcion, precio, stock, fabricante } = req.body;
   try {
     const suministro = await Suministro.findByPk(id);
     if (!suministro) {
       return res.status(404).json({ error: 'Suministro no encontrado' });
     }
-    await suministro.update({ idProveedor, nombre, descripcion, precio, stock, fabricante });
+    await suministro.update({ idProveedor, nombreSuministro, descripcion, precio, stock, fabricante });
     res.status(200).json(suministro);
   } catch (error) {
     console.error('Error al actualizar suministro:', error);

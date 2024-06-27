@@ -15,7 +15,7 @@ const Suministro = sequelize.define('Suministro', {
       key: 'idProveedor'
     }
   },
-  nombre: {
+  nombreSuministro: {
     type: DataTypes.STRING(100),
     allowNull: false
   },

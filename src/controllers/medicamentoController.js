@@ -26,12 +26,12 @@ exports.obtenerMedicamentoPorId = async (req, res) => {
   }
 };
 
-// Crear un nuevo medicamento
+
 // Crear un nuevo medicamento
 exports.crearMedicamento = async (req, res) => {
-  const { nombre, descripcion, precio, stock, fecha_vencimiento, fabricante, idProveedor } = req.body;
+  const { nombreMedicamento, descripcion, precio, stock, fecha_vencimiento, fabricante, idProveedor } = req.body;
   try {
-    const nuevoMedicamento = await Medicamento.create({ nombre, descripcion, precio, stock, fecha_vencimiento, fabricante, idProveedor });
+    const nuevoMedicamento = await Medicamento.create({ nombreMedicamento, descripcion, precio, stock, fecha_vencimiento, fabricante, idProveedor });
     res.status(201).json(nuevoMedicamento);
   } catch (error) {
     console.error('Error al crear medicamento:', error);
@@ -42,13 +42,13 @@ exports.crearMedicamento = async (req, res) => {
 // Actualizar un medicamento por ID
 exports.actualizarMedicamento = async (req, res) => {
   const { id } = req.params;
-  const { nombre, descripcion, precio, stock, fecha_vencimiento, fabricante } = req.body;
+  const { nombreMedicamento, descripcion, precio, stock, fecha_vencimiento, fabricante } = req.body;
   try {
     const medicamento = await Medicamento.findByPk(id);
     if (!medicamento) {
       return res.status(404).json({ error: 'Medicamento no encontrado' });
     }
-    await medicamento.update({ nombre, descripcion, precio, stock, fecha_vencimiento, fabricante });
+    await medicamento.update({ nombreMedicamento, descripcion, precio, stock, fecha_vencimiento, fabricante });
     res.status(200).json(medicamento);
   } catch (error) {
     console.error('Error al actualizar medicamento:', error);

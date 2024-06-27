@@ -1,22 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Índice de Proveedores</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
-
 <body>
   <div class="container mt-5">
     <h1>Índice de Proveedores</h1>
+
+    <!-- Formulario de búsqueda -->
+    <div class="mb-3">
+      <input id="buscarNombre" class="form-control" type="text" placeholder="Buscar por nombre">
+      <button class="btn btn-primary mt-2" onclick="buscarProveedor()">Buscar</button>
+    </div>
 
     <!-- Botón para abrir el modal de registro -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#registroModal">Registrar Proveedor</button>
 
     <!-- Tabla para mostrar la lista de proveedores -->
-    <table class="table table-striped">
+    <table class="table table-striped table-dark">
       <thead>
         <tr>
           <th>ID</th>
@@ -24,7 +28,6 @@
           <th>Dirección</th>
           <th>Teléfono</th>
           <th>Email</th>
-          <th>Sitio Web</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -35,8 +38,7 @@
   </div>
 
   <!-- Modal de Registro -->
-  <div class="modal fade" id="registroModal" tabindex="-1" role="dialog" aria-labelledby="registroModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="registroModal" tabindex="-1" role="dialog" aria-labelledby="registroModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -49,10 +51,9 @@
           <form id="registroProveedorForm">
             <input type="hidden" id="idProveedor" value="">
             <input type="text" id="nombreProveedor" class="form-control mb-2" placeholder="Nombre" required>
-            <input type="text" id="direccionProveedor" class="form-control mb-2" placeholder="Dirección" required>
-            <input type="tel" id="telefonoProveedor" class="form-control mb-2" placeholder="Teléfono" required>
-            <input type="email" id="emailProveedor" class="form-control mb-2" placeholder="Email">
-            <input type="url" id="sitioWebProveedor" class="form-control mb-2" placeholder="Sitio Web">
+            <input type="text" id="direccionProveedor" class="form-control mb-2" placeholder="Dirección">
+            <input type="tel" id="telefonoProveedor" class="form-control mb-2" placeholder="Teléfono">
+            <input type="correo" id="correoProveedor" class="form-control mb-2" placeholder="Correo">
             <button type="submit" class="btn btn-primary">Registrar</button>
             <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Cancelar</button>
           </form>
@@ -61,71 +62,95 @@
     </div>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Función para cargar la lista de proveedores al cargar la página
-      cargarProveedores();
+    cargarProveedores();
 
-      // Evento para enviar el formulario de registro de proveedor
-      document.getElementById('registroProveedorForm').addEventListener('submit', async function (event) {
-        event.preventDefault();
-        const formData = {
-          nombre: document.getElementById('nombreProveedor').value,
-          direccion: document.getElementById('direccionProveedor').value,
-          telefono: document.getElementById('telefonoProveedor').value,
-          email: document.getElementById('emailProveedor').value,
-          sitioWeb: document.getElementById('sitioWebProveedor').value
-        };
-        try {
-          let url = '/api/proveedores';
-          let method = 'POST';
-          const idProveedor = document.getElementById('idProveedor').value;
-          if (idProveedor) {
-            url += `/${idProveedor}`;
-            method = 'PUT';
-          }
-          const response = await fetch(url, {
-            method: method,
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-          });
-          const data = await response.json();
-          if (response.ok) {
-            alert(`Proveedor ${idProveedor ? 'actualizado' : 'registrado'} correctamente`);
-            $('#registroModal').modal('hide'); // Cerrar modal después de registro exitoso
-            cargarProveedores(); // Recargar la lista de proveedores
-            document.getElementById('registroProveedorForm').reset(); // Limpiar formulario
-          } else {
-            throw new Error(data.error || 'Error al procesar la solicitud');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-          alert(`Error al ${idProveedor ? 'actualizar' : 'registrar'} el proveedor`);
-        }
-      });
-    });
-
-    // Función para cargar la lista de proveedores desde la API
-    async function cargarProveedores() {
+    document.getElementById('registroProveedorForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+      const formData = {
+        nombreProveedor: document.getElementById('nombreProveedor').value,
+        direccion: document.getElementById('direccionProveedor').value,
+        telefono: document.getElementById('telefonoProveedor').value,
+        email: document.getElementById('correoProveedor').value // Aquí debería ser 'email' en lugar de 'correo'
+      };
       try {
-        const response = await fetch('/api/proveedores');
+        let url = '/api/proveedores';
+        let method = 'POST';
+        const idProveedor = document.getElementById('idProveedor').value;
+        if (idProveedor) {
+          url += `/${idProveedor}`;
+          method = 'PUT';
+        }
+        const response = await fetch(url, {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
         const data = await response.json();
-        const proveedoresList = document.getElementById('proveedoresList');
-        proveedoresList.innerHTML = ''; // Limpiar lista actual
+        if (response.ok) {
+          alert(`Proveedor ${idProveedor ? 'actualizado' : 'registrado'} correctamente`);
+          $('#registroModal').modal('hide');
+          cargarProveedores();
+          document.getElementById('registroProveedorForm').reset();
+        } else {
+          throw new Error(data.error || 'Error al procesar la solicitud');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert(`Error al ${idProveedor ? 'actualizar' : 'registrar'} el proveedor`);
+      }
+    });
+  });
+
+  async function cargarProveedores() {
+    try {
+      const response = await fetch('/api/proveedores');
+      const data = await response.json();
+      const proveedoresList = document.getElementById('proveedoresList');
+      proveedoresList.innerHTML = '';
+      data.forEach(proveedor => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${proveedor.idProveedor}</td>
+          <td>${proveedor.nombreProveedor}</td>
+          <td>${proveedor.direccion || ''}</td>
+          <td>${proveedor.telefono || ''}</td>
+          <td>${proveedor.email || ''}</td>
+          <td>
+            <button class="btn btn-sm btn-info" onclick="editarProveedor(${proveedor.idProveedor})">Editar</button>
+            <button class="btn btn-sm btn-danger" onclick="eliminarProveedor(${proveedor.idProveedor})">Eliminar</button>
+          </td>
+        `;
+        proveedoresList.appendChild(row);
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error al cargar la lista de proveedores');
+    }
+  }
+
+  async function buscarProveedor() {
+    const nombreProveedor = document.getElementById('buscarNombre').value;
+    try {
+      const response = await fetch(`/api/proveedores/buscar?nombre=${nombreProveedor}`);
+      const data = await response.json();
+      const proveedoresList = document.getElementById('proveedoresList');
+      proveedoresList.innerHTML = '';
+      if (data.length > 0) {
         data.forEach(proveedor => {
           const row = document.createElement('tr');
           row.innerHTML = `
             <td>${proveedor.idProveedor}</td>
-            <td>${proveedor.nombre}</td>
+            <td>${proveedor.nombreProveedor}</td>
             <td>${proveedor.direccion || ''}</td>
             <td>${proveedor.telefono || ''}</td>
             <td>${proveedor.email || ''}</td>
-            <td>${proveedor.sitioWeb || ''}</td>
             <td>
               <button class="btn btn-sm btn-info" onclick="editarProveedor(${proveedor.idProveedor})">Editar</button>
               <button class="btn btn-sm btn-danger" onclick="eliminarProveedor(${proveedor.idProveedor})">Eliminar</button>
@@ -133,50 +158,45 @@
           `;
           proveedoresList.appendChild(row);
         });
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error al cargar la lista de proveedores');
+      } else {
+        proveedoresList.innerHTML = '<tr><td colspan="6" class="text-center">No se encontraron proveedores con ese nombre</td></tr>';
       }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error al buscar el proveedor');
     }
+  }
 
-    // Función para eliminar un proveedor
-    async function eliminarProveedor(idProveedor) {
-      if (confirm('¿Estás seguro de eliminar este proveedor?')) {
-        try {
-          const response = await fetch(`/api/proveedores/${idProveedor}`, {
-            method: 'DELETE'
-          });
-          if (!response.ok) {
-            throw new Error('Proveedor no encontrado');
-          }
-          alert('Proveedor eliminado correctamente');
-          console.log('Proveedor eliminado');
-          cargarProveedores(); // Recargar la lista de proveedores
-        } catch (error) {
-          console.error('Error:', error);
-          alert('Error al eliminar el proveedor');
-        }
-      }
-    }
-
-    // Función para editar un proveedor
-    async function editarProveedor(idProveedor) {
+  async function eliminarProveedor(idProveedor) {
+    if (confirm('¿Estás seguro de eliminar este proveedor?')) {
       try {
-        const response = await fetch(`/api/proveedores/${idProveedor}`);
-        const proveedor = await response.json();
-        document.getElementById('idProveedor').value = proveedor.idProveedor;
-        document.getElementById('nombreProveedor').value = proveedor.nombre;
-        document.getElementById('direccionProveedor').value = proveedor.direccion || '';
-        document.getElementById('telefonoProveedor').value = proveedor.telefono || '';
-        document.getElementById('emailProveedor').value = proveedor.email || '';
-        document.getElementById('sitioWebProveedor').value = proveedor.sitioWeb || '';
-        $('#registroModal').modal('show');
+        const response = await fetch(`/api/proveedores/${idProveedor}`, { method: 'DELETE' });
+        if (response.ok) {
+          document.getElementById(`proveedor-${idProveedor}`).remove();
+        } else {
+          console.error('Error al eliminar el proveedor');
+        }
       } catch (error) {
         console.error('Error:', error);
-        alert('Error al cargar los datos del proveedor');
       }
     }
+  }
+
+  async function editarProveedor(idProveedor) {
+    try {
+      const response = await fetch(`/api/proveedores/${idProveedor}`);
+      const proveedor = await response.json();
+      document.getElementById('idProveedor').value = proveedor.idProveedor;
+      document.getElementById('nombreProveedor').value = proveedor.nombreProveedor;
+      document.getElementById('direccionProveedor').value = proveedor.direccion || '';
+      document.getElementById('telefonoProveedor').value = proveedor.telefono || '';
+      document.getElementById('correoProveedor').value = proveedor.email || ''; // Aquí debería ser 'email' en lugar de 'correo'
+      $('#registroModal').modal('show');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Error al cargar los datos del proveedor para editar');
+    }
+  }
   </script>
 </body>
-
 </html>

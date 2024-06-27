@@ -14,7 +14,7 @@ const Mascota = sequelize.define('Mascota', {
       key: 'idCliente'
     }
   },
-  nombre: {
+  nombreMascota: {
     type: DataTypes.STRING(50),
     allowNull: false
   },

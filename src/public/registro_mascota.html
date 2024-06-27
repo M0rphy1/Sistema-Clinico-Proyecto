@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Índice de Mascotas</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
-
 <body>
   <div class="container mt-5">
     <h1>Índice de Mascotas</h1>
 
-    <!-- Formulario de búsqueda por nombre de mascota -->
+    <!-- Formulario de búsqueda -->
     <div class="mb-3">
-      <input id="buscarNombre" class="form-control" data-table="table_id" type="text" placeholder="Buscar por nombre de mascota">
+      <input id="buscarNombre" class="form-control" type="text" placeholder="Buscar por nombre">
       <button class="btn btn-primary mt-2" onclick="buscarMascota()">Buscar</button>
     </div>
 
-    <!-- Botón para abrir el modal de registro de mascota -->
+    <!-- Botón para abrir el modal de registro -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#registroModal">Registrar Mascota</button>
 
     <!-- Tabla para mostrar la lista de mascotas -->
-    <table class="table table-striped table-dark table_id">
+    <table class="table table-striped table-dark">
       <thead>
         <tr>
           <th>ID</th>
@@ -40,9 +38,8 @@
     </table>
   </div>
 
-  <!-- Modal de Registro de Mascota -->
-  <div class="modal fade" id="registroModal" tabindex="-1" role="dialog" aria-labelledby="registroModalLabel"
-    aria-hidden="true">
+  <!-- Modal de Registro -->
+  <div class="modal fade" id="registroModal" tabindex="-1" role="dialog" aria-labelledby="registroModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -54,30 +51,11 @@
         <div class="modal-body">
           <form id="registroMascotaForm">
             <input type="hidden" id="idMascota" value="">
-            <div class="form-group">
-              <label for="idCliente">ID Cliente</label>
-              <input type="number" id="idCliente" class="form-control" placeholder="ID Cliente" required>
-            </div>
-            <!-- <div class="form-group">
-                <label for="nombreCliente">Nombre Cliente</label>
-                <input type="text" id="nombreCliente" class="form-control" placeholder="Nombre Cliente" required>
-              </div> -->
-            <div class="form-group">
-              <label for="nombreMascota">Nombre Mascota</label>
-              <input type="text" id="nombreMascota" class="form-control" placeholder="Nombre de la mascota" required>
-            </div>
-            <div class="form-group">
-              <label for="especieMascota">Especie</label>
-              <input type="text" id="especieMascota" class="form-control" placeholder="Especie de la mascota" required>
-            </div>
-            <div class="form-group">
-              <label for="razaMascota">Raza</label>
-              <input type="text" id="razaMascota" class="form-control" placeholder="Raza de la mascota">
-            </div>
-            <div class="form-group">
-              <label for="fechaNacimiento">Fecha de Nacimiento</label>
-              <input type="date" id="fechaNacimiento" class="form-control" placeholder="Fecha de nacimiento de la mascota">
-            </div>
+            <input type="text" id="nombreMascota" class="form-control mb-2" placeholder="Nombre" required>
+            <input type="text" id="especieMascota" class="form-control mb-2" placeholder="Especie" required>
+            <input type="text" id="razaMascota" class="form-control mb-2" placeholder="Raza">
+            <input type="date" id="fechaNacimientoMascota" class="form-control mb-2" placeholder="Fecha de Nacimiento">
+            <input type="number" id="idClienteMascota" class="form-control mb-2" placeholder="ID Cliente" required>
             <button type="submit" class="btn btn-primary">Registrar</button>
             <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Cancelar</button>
           </form>
@@ -86,24 +64,21 @@
     </div>
   </div>
 
-  <!-- JavaScript -->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Cargar lista de mascotas al cargar la página
       cargarMascotas();
 
-      // Evento para enviar el formulario de registro de mascota
       document.getElementById('registroMascotaForm').addEventListener('submit', async function (event) {
         event.preventDefault();
         const formData = {
-          idCliente: document.getElementById('idCliente').value,
-          nombre: document.getElementById('nombreMascota').value,
+          nombreMascota: document.getElementById('nombreMascota').value,
           especie: document.getElementById('especieMascota').value,
           raza: document.getElementById('razaMascota').value,
-          fechaNacimiento: document.getElementById('fechaNacimiento').value
+          fechaNacimiento: document.getElementById('fechaNacimientoMascota').value,
+          idCliente: document.getElementById('idClienteMascota').value
         };
         try {
           let url = '/api/mascotas';
@@ -120,35 +95,30 @@
             },
             body: JSON.stringify(formData)
           });
-          const data = await response.json();
           if (response.ok) {
-            alert(`Mascota ${idMascota ? 'actualizada' : 'registrada'} correctamente`);
-            $('#registroModal').modal('hide'); // Cerrar modal después de registro exitoso
-            cargarMascotas(); // Recargar la lista de mascotas
-            document.getElementById('registroMascotaForm').reset(); // Limpiar formulario
+            $('#registroModal').modal('hide');
+            cargarMascotas();
           } else {
-            throw new Error(data.error || 'Error al procesar la solicitud');
+            console.error('Error al guardar la mascota');
           }
         } catch (error) {
           console.error('Error:', error);
-          alert(`Error al ${idMascota ? 'actualizar' : 'registrar'} la mascota`);
         }
       });
     });
 
-    // Función para cargar la lista de mascotas desde la API
     async function cargarMascotas() {
       try {
         const response = await fetch('/api/mascotas');
         const data = await response.json();
         const mascotasList = document.getElementById('mascotasList');
-        mascotasList.innerHTML = ''; // Limpiar lista actual
+        mascotasList.innerHTML = '';
         data.forEach(mascota => {
           const row = document.createElement('tr');
-          row.id = `mascota-${mascota.idMascota}`; // Agregar id único a cada fila
+          row.id = `mascota-${mascota.idMascota}`;
           row.innerHTML = `
             <td>${mascota.idMascota}</td>
-            <td>${mascota.nombre}</td>
+            <td>${mascota.nombreMascota}</td>
             <td>${mascota.especie}</td>
             <td>${mascota.raza || ''}</td>
             <td>${mascota.fechaNacimiento || ''}</td>
@@ -162,66 +132,27 @@
         });
       } catch (error) {
         console.error('Error:', error);
-        alert('Error al cargar la lista de mascotas');
       }
     }
 
-    // Función para eliminar una mascota
-    async function eliminarMascota(idMascota) {
-      if (confirm('¿Estás seguro de eliminar esta mascota?')) {
-        try {
-          const response = await fetch(`/api/mascotas/${idMascota}`, {
-            method: 'DELETE'
-          });
-          if (!response.ok) {
-            throw new Error('Mascota no encontrada');
-          }
-          alert('Mascota eliminada correctamente');
-          console.log('Mascota eliminada');
-          document.getElementById(`mascota-${idMascota}`).remove(); // Eliminar fila de la mascota eliminada
-        } catch (error) {
-          console.error('Error:', error);
-          alert('Error al eliminar la mascota');
-        }
-      }
-    }
-
-    // Función para editar una mascota
-    async function editarMascota(idMascota) {
-      try {
-        const response = await fetch(`/api/mascotas/${idMascota}`);
-        const mascota = await response.json();
-        document.getElementById('idMascota').value = mascota.idMascota;
-        document.getElementById('idCliente').value = mascota.idCliente;
-        document.getElementById('nombreMascota').value = mascota.nombre;
-        document.getElementById('especieMascota').value = mascota.especie;
-        document.getElementById('razaMascota').value = mascota.raza || '';
-        document.getElementById('fechaNacimiento').value = mascota.fechaNacimiento || '';
-        $('#registroModal').modal('show');
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error al cargar los datos de la mascota');
-      }
-    }
-
-    // Función para buscar mascota por nombre
     async function buscarMascota() {
-      const nombre = document.getElementById('buscarNombre').value;
+      const nombreMascota = document.getElementById('buscarNombre').value;
       try {
-        const response = await fetch(`/api/mascotas/buscar?nombre=${nombre}`);
+        const response = await fetch(`/api/mascotas/buscar?nombre=${nombreMascota}`);
         const data = await response.json();
         const mascotasList = document.getElementById('mascotasList');
-        mascotasList.innerHTML = ''; // Limpiar lista actual
+        mascotasList.innerHTML = '';
         if (data.length > 0) {
           data.forEach(mascota => {
             const row = document.createElement('tr');
             row.id = `mascota-${mascota.idMascota}`;
             row.innerHTML = `
               <td>${mascota.idMascota}</td>
-              <td>${mascota.nombre}</td>
+              <td>${mascota.nombreMascota}</td>
               <td>${mascota.especie}</td>
               <td>${mascota.raza || ''}</td>
               <td>${mascota.fechaNacimiento || ''}</td>
+              <td>${mascota.idCliente || ''}</td>
               <td>
                 <button class="btn btn-sm btn-info" onclick="editarMascota(${mascota.idMascota})">Editar</button>
                 <button class="btn btn-sm btn-danger" onclick="eliminarMascota(${mascota.idMascota})">Eliminar</button>
@@ -230,15 +161,44 @@
             mascotasList.appendChild(row);
           });
         } else {
-          mascotasList.innerHTML = '<tr><td colspan="6" class="text-center">No se encontraron mascotas con ese nombre</td></tr>';
+          mascotasList.innerHTML = '<tr><td colspan="7" class="text-center">No se encontraron mascotas con ese nombre</td></tr>';
         }
       } catch (error) {
         console.error('Error:', error);
-        alert('Error al buscar la mascota');
+      }
+    }
+
+    async function eliminarMascota(idMascota) {
+      if (confirm('¿Estás seguro de eliminar esta mascota?')) {
+        try {
+          const response = await fetch(`/api/mascotas/${idMascota}`, { method: 'DELETE' });
+          if (response.ok) {
+            document.getElementById(`mascota-${idMascota}`).remove();
+          } else {
+            console.error('Error al eliminar la mascota');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+    }
+
+    async function editarMascota(idMascota) {
+      try {
+        const response = await fetch(`/api/mascotas/${idMascota}`);
+        const mascota = await response.json();
+        document.getElementById('idMascota').value = mascota.idMascota;
+        document.getElementById('nombreMascota').value = mascota.nombreMascota;
+        document.getElementById('especieMascota').value = mascota.especie;
+        document.getElementById('razaMascota').value = mascota.raza || '';
+        document.getElementById('fechaNacimientoMascota').value = mascota.fechaNacimiento || '';
+        document.getElementById('idClienteMascota').value = mascota.idCliente || '';
+        $('#registroModal').modal('show');
+      } catch (error) {
+        console.error('Error:', error);
       }
     }
   </script>
   <script src="./buscador.js"></script>
 </body>
-
 </html>
