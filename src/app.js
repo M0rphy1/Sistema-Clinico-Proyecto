@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const sequelize = require('./database/conexiones'); // Asegúrate de tener correctamente configurada la conexión a Sequelize
-
+const bodyParser = require('body-parser');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const authRoutes = require('./routes/authRoutes');
 const mascotaRoutes = require('./routes/mascotaRoutes');
@@ -22,6 +22,7 @@ const app = express();
 
 // Middleware para manejar JSON en las solicitudes
 app.use(express.json());
+app.use(bodyParser.json());
 
 // Configuración de la sesión
 app.use(session({

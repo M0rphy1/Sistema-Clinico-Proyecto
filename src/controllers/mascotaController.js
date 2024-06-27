@@ -2,19 +2,12 @@ const Mascota = require('../models/mascota');
 
 exports.createMascota = async (req, res) => {
   try {
-    const nuevaMascota = await Mascota.create({
-      nombre: req.body.nombre,
-      especie: req.body.especie,
-      raza: req.body.raza,
-      fechaNacimiento: req.body.fechaNacimiento,
-      idCliente: req.body.idCliente  // Asegúrate de asignar correctamente el ID del cliente
-    });
-
+    const nuevaMascota = await Mascota.create(req.body);
     res.status(201).json(nuevaMascota);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+}; 
 
 exports.getMascotas = async (req, res) => {
   try {
