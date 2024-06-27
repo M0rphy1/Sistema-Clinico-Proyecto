@@ -27,10 +27,11 @@ exports.obtenerMedicamentoPorId = async (req, res) => {
 };
 
 // Crear un nuevo medicamento
+// Crear un nuevo medicamento
 exports.crearMedicamento = async (req, res) => {
-  const { nombre, descripcion, precio, stock, fecha_vencimiento, fabricante } = req.body;
+  const { nombre, descripcion, precio, stock, fecha_vencimiento, fabricante, idProveedor } = req.body;
   try {
-    const nuevoMedicamento = await Medicamento.create({ nombre, descripcion, precio, stock, fecha_vencimiento, fabricante });
+    const nuevoMedicamento = await Medicamento.create({ nombre, descripcion, precio, stock, fecha_vencimiento, fabricante, idProveedor });
     res.status(201).json(nuevoMedicamento);
   } catch (error) {
     console.error('Error al crear medicamento:', error);

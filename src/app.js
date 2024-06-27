@@ -13,7 +13,7 @@ const historiaClinicaRoutes = require('./routes/historiaClinicaRoutes');
 const proveedorRoutes = require('./routes/proveedorRoutes');
 const suministroRoutes = require('./routes/suministroRoutes');
 const medicamentoRoutes = require('./routes/medicamentoRoutes');
-const inventarioRoutes = require('./routes/inventarioRoutes');
+//const inventarioRoutes = require('./routes/inventarioRoutes');
 const reporteRoutes = require('./routes/reporteRoutes');
 const citasRoutes = require('./routes/citaRoutes');
 // const empleadoRoutes = require('./routes/empleadoRoutes'); // Importa las rutas de empleados
@@ -63,7 +63,7 @@ app.use('/api/suministros', suministroRoutes);
 app.use('/api/medicamentos', medicamentoRoutes);
 
 // Middleware para manejar las rutas de inventarios
-app.use('/api/inventarios', inventarioRoutes);
+//app.use('/api/inventarios', inventarioRoutes);
 
 // Middleware para manejar las rutas de reportes
 app.use('/api/reportes', reporteRoutes);
@@ -83,15 +83,15 @@ app.get('/', (req, res) => {
 });
 
 // Ruta para el inventario
-app.get('/api/inventario', async (req, res) => {
-  try {
-    const result = await sequelize.query('SELECT * FROM vista_inventario');
-    res.json(result[0]); // Sequelize devuelve los resultados en un array, el primer elemento es el array de filas
-  } catch (error) {
-    console.error('Error fetching inventory:', error);
-    res.status(500).json({ error: 'Error fetching inventory' });
-  }
-});
+// app.get('/api/inventario', async (req, res) => {
+//   try {
+//     const result = await sequelize.query('SELECT * FROM vista_inventario');
+//     res.json(result[0]); // Sequelize devuelve los resultados en un array, el primer elemento es el array de filas
+//   } catch (error) {
+//     console.error('Error fetching inventory:', error);
+//     res.status(500).json({ error: 'Error fetching inventory' });
+//   }
+// });
 
 // Sincronización de la base de datos y inicio del servidor
 sequelize.sync()

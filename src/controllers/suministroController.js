@@ -1,4 +1,3 @@
-// controllers/suministroController.js
 const Suministro = require('../models/suministro');
 
 // Obtener todos los suministros
@@ -29,9 +28,9 @@ exports.obtenerSuministroPorId = async (req, res) => {
 
 // Crear un nuevo suministro
 exports.crearSuministro = async (req, res) => {
-  const { nombre, descripcion, cantidad, precioUnitario, idProveedor } = req.body;
+  const { idProveedor, nombre, descripcion, precio, stock, fabricante } = req.body;
   try {
-    const nuevoSuministro = await Suministro.create({ nombre, descripcion, cantidad, precioUnitario, idProveedor });
+    const nuevoSuministro = await Suministro.create({ idProveedor, nombre, descripcion, precio, stock, fabricante });
     res.status(201).json(nuevoSuministro);
   } catch (error) {
     console.error('Error al crear suministro:', error);
@@ -42,13 +41,13 @@ exports.crearSuministro = async (req, res) => {
 // Actualizar un suministro por ID
 exports.actualizarSuministro = async (req, res) => {
   const { id } = req.params;
-  const { nombre, descripcion, cantidad, precioUnitario, idProveedor } = req.body;
+  const { idProveedor, nombre, descripcion, precio, stock, fabricante } = req.body;
   try {
     const suministro = await Suministro.findByPk(id);
     if (!suministro) {
       return res.status(404).json({ error: 'Suministro no encontrado' });
     }
-    await suministro.update({ nombre, descripcion, cantidad, precioUnitario, idProveedor });
+    await suministro.update({ idProveedor, nombre, descripcion, precio, stock, fabricante });
     res.status(200).json(suministro);
   } catch (error) {
     console.error('Error al actualizar suministro:', error);
@@ -71,5 +70,3 @@ exports.eliminarSuministro = async (req, res) => {
     res.status(500).json({ error: 'Error al eliminar suministro' });
   }
 };
-
-

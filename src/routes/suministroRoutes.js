@@ -1,4 +1,3 @@
-// routes/suministroRoutes.js
 const express = require('express');
 const router = express.Router();
 const suministroController = require('../controllers/suministroController');
@@ -11,4 +10,5 @@ router.put('/:id', suministroController.actualizarSuministro);
 router.delete('/:id', suministroController.eliminarSuministro);
 
 module.exports = router;
+
 

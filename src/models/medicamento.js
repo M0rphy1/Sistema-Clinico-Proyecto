@@ -28,6 +28,14 @@ const Medicamento = sequelize.define('Medicamento', {
   fabricante: {
     type: DataTypes.STRING,
   },
+  idProveedor: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'Proveedor',
+      key: 'idProveedor'
+    }
+  }
 },
 {
   tableName: 'Medicamento',
