@@ -7,7 +7,7 @@ const Cliente = sequelize.define('Cliente', {
     primaryKey: true,
     autoIncrement: true
   },
-  nombre: {
+  nombreCliente: {
     type: DataTypes.STRING(50),
     allowNull: false
   },
@@ -31,4 +31,5 @@ const Cliente = sequelize.define('Cliente', {
 });
 
 module.exports = Cliente;
+
 
