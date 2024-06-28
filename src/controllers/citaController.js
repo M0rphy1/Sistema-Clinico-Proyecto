@@ -1,69 +1,29 @@
 const Cita = require('../models/cita');
 const Mascota = require('../models/mascota');
 const Usuario = require('../models/usuario');
-const DiaSemana = require('../models/diaSemana');
-const Hora = require('../models/hora');
-const HorarioAtencion = require('../models/horarioAtencion');
 const Medicamento = require('../models/medicamento');
 const Suministro = require('../models/suministro');
+const { Op } = require('sequelize');
 
 exports.createCita = async (req, res) => {
-  const { idMascota, nombreUsuario, idDiaSemana, idHora, idHorarioAtencion, idMedicamento, idSuministro, fechaCita, motivo } = req.body;
-
   try {
-    // Verificar si existen los modelos relacionados
-    const mascota = await Mascota.findByPk(idMascota);
-    const usuario = await Usuario.findByPk(nombreUsuario);
-    const diaSemana = await DiaSemana.findByPk(idDiaSemana);
-    const hora = await Hora.findByPk(idHora);
-    const horarioAtencion = await HorarioAtencion.findByPk(idHorarioAtencion);
-    const medicamento = await Medicamento.findByPk(idMedicamento);
-    const suministro = await Suministro.findByPk(idSuministro);
-
-    if (!mascota || !usuario || !diaSemana || !hora || !horarioAtencion || !medicamento || !suministro) {
-      return res.status(404).json({ message: 'Uno o más datos de la cita no son válidos.' });
-    }
-
-    // Verificar si hay suficiente cantidad en el inventario
-    if (medicamento.cantidad <= 0) {
-      return res.status(400).json({ message: 'No hay suficiente cantidad en el inventario de medicamento.' });
-    }
-    // Verificar si hay suficiente cantidad en el inventario
-    if (suministro.cantidad <= 0) {
-      return res.status(400).json({ message: 'No hay suficiente cantidad en el inventario de suministro.' });
-    }
-
-    // Crear la cita
-    const nuevaCita = await Cita.create({
-      idMascota,
-      nombreUsuario,
-      idDiaSemana,
-      idHora,
-      idHorarioAtencion,
-      idMedicamento,
-      idSuministro,
-      fechaCita,
-      motivo
-    });
-
-    // Reducir la cantidad en el inventario de medicamento
-    medicamento.cantidad -= 1; // Reducir en 1 la cantidad disponible
-    await medicamento.save(); // Guardar el inventario actualizado
-
-     // Reducir la cantidad en el inventario de suministro
-     suministro.cantidad -= 1; // Reducir en 1 la cantidad disponible
-     await suministro.save(); // Guardar el inventario actualizado
-
+    const nuevaCita = await Cita.create(req.body);
     res.status(201).json(nuevaCita);
   } catch (error) {
-    console.error('Error al crear la cita:', error);
-    res.status(500).json({ error: 'Error al crear la cita' });
+    res.status(500).json({ error: error.message });
   }
 };
 
 exports.getCitas = async (req, res) => {
   try {
-    const citas = await Cita.findAll();
+    const citas = await Cita.findAll({
+      include: [
+        { model: Mascota },
+        { model: Usuario },
+        { model: Medicamento },
+        { model: Suministro }
+      ]
+    });
     res.status(200).json(citas);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -72,7 +32,14 @@ exports.getCitas = async (req, res) => {
 
 exports.getCitaById = async (req, res) => {
   try {
-    const cita = await Cita.findByPk(req.params.id);
+    const cita = await Cita.findByPk(req.params.id, {
+      include: [
+        { model: Mascota },
+        { model: Usuario },
+        { model: Medicamento },
+        { model: Suministro }
+      ]
+    });
     if (cita) {
       res.status(200).json(cita);
     } else {
@@ -110,3 +77,86 @@ exports.deleteCita = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Nuevo controlador para buscar citas por fecha
+exports.getCitasByFecha = async (req, res) => {
+  try {
+    const fecha = req.query.fecha;
+    const citas = await Cita.findAll({
+      where: {
+        fechaCita: fecha
+      },
+      include: [
+        { model: Mascota },
+        { model: Usuario },
+        { model: Medicamento },
+        { model: Suministro }
+      ]
+    });
+    if (citas.length > 0) {
+      res.status(200).json(citas);
+    } else {
+      res.status(404).json({ error: 'No se encontraron citas para la fecha especificada' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Nuevo controlador para buscar citas por estado
+exports.getCitasByEstado = async (req, res) => {
+  try {
+    const estado = req.query.estado;
+    const citas = await Cita.findAll({
+      where: {
+        estado: estado
+      },
+      include: [
+        { model: Mascota },
+        { model: Usuario },
+        { model: Medicamento },
+        { model: Suministro }
+      ]
+    });
+    if (citas.length > 0) {
+      res.status(200).json(citas);
+    } else {
+      res.status(404).json({ error: 'No se encontraron citas con ese estado' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Nuevo controlador para buscar citas por nombre de mascota
+exports.getCitasByNombreMascota = async (req, res) => {
+  try {
+    const nombreMascota = req.query.nombreMascota;
+    const citas = await Cita.findAll({
+      include: [
+        {
+          model: Mascota,
+          where: {
+            nombreMascota: {
+              [Op.like]: `%${nombreMascota}%`
+            }
+          }
+        },
+        { model: Usuario },
+        { model: Medicamento },
+        { model: Suministro }
+      ]
+    });
+    if (citas.length > 0) {
+      res.status(200).json(citas);
+    } else {
+      res.status(404).json({ error: 'No se encontraron citas para esa mascota' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Otros controladores según sea necesario
+
+module.exports = exports;

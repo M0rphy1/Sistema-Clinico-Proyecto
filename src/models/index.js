@@ -5,9 +5,6 @@ const Rol = require('./rol');
 const Mascota = require('./mascota');
 const HistoriaClinica = require('./historiaClinica');
 const Cita = require('./cita');
-const HorarioAtencion = require('./horarioAtencion');
-const DiaSemana = require('./diaSemana');
-const Hora = require('./hora');
 const Proveedor = require('./proveedor');
 const Medicamento = require('./medicamento');
 const Suministro = require('./suministro');
@@ -27,16 +24,11 @@ Mascota.hasMany(HistoriaClinica, { foreignKey: 'idMascota' });
 HistoriaClinica.belongsTo(Mascota, { foreignKey: 'idMascota' });
 
 // Cita y otras tablas
-Cita.belongsTo(Mascota, { foreignKey: 'idMascota' });
+Cita.belongsTo(Mascota, { foreignKey: 'idMascota' }); // Esto asume que `idMascota` es la clave foránea en la tabla de Cita
 Cita.belongsTo(Usuario, { foreignKey: 'idUsuario' });
-Cita.belongsTo(Hora, { foreignKey: 'idHora' });
-Cita.belongsTo(HorarioAtencion, { foreignKey: 'idHorarioAtencion' });
-Cita.belongsTo(DiaSemana, { foreignKey: 'idDiaSemana' });
-Cita.belongsTo(Medicamento, { foreignKey: 'idMedicamento' }); // Relación con Medicamento
-Cita.belongsTo(Suministro, { foreignKey: 'idSuministro' }); // Relación con Suministro
+Cita.belongsTo(Medicamento, { foreignKey: 'idMedicamento' });
+Cita.belongsTo(Suministro, { foreignKey: 'idSuministro' });
 
-// HorarioAtencion y DiaSemana
-HorarioAtencion.belongsTo(DiaSemana, { foreignKey: 'idDiaSemana' });
 
 // Proveedor y Medicamento
 Proveedor.hasMany(Medicamento, { foreignKey: 'idProveedor' });
@@ -45,6 +37,14 @@ Medicamento.belongsTo(Proveedor, { foreignKey: 'idProveedor' });
 // Proveedor y Suministro
 Proveedor.hasMany(Suministro, { foreignKey: 'idProveedor' });
 Suministro.belongsTo(Proveedor, { foreignKey: 'idProveedor' });
+
+// Mascota y Cita
+Mascota.hasMany(Cita, { foreignKey: 'idMascota' }); // Esto asume que `idMascota` es la clave foránea en la tabla de Cita
+Cita.belongsTo(Mascota, { foreignKey: 'idMascota' });
+
+// Medicamento y Cita
+Medicamento.hasMany(Cita, { foreignKey: 'idMedicamento' });
+Cita.belongsTo(Medicamento, { foreignKey: 'idMedicamento' });
 
 // Sincronización de modelos con la base de datos
 sequelize.sync({ force: true }) // force: true eliminará las tablas existentes y las volverá a crear
@@ -62,11 +62,9 @@ module.exports = {
   Mascota,
   HistoriaClinica,
   Cita,
-  HorarioAtencion,
-  DiaSemana,
-  Hora,
   Proveedor,
   Medicamento,
   Suministro
 };
+
 

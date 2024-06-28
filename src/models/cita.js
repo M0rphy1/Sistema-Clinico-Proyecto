@@ -7,55 +7,46 @@ const Cita = sequelize.define('Cita', {
     autoIncrement: true,
     primaryKey: true
   },
+  idCliente: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
   idMascota: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true // Parte de la clave primaria compuesta
-  },
-  nombreUsuario: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true // Parte de la clave primaria compuesta
-  },
-  idDiaSemana: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  idHora: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  idHorarioAtencion: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  idMedicamento: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  idSuministro: {
-    type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: true // Puede ser nulo si no hay mascota asociada
   },
   fechaCita: {
     type: DataTypes.DATE,
-    allowNull: false,
-    primaryKey: true // Parte de la clave primaria compuesta
+    allowNull: false
   },
-  motivo: {
+  descripcion: {
     type: DataTypes.TEXT,
     allowNull: true
+  },
+  estado: {
+    type: DataTypes.ENUM('confirmado', 'pendiente', 'cancelado', 'emergencia'),
+    allowNull: false
+  },
+  horaInicio: {
+    type: DataTypes.TIME,
+    allowNull: true
+  },
+  horaFin: {
+    type: DataTypes.TIME,
+    allowNull: true
+  },
+  diaSemana: {
+    type: DataTypes.STRING,
+    allowNull: true,
+    validate: {
+      isIn: [['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']]
+    }
   }
 }, {
   tableName: 'Cita',
-  timestamps: false,
-  indexes: [
-    {
-      unique: true,
-      fields: ['idMascota', 'nombreUsuario', 'fechaCita']
-    }
-  ]
+  timestamps: false
 });
 
 module.exports = Cita;
+
 
