@@ -28,9 +28,6 @@ exports.generarReporte = async (req, res) => {
             case 'mascotas':
                 await generarReporteMascotas(doc);
                 break;
-            case 'inventario':
-                await generarReporteInventario(doc);
-                break;
             case 'medicamentos':
                 await generarReporteMedicamentos(doc);
                 break;
@@ -40,9 +37,9 @@ exports.generarReporte = async (req, res) => {
             case 'proveedores':
                 await generarReporteProveedores(doc);
                 break;
-            case 'citas':
-                await generarReporteCitas(doc);
-                break;
+            // case 'citas':
+            //     await generarReporteCitas(doc);
+            //     break;
             default:
                 return res.status(400).json({ error: 'Tipo de reporte inválido' });
         }
@@ -58,20 +55,25 @@ exports.generarReporte = async (req, res) => {
 
 // Función para generar el reporte de clientes
 async function generarReporteClientes(doc) {
-    const clientes = await Cliente.findAll();
+    try {
+        const clientes = await Cliente.findAll(); // Obtener datos de clientes desde la base de datos
 
-    doc.fontSize(20).text('Reporte de Clientes', { align: 'center' });
-    doc.moveDown();
-
-    clientes.forEach(cliente => {
-        doc.fontSize(12).text(`Nombre: ${cliente.nombre}`);
-        doc.text(`Apellido: ${cliente.apellido}`);
-        doc.text(`Correo: ${cliente.correo}`);
-        doc.text(`Teléfono: ${cliente.telefono}`);
-        doc.text(`Dirección: ${cliente.direccion}`);
+        doc.fontSize(20).text('Reporte de Clientes', { align: 'center' });
         doc.moveDown();
-    });
+
+        clientes.forEach(cliente => {
+            doc.fontSize(12).text(`Nombre: ${cliente.nombreCliente}`);
+            doc.text(`Apellido: ${cliente.apellido}`);
+            doc.text(`Correo: ${cliente.correo}`);
+            doc.text(`Teléfono: ${cliente.telefono}`);
+            doc.text(`Dirección: ${cliente.direccion}`);
+            doc.moveDown();
+        });
+    } catch (error) {
+        console.error('Error al generar el reporte de clientes:', error);
+    }
 }
+
 
 // Funciones de ejemplo para la generación de otros reportes
 async function generarReporteMascotas(doc) {
@@ -86,11 +88,6 @@ async function generarReporteMascotas(doc) {
         doc.text(`Raza: ${mascota.raza}`);
         doc.moveDown();
     });
-}
-
-async function generarReporteInventario(doc) {
-    doc.fontSize(20).text('Reporte de Inventario', { align: 'center' });
-    doc.moveDown();
 }
 
 async function generarReporteMedicamentos(doc) {
@@ -137,7 +134,7 @@ async function generarReporteProveedores(doc) {
     });
 }
 
-async function generarReporteCitas(doc) {
-    doc.fontSize(20).text('Reporte de Citas', { align: 'center' });
-    doc.moveDown();
-}
+// async function generarReporteCitas(doc) {
+//     doc.fontSize(20).text('Reporte de Citas', { align: 'center' });
+//     doc.moveDown();
+// }
