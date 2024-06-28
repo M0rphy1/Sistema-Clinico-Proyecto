@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const Proveedor = require('../models/Proveedor');
+const Proveedor = require('../models/proveedor');
 
 exports.getProveedores = async (req, res) => {
   try {
@@ -12,12 +12,13 @@ exports.getProveedores = async (req, res) => {
 
 exports.createProveedor = async (req, res) => {
   try {
-    const { nombreProveedor, direccion, telefono, correo } = req.body;
+    const { nombreProveedor, direccion, telefono, email, sitioWeb } = req.body;
     const nuevoProveedor = await Proveedor.create({
       nombreProveedor,
       direccion,
       telefono,
-      correo
+      email,
+      sitioWeb
     });
     res.status(201).json(nuevoProveedor);
   } catch (error) {
@@ -42,12 +43,13 @@ exports.getProveedorById = async (req, res) => {
 exports.updateProveedor = async (req, res) => {
   const idProveedor = req.params.id;
   try {
-    const { nombreProveedor, direccion, telefono, correo } = req.body;
+    const { nombreProveedor, direccion, telefono, email, sitioWeb } = req.body;
     const [updated] = await Proveedor.update({
       nombreProveedor,
       direccion,
       telefono,
-      correo
+      email,
+      sitioWeb
     }, {
       where: { idProveedor }
     });

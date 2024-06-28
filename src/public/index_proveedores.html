@@ -28,6 +28,7 @@
           <th>Dirección</th>
           <th>Teléfono</th>
           <th>Email</th>
+          <th>Sitio Web</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -53,7 +54,8 @@
             <input type="text" id="nombreProveedor" class="form-control mb-2" placeholder="Nombre" required>
             <input type="text" id="direccionProveedor" class="form-control mb-2" placeholder="Dirección">
             <input type="tel" id="telefonoProveedor" class="form-control mb-2" placeholder="Teléfono">
-            <input type="correo" id="correoProveedor" class="form-control mb-2" placeholder="Correo">
+            <input type="correo" id="correoProveedor" class="form-control mb-2" placeholder="Email">
+            <input type="correo" id="sitioWeb" class="form-control mb-2" placeholder="Sitio Web">
             <button type="submit" class="btn btn-primary">Registrar</button>
             <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Cancelar</button>
           </form>
@@ -75,7 +77,8 @@
         nombreProveedor: document.getElementById('nombreProveedor').value,
         direccion: document.getElementById('direccionProveedor').value,
         telefono: document.getElementById('telefonoProveedor').value,
-        email: document.getElementById('correoProveedor').value // Aquí debería ser 'email' en lugar de 'correo'
+        email: document.getElementById('correoProveedor').value, // Aquí debería ser 'email' en lugar de 'correo'
+        sitioWeb: document.getElementById('sitioWeb').value // Aquí debería ser 'sitioWeb' en lugar de 'correo'
       };
       try {
         let url = '/api/proveedores';
@@ -122,6 +125,7 @@
           <td>${proveedor.direccion || ''}</td>
           <td>${proveedor.telefono || ''}</td>
           <td>${proveedor.email || ''}</td>
+          <td>${proveedor.sitioWeb || ''}</td>
           <td>
             <button class="btn btn-sm btn-info" onclick="editarProveedor(${proveedor.idProveedor})">Editar</button>
             <button class="btn btn-sm btn-danger" onclick="eliminarProveedor(${proveedor.idProveedor})">Eliminar</button>
@@ -151,6 +155,7 @@
             <td>${proveedor.direccion || ''}</td>
             <td>${proveedor.telefono || ''}</td>
             <td>${proveedor.email || ''}</td>
+            <td>${proveedor.sitioWeb || ''}</td>
             <td>
               <button class="btn btn-sm btn-info" onclick="editarProveedor(${proveedor.idProveedor})">Editar</button>
               <button class="btn btn-sm btn-danger" onclick="eliminarProveedor(${proveedor.idProveedor})">Eliminar</button>
@@ -191,6 +196,7 @@
       document.getElementById('direccionProveedor').value = proveedor.direccion || '';
       document.getElementById('telefonoProveedor').value = proveedor.telefono || '';
       document.getElementById('correoProveedor').value = proveedor.email || ''; // Aquí debería ser 'email' en lugar de 'correo'
+      document.getElementById('sitioWeb').value = proveedor.sitioWeb || ''; // Aquí debería ser 'sitioWeb' en lugar de 'correo'
       $('#registroModal').modal('show');
     } catch (error) {
       console.error('Error:', error);

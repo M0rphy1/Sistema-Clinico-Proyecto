@@ -1,5 +1,3 @@
-// En el archivo de modelo Cita (cita.js o similar)
-
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/conexiones'); // Asegúrate de tener la configuración correcta de Sequelize
 
@@ -11,11 +9,13 @@ const Cita = sequelize.define('Cita', {
   },
   idMascota: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
+    primaryKey: true // Parte de la clave primaria compuesta
   },
   nombreUsuario: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
+    primaryKey: true // Parte de la clave primaria compuesta
   },
   idDiaSemana: {
     type: DataTypes.INTEGER,
@@ -39,7 +39,8 @@ const Cita = sequelize.define('Cita', {
   },
   fechaCita: {
     type: DataTypes.DATE,
-    allowNull: false
+    allowNull: false,
+    primaryKey: true // Parte de la clave primaria compuesta
   },
   motivo: {
     type: DataTypes.TEXT,
@@ -47,7 +48,14 @@ const Cita = sequelize.define('Cita', {
   }
 }, {
   tableName: 'Cita',
-  timestamps: false
+  timestamps: false,
+  indexes: [
+    {
+      unique: true,
+      fields: ['idMascota', 'nombreUsuario', 'fechaCita']
+    }
+  ]
 });
 
 module.exports = Cita;
+
