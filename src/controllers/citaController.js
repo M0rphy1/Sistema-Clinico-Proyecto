@@ -1,10 +1,18 @@
+// citaController.js
+
 const Cita = require('../models/cita');
 const Mascota = require('../models/mascota');
 const Usuario = require('../models/usuario');
-const Medicamento = require('../models/medicamento');
-const Suministro = require('../models/suministro');
 const { Op } = require('sequelize');
 
+exports.crearCita = async (req, res) => {
+  try {
+    const nuevaCita = await Cita.create(req.body);
+    res.status(201).json(nuevaCita);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 exports.createCita = async (req, res) => {
   try {
     const nuevaCita = await Cita.create(req.body);
@@ -14,14 +22,12 @@ exports.createCita = async (req, res) => {
   }
 };
 
-exports.getCitas = async (req, res) => {
+exports.obtenerTodasLasCitas = async (req, res) => {
   try {
     const citas = await Cita.findAll({
       include: [
         { model: Mascota },
-        { model: Usuario },
-        { model: Medicamento },
-        { model: Suministro }
+        { model: Usuario }
       ]
     });
     res.status(200).json(citas);
@@ -30,133 +36,110 @@ exports.getCitas = async (req, res) => {
   }
 };
 
-exports.getCitaById = async (req, res) => {
+exports.obtenerCitaPorId = async (req, res) => {
+  const { id } = req.params;
   try {
-    const cita = await Cita.findByPk(req.params.id, {
+    const cita = await Cita.findByPk(id, {
       include: [
         { model: Mascota },
-        { model: Usuario },
-        { model: Medicamento },
-        { model: Suministro }
+        { model: Usuario }
       ]
     });
     if (cita) {
       res.status(200).json(cita);
     } else {
-      res.status(404).json({ error: 'Cita not found' });
+      res.status(404).json({ error: 'Cita no encontrada' });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-exports.updateCita = async (req, res) => {
+exports.actualizarCita = async (req, res) => {
+  const { id } = req.params;
   try {
-    const cita = await Cita.findByPk(req.params.id);
+    const cita = await Cita.findByPk(id);
     if (cita) {
       await cita.update(req.body);
       res.status(200).json(cita);
     } else {
-      res.status(404).json({ error: 'Cita not found' });
+      res.status(404).json({ error: 'Cita no encontrada' });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-exports.deleteCita = async (req, res) => {
+exports.eliminarCita = async (req, res) => {
+  const { id } = req.params;
   try {
-    const cita = await Cita.findByPk(req.params.id);
+    const cita = await Cita.findByPk(id);
     if (cita) {
       await cita.destroy();
-      res.status(200).json({ message: 'Cita deleted' });
+      res.status(200).json({ message: 'Cita eliminada' });
     } else {
-      res.status(404).json({ error: 'Cita not found' });
+      res.status(404).json({ error: 'Cita no encontrada' });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Nuevo controlador para buscar citas por fecha
-exports.getCitasByFecha = async (req, res) => {
+exports.buscarCitasPorFecha = async (req, res) => {
+  const { fecha } = req.query;
   try {
-    const fecha = req.query.fecha;
     const citas = await Cita.findAll({
       where: {
         fechaCita: fecha
       },
       include: [
         { model: Mascota },
-        { model: Usuario },
-        { model: Medicamento },
-        { model: Suministro }
+        { model: Usuario }
       ]
     });
-    if (citas.length > 0) {
-      res.status(200).json(citas);
-    } else {
-      res.status(404).json({ error: 'No se encontraron citas para la fecha especificada' });
-    }
+    res.status(200).json(citas);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Nuevo controlador para buscar citas por estado
-exports.getCitasByEstado = async (req, res) => {
+exports.buscarCitasPorEstado = async (req, res) => {
+  const { estado } = req.query;
   try {
-    const estado = req.query.estado;
     const citas = await Cita.findAll({
       where: {
         estado: estado
       },
       include: [
         { model: Mascota },
-        { model: Usuario },
-        { model: Medicamento },
-        { model: Suministro }
+        { model: Usuario }
       ]
     });
-    if (citas.length > 0) {
-      res.status(200).json(citas);
-    } else {
-      res.status(404).json({ error: 'No se encontraron citas con ese estado' });
-    }
+    res.status(200).json(citas);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Nuevo controlador para buscar citas por nombre de mascota
-exports.getCitasByNombreMascota = async (req, res) => {
+exports.buscarCitasPorNombreMascota = async (req, res) => {
+  const { nombreMascota } = req.query;
   try {
-    const nombreMascota = req.query.nombreMascota;
     const citas = await Cita.findAll({
-      include: [
-        {
-          model: Mascota,
-          where: {
-            nombreMascota: {
-              [Op.like]: `%${nombreMascota}%`
-            }
+      include: [{
+        model: Mascota,
+        where: {
+          nombreMascota: {
+            [Op.like]: `%${nombreMascota}%`
           }
-        },
-        { model: Usuario },
-        { model: Medicamento },
-        { model: Suministro }
+        }
+      }],
+      include: [
+        { model: Usuario }
       ]
     });
-    if (citas.length > 0) {
-      res.status(200).json(citas);
-    } else {
-      res.status(404).json({ error: 'No se encontraron citas para esa mascota' });
-    }
+    res.status(200).json(citas);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-// Otros controladores según sea necesario
-
-module.exports = exports;

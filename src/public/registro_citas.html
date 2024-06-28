@@ -3,66 +3,283 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro de Citas</title>
+  <title>Índice de Citas</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-  <h1>Registro de Citas</h1>
-  <form action="/api/citas" method="POST">
-    <label for="idCliente">ID Cliente:</label>
-    <input type="number" id="idCliente" name="idCliente" required><br><br>
+  <div class="container mt-5">
+    <h1>Índice de Citas</h1>
 
-    <label for="idMascota">ID Mascota:</label>
-    <input type="number" id="idMascota" name="idMascota"><br><br>
+    <!-- Formulario de búsqueda -->
+    <div class="mb-3">
+      <input id="buscarFecha" class="form-control" type="date" placeholder="Buscar por fecha">
+      <button class="btn btn-primary mt-2" onclick="buscarCita()">Buscar</button>
+    </div>
 
-    <label for="fechaCita">Fecha y Hora de la Cita:</label>
-    <input type="datetime-local" id="fechaCita" name="fechaCita" required><br><br>
+    <!-- Botón para abrir el modal de registro -->
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#registroCitaModal">Registrar Cita</button>
 
-    <label for="descripcion">Descripción:</label><br>
-    <textarea id="descripcion" name="descripcion" rows="4" cols="50"></textarea><br><br>
+    <!-- Tabla para mostrar la lista de citas -->
+    <table class="table table-striped table-dark">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Mascota</th>
+          <th>Usuario</th>
+          <th>Cliente</th>
+          <th>Fecha</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Hora Inicio</th>
+          <th>Hora Fin</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="citasList">
+        <!-- Aquí se añadirán dinámicamente las citas -->
+      </tbody>
+    </table>
+  </div>
 
-    <label for="estado">Estado:</label>
-    <select id="estado" name="estado" required>
-      <option value="confirmado">Confirmado</option>
-      <option value="pendiente">Pendiente</option>
-      <option value="cancelado">Cancelado</option>
-      <option value="emergencia">Emergencia</option>
-    </select><br><br>
+  <!-- Modal de Registro -->
+  <div class="modal fade" id="registroCitaModal" tabindex="-1" role="dialog" aria-labelledby="registroCitaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="registroCitaModalLabel">Registrar Cita</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="registroCitaForm">
+            <input type="hidden" id="idCita" value="">
+            
+            <!-- Selector de Mascota -->
+            <select id="idMascota" class="form-control mb-2">
+              <!-- Opciones de mascotas se cargarán dinámicamente -->
+            </select>
 
-    <label for="idUsuario">ID Usuario:</label>
-    <input type="number" id="idUsuario" name="idUsuario" required><br><br>
+            <!-- Selector de Usuario -->
+            <select id="idUsuario" class="form-control mb-2">
+              <!-- Opciones de usuarios se cargarán dinámicamente -->
+            </select>
 
-    <label for="idMedicamento">ID Medicamento:</label>
-    <input type="number" id="idMedicamento" name="idMedicamento" required><br><br>
+            <!-- Selector de Cliente -->
+            <select id="idCliente" class="form-control mb-2">
+              <!-- Opciones de clientes se cargarán dinámicamente -->
+            </select>
 
-    <label for="idSuministro">ID Suministro:</label>
-    <input type="number" id="idSuministro" name="idSuministro" required><br><br>
+            <input type="datetime-local" id="fechaCita" class="form-control mb-2" placeholder="Fecha de la cita" required>
+            <input type="text" id="descripcionCita" class="form-control mb-2" placeholder="Descripción">
+            <select id="estadoCita" class="form-control mb-2" required>
+              <option value="confirmado">Confirmado</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="cancelado">Cancelado</option>
+              <option value="emergencia">Emergencia</option>
+            </select>
+            <input type="time" id="horaInicio" class="form-control mb-2" placeholder="Hora de inicio">
+            <input type="time" id="horaFin" class="form-control mb-2" placeholder="Hora de fin">
+            <input type="text" id="diaSemana" class="form-control mb-2" placeholder="Día de la semana">
+            <button type="submit" class="btn btn-primary">Confirmar</button>
+            <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Cancelar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <button type="submit">Guardar Cita</button>
-  </form>
-
-  <hr>
-
-  <h2>Listado de Citas</h2>
-  <ul id="listaCitas"></ul>
-
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script>
-    // Función para cargar y mostrar las citas
-    async function cargarCitas() {
-      const response = await fetch('/api/citas');
-      const citas = await response.json();
+    document.addEventListener('DOMContentLoaded', function () {
+      cargarOpcionesSelect();
 
-      const listaCitas = document.getElementById('listaCitas');
-      listaCitas.innerHTML = '';
-
-      citas.forEach(cita => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `ID: ${cita.idCita} - Cliente: ${cita.idCliente} - Fecha: ${new Date(cita.fechaCita).toLocaleString()} - Estado: ${cita.estado}`;
-        listaCitas.appendChild(listItem);
+      document.getElementById('registroCitaForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const formData = {
+          idMascota: document.getElementById('idMascota').value,
+          idUsuario: document.getElementById('idUsuario').value,
+          idCliente: document.getElementById('idCliente').value,
+          fechaCita: document.getElementById('fechaCita').value,
+          descripcion: document.getElementById('descripcionCita').value,
+          estado: document.getElementById('estadoCita').value,
+          horaInicio: document.getElementById('horaInicio').value,
+          horaFin: document.getElementById('horaFin').value,
+          diaSemana: document.getElementById('diaSemana').value
+        };
+        try {
+          let url = '/api/citas';
+          let method = 'POST';
+          const idCita = document.getElementById('idCita').value;
+          if (idCita) {
+            url += `/${idCita}`;
+            method = 'PUT';
+          }
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+          if (response.ok) {
+            $('#registroCitaModal').modal('hide');
+            cargarCitas();
+          } else {
+            console.error('Error al guardar la cita');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
       });
+    });
+
+    async function cargarOpcionesSelect() {
+      try {
+        // Cargar opciones de mascotas
+        const mascotasResponse = await fetch('/api/mascotas');
+        const mascotas = await mascotasResponse.json();
+        const selectMascotas = document.getElementById('idMascota');
+        selectMascotas.innerHTML = '';
+        mascotas.forEach(mascota => {
+          const option = document.createElement('option');
+          option.value = mascota.idMascota;
+          option.textContent = `${mascota.nombreMascota} (${mascota.especie})`;
+          selectMascotas.appendChild(option);
+        });
+
+        // Cargar opciones de usuarios (si tienes un endpoint para usuarios)
+        const usuariosResponse = await fetch('/api/usuarios');
+        const usuarios = await usuariosResponse.json();
+        const selectUsuarios = document.getElementById('idUsuario');
+        selectUsuarios.innerHTML = '';
+        usuarios.forEach(usuario => {
+          const option = document.createElement('option');
+          option.value = usuario.idUsuario; // Asegúrate de tener el campo correcto para el ID del usuario
+          option.textContent = `${usuario.nombre} ${usuario.apellido}`;
+          selectUsuarios.appendChild(option);
+        });
+
+        // Cargar opciones de clientes (si tienes un endpoint para clientes)
+        const clientesResponse = await fetch('/api/clientes');
+        const clientes = await clientesResponse.json();
+        const selectClientes = document.getElementById('idCliente');
+        selectClientes.innerHTML = '';
+        clientes.forEach(cliente => {
+          const option = document.createElement('option');
+          option.value = cliente.idCliente; // Asegúrate de tener el campo correcto para el ID del cliente
+          option.textContent = `${cliente.nombreCliente} ${cliente.apellido}`;
+          selectClientes.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error al cargar opciones:', error);
+      }
     }
 
-    cargarCitas();
+    async function cargarCitas() {
+      try {
+        const response = await fetch('/api/citas');
+        const data = await response.json();
+        const citasList = document.getElementById('citasList');
+        citasList.innerHTML = '';
+        data.forEach(cita => {
+          const row = document.createElement('tr');
+          row.id = `cita-${cita.idCita}`;
+          row.innerHTML = `
+            <td>${cita.idCita}</td>
+            <td>${formatoFechaHora(cita.fechaCita)}</td>
+            <td>${cita.descripcion || ''}</td>
+            <td>${cita.estado}</td>
+            <td>${cita.notas || ''}</td>
+            <td>
+              <button class="btn btn-sm btn-info" onclick="editarCita(${cita.idCita})">Editar</button>
+              <button class="btn btn-sm btn-danger" onclick="eliminarCita(${cita.idCita})">Eliminar</button>
+            </td>
+          `;
+          citasList.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Error al cargar citas:', error);
+      }
+    }
+
+    async function buscarCita() {
+      const fecha = document.getElementById('buscarFecha').value;
+      try {
+        const response = await fetch(`/api/citas/buscar?fecha=${fecha}`);
+        const data = await response.json();
+        const citasList = document.getElementById('citasList');
+        citasList.innerHTML = '';
+        if (data.length > 0) {
+          data.forEach(cita => {
+            const row = document.createElement('tr');
+            row.id = `cita-${cita.idCita}`;
+            row.innerHTML = `
+              <td>${cita.idCita}</td>
+              <td>${formatoFechaHora(cita.fechaCita)}</td>
+              <td>${cita.descripcion || ''}</td>
+              <td>${cita.estado}</td>
+              <td>${cita.notas || ''}</td>
+              <td>
+                <button class="btn btn-sm btn-info" onclick="editarCita(${cita.idCita})">Editar</button>
+                <button class="btn btn-sm btn-danger" onclick="eliminarCita(${cita.idCita})">Eliminar</button>
+              </td>
+            `;
+            citasList.appendChild(row);
+          });
+        } else {
+          citasList.innerHTML = '<tr><td colspan="6" class="text-center">No se encontraron citas en esa fecha</td></tr>';
+        }
+      } catch (error) {
+        console.error('Error al buscar citas:', error);
+      }
+    }
+
+    async function eliminarCita(idCita) {
+      if (confirm('¿Estás seguro de eliminar esta cita?')) {
+        try {
+          const response = await fetch(`/api/citas/${idCita}`, { method: 'DELETE' });
+          if (response.ok) {
+            document.getElementById(`cita-${idCita}`).remove();
+          } else {
+            console.error('Error al eliminar la cita');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+    }
+
+    async function editarCita(idCita) {
+      try {
+        const response = await fetch(`/api/citas/${idCita}`);
+        const cita = await response.json();
+        document.getElementById('idCita').value = cita.idCita;
+        document.getElementById('idMascota').value = cita.idMascota || '';
+        document.getElementById('idUsuario').value = cita.idUsuario || '';
+        document.getElementById('idCliente').value = cita.idCliente || '';
+        document.getElementById('fechaCita').value = formatoFechaHoraInput(cita.fechaCita);
+        document.getElementById('descripcionCita').value = cita.descripcion || '';
+        document.getElementById('estadoCita').value = cita.estado;
+        document.getElementById('horaInicio').value = cita.horaInicio || '';
+        document.getElementById('horaFin').value = cita.horaFin || '';
+        document.getElementById('diaSemana').value = cita.diaSemana || '';
+        $('#registroCitaModal').modal('show');
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    function formatoFechaHora(fecha) {
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+      return new Date(fecha).toLocaleDateString('es-ES', options);
+    }
+
+    function formatoFechaHoraInput(fecha) {
+      return new Date(fecha).toISOString().slice(0, 16);
+    }
   </script>
 </body>
 </html>
-

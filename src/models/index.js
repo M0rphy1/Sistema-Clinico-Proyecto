@@ -25,7 +25,7 @@ HistoriaClinica.belongsTo(Mascota, { foreignKey: 'idMascota' });
 
 // Cita y otras tablas
 Cita.belongsTo(Mascota, { foreignKey: 'idMascota' }); // Esto asume que `idMascota` es la clave foránea en la tabla de Cita
-Cita.belongsTo(Usuario, { foreignKey: 'idUsuario' });
+Cita.belongsTo(Usuario, { foreignKey: 'nombreUsuario', targetKey: 'nombreUsuario' }); // Relación utilizando nombreUsuario como clave foránea
 Cita.belongsTo(Medicamento, { foreignKey: 'idMedicamento' });
 Cita.belongsTo(Suministro, { foreignKey: 'idSuministro' });
 
