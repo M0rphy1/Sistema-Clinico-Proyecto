@@ -10,19 +10,26 @@
   <div class="container mt-5">
     <h1>Índice de Suministros</h1>
 
+    <!-- Formulario de búsqueda -->
+    <div class="mb-3">
+      <input id="buscarNombre" class="form-control" type="text" placeholder="Buscar por nombre">
+      <button class="btn btn-primary mt-2" onclick="buscarSuministro()">Buscar</button>
+    </div>
+
     <!-- Botón para abrir el modal de registro -->
     <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#registroModal">Registrar Suministro</button>
 
     <!-- Tabla para mostrar la lista de suministros -->
-    <table class="table table-striped">
+    <table class="table table-striped table-dark">
       <thead>
         <tr>
           <th>ID</th>
+          <th>ID Proveedor</th>
           <th>Nombre</th>
           <th>Descripción</th>
-          <!-- <th>Cantidad</th>
-          <th>Precio Unitario</th> -->
-          <th>ID Proveedor</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Fabricante</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -44,70 +51,65 @@
         </div>
         <div class="modal-body">
           <form id="registroSuministroForm">
-            <input type="hidden" id="suministroId">
-            <input type="text" id="nombre" class="form-control mb-2" placeholder="Nombre" required>
-            <input type="text" id="descripcion" class="form-control mb-2" placeholder="Descripción">
-            <input type="number" id="cantidad" class="form-control mb-2" placeholder="Cantidad" required>
-            <input type="number" step="0.01" id="precioUnitario" class="form-control mb-2" placeholder="Precio Unitario" required>
+            <input type="hidden" id="idSuministro" value="">
             <input type="number" id="idProveedor" class="form-control mb-2" placeholder="ID Proveedor" required>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+            <input type="text" id="nombreSuministro" class="form-control mb-2" placeholder="Nombre" required>
+            <input type="text" id="descripcionSuministro" class="form-control mb-2" placeholder="Descripción">
+            <input type="number" id="precioSuministro" class="form-control mb-2" placeholder="Precio" required>
+            <input type="number" id="stockSuministro" class="form-control mb-2" placeholder="Stock" required>
+            <input type="text" id="fabricanteSuministro" class="form-control mb-2" placeholder="Fabricante">
+            <button type="submit" class="btn btn-primary">Registrar</button>
+            <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Cancelar</button>
           </form>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       cargarSuministros();
 
-      // Evento para enviar el formulario de registro o actualización de suministro
-      document.getElementById('registroSuministroForm').addEventListener('submit', async function(event) {
+      document.getElementById('registroSuministroForm').addEventListener('submit', async function (event) {
         event.preventDefault();
-        const suministroId = document.getElementById('suministroId').value;
         const formData = {
-          nombre: document.getElementById('nombre').value,
-          descripcion: document.getElementById('descripcion').value,
-          // cantidad: document.getElementById('cantidad').value,
-          // precioUnitario: document.getElementById('precioUnitario').value,
-          idProveedor: document.getElementById('idProveedor').value
+          idProveedor: document.getElementById('idProveedor').value,
+          nombreSuministro: document.getElementById('nombreSuministro').value,
+          descripcion: document.getElementById('descripcionSuministro').value,
+          precio: document.getElementById('precioSuministro').value,
+          stock: document.getElementById('stockSuministro').value,
+          fabricante: document.getElementById('fabricanteSuministro').value
         };
         try {
-          let response;
-          if (suministroId) {
-            // Si hay un ID de suministro, se trata de una actualización
-            response = await fetch(`/api/suministros/${suministroId}`, {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(formData)
-            });
-          } else {
-            // Si no hay ID de suministro, se trata de un registro nuevo
-            response = await fetch('/api/suministros', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(formData)
-            });
+          let url = '/api/suministros';
+          let method = 'POST';
+          const idSuministro = document.getElementById('idSuministro').value;
+          if (idSuministro) {
+            url += `/${idSuministro}`;
+            method = 'PUT';
           }
-          const data = await response.json();
-          $('#registroModal').modal('hide');
-          alert('Suministro guardado correctamente');
-          cargarSuministros();
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+          if (response.ok) {
+            $('#registroModal').modal('hide');
+            cargarSuministros();
+          } else {
+            console.error('Error al guardar el suministro');
+          }
         } catch (error) {
           console.error('Error:', error);
-          alert('Error al guardar el suministro');
         }
       });
     });
 
-    // Función para cargar la lista de suministros desde la API
     async function cargarSuministros() {
       try {
         const response = await fetch('/api/suministros');
@@ -116,11 +118,15 @@
         suministrosList.innerHTML = '';
         data.forEach(suministro => {
           const row = document.createElement('tr');
+          row.id = `suministro-${suministro.idSuministro}`;
           row.innerHTML = `
             <td>${suministro.idSuministro}</td>
-            <td>${suministro.nombre}</td>
-            <td>${suministro.descripcion}</td>
             <td>${suministro.idProveedor}</td>
+            <td>${suministro.nombreSuministro}</td>
+            <td>${suministro.descripcion || ''}</td>
+            <td>${suministro.precio}</td>
+            <td>${suministro.stock}</td>
+            <td>${suministro.fabricante || ''}</td>
             <td>
               <button class="btn btn-sm btn-info" onclick="editarSuministro(${suministro.idSuministro})">Editar</button>
               <button class="btn btn-sm btn-danger" onclick="eliminarSuministro(${suministro.idSuministro})">Eliminar</button>
@@ -130,48 +136,74 @@
         });
       } catch (error) {
         console.error('Error:', error);
-        alert('Error al cargar la lista de suministros');
       }
     }
 
-    // Función para eliminar un suministro
+    async function buscarSuministro() {
+      const nombreSuministro = document.getElementById('buscarNombre').value;
+      try {
+        const response = await fetch(`/api/suministros/buscar?nombre=${nombreSuministro}`);
+        const data = await response.json();
+        const suministrosList = document.getElementById('suministrosList');
+        suministrosList.innerHTML = '';
+        if (data.length > 0) {
+          data.forEach(suministro => {
+            const row = document.createElement('tr');
+            row.id = `suministro-${suministro.idSuministro}`;
+            row.innerHTML = `
+              <td>${suministro.idSuministro}</td>
+              <td>${suministro.idProveedor}</td>
+              <td>${suministro.nombreSuministro}</td>
+              <td>${suministro.descripcion || ''}</td>
+              <td>${suministro.precio}</td>
+              <td>${suministro.stock}</td>
+              <td>${suministro.fabricante || ''}</td>
+              <td>
+                <button class="btn btn-sm btn-info" onclick="editarSuministro(${suministro.idSuministro})">Editar</button>
+                <button class="btn btn-sm btn-danger" onclick="eliminarSuministro(${suministro.idSuministro})">Eliminar</button>
+              </td>
+            `;
+            suministrosList.appendChild(row);
+          });
+        } else {
+          suministrosList.innerHTML = '<tr><td colspan="8" class="text-center">No se encontraron suministros con ese nombre</td></tr>';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
     async function eliminarSuministro(idSuministro) {
       if (confirm('¿Estás seguro de eliminar este suministro?')) {
         try {
-          const response = await fetch(`/api/suministros/${idSuministro}`, {
-            method: 'DELETE'
-          });
-          if (!response.ok) {
-            throw new Error('Suministro no encontrado');
+          const response = await fetch(`/api/suministros/${idSuministro}`, { method: 'DELETE' });
+          if (response.ok) {
+            document.getElementById(`suministro-${idSuministro}`).remove();
+          } else {
+            console.error('Error al eliminar el suministro');
           }
-          alert('Suministro eliminado correctamente');
-          console.log('Suministro eliminado');
-          cargarSuministros();
         } catch (error) {
           console.error('Error:', error);
-          alert('Error al eliminar el suministro');
         }
       }
     }
 
-    // Función para editar un suministro
     async function editarSuministro(idSuministro) {
       try {
         const response = await fetch(`/api/suministros/${idSuministro}`);
-        const data = await response.json();
-        document.getElementById('suministroId').value = data.idSuministro;
-        document.getElementById('nombre').value = data.nombre;
-        document.getElementById('descripcion').value = data.descripcion;
-        // document.getElementById('cantidad').value = data.cantidad;
-        // document.getElementById('precioUnitario').value = data.precioUnitario;
-        document.getElementById('idProveedor').value = data.idProveedor;
+        const suministro = await response.json();
+        document.getElementById('idSuministro').value = suministro.idSuministro;
+        document.getElementById('idProveedor').value = suministro.idProveedor;
+        document.getElementById('nombreSuministro').value = suministro.nombreSuministro;
+        document.getElementById('descripcionSuministro').value = suministro.descripcion || '';
+        document.getElementById('precioSuministro').value = suministro.precio;
+        document.getElementById('stockSuministro').value = suministro.stock;
+        document.getElementById('fabricanteSuministro').value = suministro.fabricante || '';
         $('#registroModal').modal('show');
       } catch (error) {
         console.error('Error:', error);
-        alert('Error al obtener el suministro para editar');
       }
     }
   </script>
 </body>
 </html>
-
