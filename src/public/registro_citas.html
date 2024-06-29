@@ -28,83 +28,19 @@
             <div class="modal-body">
                 <form id="registroCitaForm">
                     <input type="text" id="idMascota" placeholder="idMascota" required>
-                    <input type="text" id="idEmpleado" placeholder="idEmpleado" required>
-                    <input type="date" id="fechaHora" placeholder="Fecha" required>
+                    <input type="text" id="idCliente" placeholder="idCliente" required>
+                    <input type="text" id="nombreUsuario" placeholder="Nombre de Usuario" required>
+                    <input type="time" id="horaCita" placeholder="Hora" required>
+                    <input type="date" id="fechaCita" placeholder="Fecha" required>
                     <input type="text" id="motivo" placeholder="Motivo" required>
-                    <input type="text" id="idInventario" placeholder="Inventario" required>
+                    <input type="text" id="idMedicamento" placeholder="idMedicamento" required>
+                    <input type="text" id="idSuministro" placeholder="idSuministro" required>
                     <br><button type="submit">Registrar Cita</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-
-    <!-- Modal de Actualización de Cita -->
-    <div class="modal fade" id="actualizarCitaModal" tabindex="-1" role="dialog" aria-labelledby="actualizarClienteModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="actualizarCitaModalLabel">Actualizar Cita</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="actualizarCitaForm">
-                        <input type="number" id="idCitaAct" placeholder="idCita" required>
-                        <input type="number" id="idMascotaAct" placeholder="idMascota" required>
-                        <input type="number" id="idEmpleadoAct" placeholder="idEmpleado" required>
-                        <input type="date" id="fechaHoraAct" placeholder="Fecha" required>
-                        <input type="text" id="motivoAct" placeholder="Motivo" required>
-                        <input type="number" id="idInventarioAct" placeholder="Inventario" required>
-                        <button type="submit" class="btn btn-secondary">Actualizar Citas</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Búsqueda de Cita -->
-    <div class="modal fade" id="buscarCitaModal" tabindex="-1" role="dialog" aria-labelledby="buscarCitaModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="buscarCitaModalLabel">Buscar Cita</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="buscarCitaForm">
-                        <input type="number" id="idCitaBuscar" placeholder="ID de la Cita" required>
-                        <button type="submit" class="btn btn-info">Buscar Cita</button>
-                    </form>
-                    <div id="resultadoBuscarCita" class="mt-3"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Eliminación de Cliente -->
-    <div class="modal fade" id="eliminarCitaModal" tabindex="-1" role="dialog" aria-labelledby="eliminarCitaModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="eliminarCitaModalLabel">Eliminar Cita</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="eliminarCitaForm">
-                        <input type="number" id="idCitaEliminar" placeholder="ID de la Cita" required>
-                        <button type="submit" class="btn btn-danger">Eliminar Cita</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
@@ -114,16 +50,19 @@
         document.getElementById('registroCitaForm').addEventListener('submit', async function (event) {
     event.preventDefault();
     const idMascota = document.getElementById('idMascota').value;
-    const idEmpleado = document.getElementById('idEmpleado').value;
-    const fechaHora = document.getElementById('fechaHora').value;
+    const idCliente = document.getElementById('idCliente').value;
+    const nombreUsuario = document.getElementById('nombreUsuario').value;
+    const fechaCita = document.getElementById('fechaCita').value;
+    const horaCita = document.getElementById('horaCita').value;
     const motivo = document.getElementById('motivo').value;
-    const idInventario = document.getElementById('idInventario').value;
+    const idMedicamento = document.getElementById('idMedicamento').value;
+    const idSuministro = document.getElementById('idSuministro').value;
     
     try {
         const response = await fetch('/api/citas', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({idMascota, idEmpleado, fechaHora, motivo, idInventario })
+            body: JSON.stringify({idMascota, idCliente, nombreUsuario, fechaCita, horaCita, motivo, idMedicamento, idSuministro })
         });
         
         if (response.ok) {
@@ -141,79 +80,6 @@
         alert('Error al registrar el cita');
     }
 });
-
-
-        // Actualización de Cita
-        document.getElementById('actualizarCitaForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
-            const idCita = document.getElementById('idCitaAct').value;
-            const idMascota = document.getElementById('idMascotaAct').value;
-            const idEmpleado = document.getElementById('idEmpleadoAct').value;
-            const fechaHora = document.getElementById('fechaHoraAct').value;
-            const motivo = document.getElementById('motivoAct').value;
-            const idInventario = document.getElementById('idInventarioAct').value;
-            try {
-                const response = await fetch(`/api/citas /${idCita}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ idMascota, idEmpleado, fechaHora, motivo, idInventario })
-                });
-                if (response.ok) {
-                    alert('Cita actualizada exitosamente');
-                    $('#actualizarCitaModal').modal('hide');
-                    document.getElementById('actualizarCitaForm').reset();
-                } else {
-                    alert('Error al actualizar la cita');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al actualizar la cita');
-            }
-        });
-
-        // Búsqueda de Citas
-        document.getElementById('buscarCitaForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
-            const idCita = document.getElementById('idCitaBuscar').value;
-            try {
-                const response = await fetch(`/api/citas/${idCita}`);
-                if (response.ok) {
-                    const cita = await response.json();
-                    document.getElementById('resultadoBuscarCita').innerHTML = `
-                        <p>ID: ${cita.idCita}</p>
-                        <p>ID Mascota: ${cita.idMascota}</p>
-                        <p>Fecha y Hora: ${cita.fechaHota}</p>
-                        <p>Motivo: ${cita.motivo}</p>
-                    `;
-                } else {
-                    document.getElementById('resultadoBuscarCita').textContent = 'Cita no encontrada';
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al buscar la cita');
-            }
-        });
-
-        // Eliminación de Citas
-        document.getElementById('eliminarCitaForm').addEventListener('submit', async function (event) {
-            event.preventDefault();
-            const idCita = document.getElementById('idCitaEliminar').value;
-            try {
-                const response = await fetch(`/api/citas/${idCita}`, {
-                    method: 'DELETE'
-                });
-                if (response.ok) {
-                    alert('Cita eliminada exitosamente');
-                    $('#eliminarCitaModal').modal('hide');
-                    document.getElementById('eliminarCitaForm').reset();
-                } else {
-                    alert('Error al eliminar la cita');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al eliminar la cita');
-            }
-        });
     </script>
 </body>
 </html>

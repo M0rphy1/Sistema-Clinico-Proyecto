@@ -9,5 +9,3 @@ router.put('/:id', citaController.updateCita);
 router.delete('/:id', citaController.deleteCita);
 
 module.exports = router;
-
-

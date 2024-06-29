@@ -7,72 +7,37 @@ const Cita = sequelize.define('Cita', {
     autoIncrement: true,
     primaryKey: true
   },
-  idCliente: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'Cliente',
-      key: 'idCliente'
-    }
-  },
-  nombreUsuario: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    references: {
-      model: 'Usuario',
-      key: 'nombreUsuario'
-    }
-  },
   idMascota: {
     type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: 'Mascota',
-      key: 'idMascota'
-    }
+    allowNull: false
+  },
+  nombreUsuario: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  idCliente: {
+    type: DataTypes.INTEGER,
+    allowNull: false
   },
   idMedicamento: {
     type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: 'Medicamento',
-      key: 'idMedicamento'
-    }
+    allowNull: false
   },
   idSuministro: {
     type: DataTypes.INTEGER,
-    allowNull: true,
-    references: {
-      model: 'Suministro',
-      key: 'idSuministro'
-    }
+    allowNull: false
   },
   fechaCita: {
     type: DataTypes.DATE,
     allowNull: false
   },
-  descripcion: {
+  motivo: {
     type: DataTypes.TEXT,
     allowNull: true
   },
-  estado: {
-    type: DataTypes.ENUM('confirmado', 'pendiente', 'cancelado', 'emergencia'),
-    allowNull: false
-  },
-  horaInicio: {
+  horaCita: {
     type: DataTypes.TIME,
     allowNull: true
-  },
-  horaFin: {
-    type: DataTypes.TIME,
-    allowNull: true
-  },
-  diaSemana: {
-    type: DataTypes.STRING,
-    allowNull: true,
-    validate: {
-      isIn: [['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes']]
-    }
   }
 }, {
   tableName: 'Cita',
@@ -80,5 +45,3 @@ const Cita = sequelize.define('Cita', {
 });
 
 module.exports = Cita;
-
-
