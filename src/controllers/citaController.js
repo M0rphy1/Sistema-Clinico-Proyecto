@@ -44,11 +44,11 @@ const getCitaById = async (req, res) => {
     const { id } = req.params;
     const cita = await Cita.findByPk(id, {
       include: [
-        { model: Mascota },
-        { model: Usuario },
-        { model: Cliente },
-        { model: Medicamento },
-        { model: Suministro }
+        { model: Mascota, attributes: ['idMascota', 'nombreMascota'] },
+        { model: Cliente, attributes: ['idCliente', 'nombreCliente'] },
+        { model: Usuario, attributes: ['nombreUsuario'] },
+        { model: Medicamento, attributes: ['idMedicamento', 'nombreMedicamento'] },
+        { model: Suministro, attributes: ['idSuministro', 'nombreSuministro'] }
       ]
     });
     if (!cita) {
