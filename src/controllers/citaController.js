@@ -1,114 +1,109 @@
-const Cita = require('../models/cita');
-// const Mascota = require('../models/mascota');
-// const Usuario = require('../models/usuario');
-// const Medicamento = require('../models/medicamento');
-// const Suministro = require('../models/suministro');
+const { Cita, Mascota, Usuario, Cliente, Medicamento, Suministro } = require('../models');
 
-// exports.createCita = async (req, res) => {
-//   const { idMascota, nombreUsuario, horaCita, idCliente, idMedicamento, idSuministro, fechaCita, motivo } = req.body;
-
-//   try {
-//     // Verificar si existen los modelos relacionados
-//     const mascota = await Mascota.findByPk(idMascota);
-//     const usuario = await Usuario.findByPk(nombreUsuario);
-//     const cliente = await Usuario.findByPk(idCliente); // Assumimos que el cliente es un usuario también
-//     const medicamento = await Medicamento.findByPk(idMedicamento);
-//     const suministro = await Suministro.findByPk(idSuministro);
-
-//     if (!mascota || !usuario || !cliente || !medicamento || !suministro) {
-//       return res.status(404).json({ message: 'Uno o más datos de la cita no son válidos.' });
-//     }
-
-//     // Verificar si hay suficiente cantidad en el inventario
-//     if (medicamento.stock <= 0) {
-//       return res.status(400).json({ message: 'No hay suficiente cantidad en el inventario de medicamento.' });
-//     }
-//     // Verificar si hay suficiente cantidad en el inventario
-//     if (suministro.stock <= 0) {
-//       return res.status(400).json({ message: 'No hay suficiente cantidad en el inventario de suministro.' });
-//     }
-
-//     // Crear la cita
-//     const nuevaCita = await Cita.create({
-//       idMascota,
-//       idCliente,
-//       nombreUsuario,
-//       idMedicamento,
-//       idSuministro,
-//       fechaCita,
-//       horaCita,
-//       motivo
-//     });
-
-//     // Reducir la cantidad en el inventario de medicamento
-//     medicamento.stock -= 1; // Reducir en 1 la cantidad disponible
-//     await medicamento.save(); // Guardar el inventario actualizado
-
-//      // Reducir la cantidad en el inventario de suministro
-//      suministro.stock -= 1; // Reducir en 1 la cantidad disponible
-//      await suministro.save(); // Guardar el inventario actualizado
-
-//     res.status(201).json(nuevaCita);
-//   } catch (error) {
-//     console.error('Error al crear la cita:', error);
-//     res.status(500).json({ error: 'Error al crear la cita' });
-//   }
-// };
-exports.createCita = async (req, res) => {
+// Crear una nueva cita
+const createCita = async (req, res) => {
   try {
-    const nuevaCita = await Cita.create(req.body);
+    const { idMascota, nombreUsuario, idCliente, idMedicamento, idSuministro, fechaCita, motivo, horaCita } = req.body;
+    const nuevaCita = await Cita.create({
+      idMascota,
+      nombreUsuario,
+      idCliente,
+      idMedicamento,
+      idSuministro,
+      fechaCita,
+      motivo,
+      horaCita
+    });
     res.status(201).json(nuevaCita);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: 'Error al crear la cita', error });
   }
-}; 
+};
 
-exports.getCitas = async (req, res) => {
+// Obtener todas las citas
+const getCitas = async (req, res) => {
   try {
-    const citas = await Cita.findAll();
+    const citas = await Cita.findAll({
+      include: [
+        { model: Mascota },
+        { model: Usuario },
+        { model: Cliente },
+        { model: Medicamento },
+        { model: Suministro }
+      ]
+    });
     res.status(200).json(citas);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: 'Error al obtener las citas', error });
   }
 };
 
-exports.getCitaById = async (req, res) => {
+// Obtener una cita por ID
+const getCitaById = async (req, res) => {
   try {
-    const cita = await Cita.findByPk(req.params.id);
-    if (cita) {
-      res.status(200).json(cita);
-    } else {
-      res.status(404).json({ error: 'Cita not found' });
+    const { id } = req.params;
+    const cita = await Cita.findByPk(id, {
+      include: [
+        { model: Mascota },
+        { model: Usuario },
+        { model: Cliente },
+        { model: Medicamento },
+        { model: Suministro }
+      ]
+    });
+    if (!cita) {
+      return res.status(404).json({ message: 'Cita no encontrada' });
     }
+    res.status(200).json(cita);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: 'Error al obtener la cita', error });
   }
 };
 
-exports.updateCita = async (req, res) => {
+// Actualizar una cita
+const updateCita = async (req, res) => {
   try {
-    const cita = await Cita.findByPk(req.params.id);
-    if (cita) {
-      await cita.update(req.body);
-      res.status(200).json(cita);
-    } else {
-      res.status(404).json({ error: 'Cita not found' });
+    const { id } = req.params;
+    const { idMascota, nombreUsuario, idCliente, idMedicamento, idSuministro, fechaCita, motivo, horaCita } = req.body;
+    const cita = await Cita.findByPk(id);
+    if (!cita) {
+      return res.status(404).json({ message: 'Cita no encontrada' });
     }
+    await cita.update({
+      idMascota,
+      nombreUsuario,
+      idCliente,
+      idMedicamento,
+      idSuministro,
+      fechaCita,
+      motivo,
+      horaCita
+    });
+    res.status(200).json(cita);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: 'Error al actualizar la cita', error });
   }
 };
 
-exports.deleteCita = async (req, res) => {
+// Eliminar una cita
+const deleteCita = async (req, res) => {
   try {
-    const cita = await Cita.findByPk(req.params.id);
-    if (cita) {
-      await cita.destroy();
-      res.status(200).json({ message: 'Cita deleted' });
-    } else {
-      res.status(404).json({ error: 'Cita not found' });
+    const { id } = req.params;
+    const cita = await Cita.findByPk(id);
+    if (!cita) {
+      return res.status(404).json({ message: 'Cita no encontrada' });
     }
+    await cita.destroy();
+    res.status(204).json();
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: 'Error al eliminar la cita', error });
   }
+};
+
+module.exports = {
+  createCita,
+  getCitas,
+  getCitaById,
+  updateCita,
+  deleteCita
 };

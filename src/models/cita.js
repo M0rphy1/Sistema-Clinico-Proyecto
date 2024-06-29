@@ -9,23 +9,43 @@ const Cita = sequelize.define('Cita', {
   },
   idMascota: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
+    references: {
+      model: 'Mascota',
+      key: 'idMascota'
+    }
   },
   nombreUsuario: {
-    type: DataTypes.INTEGER,
-    allowNull: false
+    type: DataTypes.STRING,
+    allowNull: false,
+    references: {
+      model: 'Usuario',
+      key: 'idUsuario'
+    }
   },
   idCliente: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
+    references: {
+      model: 'Cliente',
+      key: 'idCliente'
+    }
   },
   idMedicamento: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
+    references: {
+      model: 'Medicamento',
+      key: 'idMedicamento'
+    }
   },
   idSuministro: {
     type: DataTypes.INTEGER,
-    allowNull: false
+    allowNull: false,
+    references: {
+      model: 'Suministro',
+      key: 'idSuministro'
+    }
   },
   fechaCita: {
     type: DataTypes.DATE,
