@@ -13,7 +13,10 @@
         <button class="btn btn-secondary" data-toggle="modal" data-target="#actualizarCitaModal">Actualizar Cita</button>
         <button class="btn btn-info" data-toggle="modal" data-target="#buscarCitaModal">Buscar Cita</button>
         <button class="btn btn-danger" data-toggle="modal" data-target="#eliminarCitaModal">Eliminar Cita</button>
+        <!-- Contenido de tu página -->
+    <div id="calendar"></div> <!-- Aquí se mostrará el calendario -->
     </div>
+    <script src="calnedario.js"></script>
 
     <!-- Modal para Registrar Cita -->
     <div class="modal fade" id="registroCitaModal" tabindex="-1" role="dialog" aria-labelledby="registroCitaModalLabel" aria-hidden="true">
@@ -206,12 +209,12 @@
                 alert('Cita registrada correctamente.');
 
                 // Verificar si hay alertas de stock bajo para medicamento y suministro
-                if (data.alertaMedicamento) {
-                    alert(`¡Alerta! Quedan pocos ${data.medicamento.nombreMedicamento} en stock. Contactar al proveedor.`);
-                }
-                if (data.alertaSuministro) {
-                    alert(`¡Alerta! Quedan pocos ${data.suministro.nombreSuministro} en stock. Contactar al proveedor.`);
-                }
+            if (data.alertaMedicamento) {
+                alert(`¡Alerta! Quedan pocos ${data.medicamento.nombreMedicamento} en stock. Contactar al proveedor.`);
+            }
+            if (data.alertaSuministro) {
+                alert(`¡Alerta! Quedan pocos ${data.suministro.nombreSuministro} en stock. Contactar al proveedor.`);
+            }
                 // Aquí puedes agregar código adicional para actualizar la interfaz o limpiar el formulario
             })
             .catch((error) => {
