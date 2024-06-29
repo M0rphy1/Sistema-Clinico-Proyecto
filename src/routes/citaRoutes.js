@@ -1,16 +1,13 @@
-// citaRoutes.js
-
 const express = require('express');
+const router = express.Router();
 const citaController = require('../controllers/citaController');
 
-const router = express.Router();
-
-router.post('/api/citas', citaController.crearCita);
-router.post('/api/citas', citaController.createCita);
-router.get('/api/citas', citaController.obtenerTodasLasCitas);
-router.get('/api/citas/:id', citaController.obtenerCitaPorId);
-router.put('/api/citas/:id', citaController.actualizarCita);
-router.delete('/api/citas/:id', citaController.eliminarCita);
+router.post('/crear', citaController.createCita);
+router.get('/', citaController.getCitas);
+router.get('/:id', citaController.getCitaById);
+router.put('/:id', citaController.updateCita);
+router.delete('/:id', citaController.deleteCita);
 
 module.exports = router;
+
 
