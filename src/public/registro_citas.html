@@ -204,6 +204,14 @@
             .then(data => {
                 console.log('Cita registrada:', data);
                 alert('Cita registrada correctamente.');
+
+                // Verificar si hay alertas de stock bajo para medicamento y suministro
+                if (data.alertaMedicamento) {
+                    alert(`¡Alerta! Quedan pocos ${data.medicamento.nombreMedicamento} en stock. Contactar al proveedor.`);
+                }
+                if (data.alertaSuministro) {
+                    alert(`¡Alerta! Quedan pocos ${data.suministro.nombreSuministro} en stock. Contactar al proveedor.`);
+                }
                 // Aquí puedes agregar código adicional para actualizar la interfaz o limpiar el formulario
             })
             .catch((error) => {
@@ -217,29 +225,29 @@
             event.preventDefault();
             const buscarIdCita = document.getElementById('buscarIdCita').value;
 
-fetch(`/api/citas/${buscarIdCita}`)
-  .then(response => response.json())
-  .then(data => {
-    console.log('Cita encontrada:', data);
+        fetch(`/api/citas/${buscarIdCita}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Cita encontrada:', data);
 
-    const resultado = document.getElementById('buscarCitaResultado');
-    resultado.innerHTML = `
-      <h5>ID Cita: ${data.idCita}</h5>
-      <p>ID Mascota: ${data.Mascotum.idMascota} - ${data.Mascotum.nombreMascota}</p>
-      <p>Nombre Usuario: ${data.Usuario.nombreUsuario}</p>
-      <p>ID Cliente: ${data.Cliente.idCliente} - ${data.Cliente.nombreCliente}</p>
-      <p>ID Medicamento: ${data.Medicamento.idMedicamento} - ${data.Medicamento.nombreMedicamento}</p>
-      <p>ID Suministro: ${data.Suministro.idSuministro} - ${data.Suministro.nombreSuministro}</p>
-      <p>Fecha Cita: ${data.fechaCita}</p>
-      <p>Motivo: ${data.motivo}</p>
-      <p>Hora Cita: ${data.horaCita}</p>
-    `;
-  })
-  .catch((error) => {
-    console.error('Error al buscar la cita:', error);
-    const resultado = document.getElementById('buscarCitaResultado');
-    resultado.innerHTML = '<p>No se encontró ninguna cita con ese ID.</p>';
-  });
+            const resultado = document.getElementById('buscarCitaResultado');
+            resultado.innerHTML = `
+            <h5>ID Cita: ${data.idCita}</h5>
+            <p>ID Mascota: ${data.Mascotum.idMascota} - ${data.Mascotum.nombreMascota}</p>
+            <p>Nombre Usuario: ${data.Usuario.nombreUsuario}</p>
+            <p>ID Cliente: ${data.Cliente.idCliente} - ${data.Cliente.nombreCliente}</p>
+            <p>ID Medicamento: ${data.Medicamento.idMedicamento} - ${data.Medicamento.nombreMedicamento}</p>
+            <p>ID Suministro: ${data.Suministro.idSuministro} - ${data.Suministro.nombreSuministro}</p>
+            <p>Fecha Cita: ${data.fechaCita}</p>
+            <p>Motivo: ${data.motivo}</p>
+            <p>Hora Cita: ${data.horaCita}</p>
+            `;
+        })
+        .catch((error) => {
+            console.error('Error al buscar la cita:', error);
+            const resultado = document.getElementById('buscarCitaResultado');
+            resultado.innerHTML = '<p>No se encontró ninguna cita con ese ID.</p>';
+        });
 
         });
 

@@ -2,23 +2,44 @@ const { Cita, Mascota, Usuario, Cliente, Medicamento, Suministro } = require('..
 
 // Crear una nueva cita
 const createCita = async (req, res) => {
+  // Obtener datos de la cita desde el cuerpo de la solicitud
+  const { idMascota, nombreUsuario, idCliente, idMedicamento, idSuministro, fechaCita, motivo, horaCita } = req.body;
+
   try {
-    const { idMascota, nombreUsuario, idCliente, idMedicamento, idSuministro, fechaCita, motivo, horaCita } = req.body;
-    const nuevaCita = await Cita.create({
-      idMascota,
-      nombreUsuario,
-      idCliente,
-      idMedicamento,
-      idSuministro,
-      fechaCita,
-      motivo,
-      horaCita
-    });
-    res.status(201).json(nuevaCita);
+      // Guardar la nueva cita en la base de datos
+      const nuevaCita = await Cita.create({
+          idMascota,
+          nombreUsuario,
+          idCliente,
+          idMedicamento,
+          idSuministro,
+          fechaCita,
+          motivo,
+          horaCita
+      });
+
+      // Actualizar el stock de medicamento
+      const medicamento = await Medicamento.findByPk(idMedicamento);
+      if (medicamento) {
+          medicamento.stock -= 1; // O la cantidad que se desee reducir
+          await medicamento.save();
+      }
+
+      // Actualizar el stock de suministro
+      const suministro = await Suministro.findByPk(idSuministro);
+      if (suministro) {
+          suministro.stock -= 1; // O la cantidad que se desee reducir
+          await suministro.save();
+      }
+
+      // Aquí puedes enviar una respuesta con la cita registrada, si es necesario
+      res.status(201).json(nuevaCita);
   } catch (error) {
-    res.status(500).json({ message: 'Error al crear la cita', error });
+      console.error('Error al registrar la cita:', error);
+      res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
+
 
 // Obtener todas las citas
 const getCitas = async (req, res) => {
