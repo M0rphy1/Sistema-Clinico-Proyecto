@@ -1,36 +1,73 @@
-// const jwt = require('jsonwebtoken');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../database/conexiones');
+const Mascota = require('./mascota'); // Importar el modelo Mascota
+const Medicamento = require('./medicamento'); // Importar el modelo Medicamento
+const Suministro = require('./suministro'); // Importar el modelo Suministro
 
-// const authMiddleware = (req, res, next) => {
-//   const token = req.header('x-auth-token');
-
-//   if (!token) {
-//     return res.status(401).json({ error: 'No token provided' });
-//   }
-
-//   try {
-//     const decoded = jwt.verify(token, process.env.p455w0rd);
-//     req.user = decoded;
-//     next();
-//   } catch (error) {
-//     return res.status(401).json({ error: 'Invalid token' });
-//   }
-// };
-
-// module.exports = authMiddleware;
-
-// middleware/auth.js
-const jwt = require('jsonwebtoken');
-
-module.exports = (req, res, next) => {
-  const token = req.headers['authorization'];
-  if (!token) {
-    return res.status(403).json({ error: 'No token provided' });
-  }
-  jwt.verify(token, 'secretKey', (error, decoded) => {
-    if (error) {
-      return res.status(500).json({ error: 'Failed to authenticate token' });
+const Cita = sequelize.define('Cita', {
+  idCita: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  idMascota: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  nombreUsuario: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  idDiaSemana: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  idHora: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  idHorarioAtencion: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  idMedicamento: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'Medicamento',
+      key: 'idMedicamento'
     }
-    req.userId = decoded.idUsuario;
-    next();
-  });
-};
+  },
+  idSuministro: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'Suministro',
+      key: 'idSuministro'
+    }
+  },
+  fechaCita: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  motivo: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  }
+}, {
+  tableName: 'Cita',
+  timestamps: false,
+  indexes: [
+    {
+      unique: true,
+      fields: ['idMascota', 'nombreUsuario', 'fechaCita']
+    }
+  ]
+});
+
+// Definir asociaciones
+Cita.belongsTo(Mascota, { foreignKey: 'idMascota' });
+Cita.belongsTo(Medicamento, { foreignKey: 'idMedicamento' });
+Cita.belongsTo(Suministro, { foreignKey: 'idSuministro' });
+
+module.exports = Cita;

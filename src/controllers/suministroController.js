@@ -1,75 +1,81 @@
-// controllers/suministroController.js
 const Suministro = require('../models/suministro');
+const { Op } = require('sequelize');
 
-// Obtener todos los suministros
-exports.obtenerSuministros = async (req, res) => {
+exports.createSuministro = async (req, res) => {
+  try {
+    const nuevoSuministro = await Suministro.create(req.body);
+    res.status(201).json(nuevoSuministro);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getSuministros = async (req, res) => {
   try {
     const suministros = await Suministro.findAll();
     res.status(200).json(suministros);
   } catch (error) {
-    console.error('Error al obtener suministros:', error);
-    res.status(500).json({ error: 'Error al obtener suministros' });
+    res.status(500).json({ error: error.message });
   }
 };
 
-// Obtener un suministro por ID
-exports.obtenerSuministroPorId = async (req, res) => {
-  const { id } = req.params;
+exports.getSuministroById = async (req, res) => {
   try {
-    const suministro = await Suministro.findByPk(id);
-    if (!suministro) {
-      return res.status(404).json({ error: 'Suministro no encontrado' });
+    const suministro = await Suministro.findByPk(req.params.id);
+    if (suministro) {
+      res.status(200).json(suministro);
+    } else {
+      res.status(404).json({ error: 'Suministro not found' });
     }
-    res.status(200).json(suministro);
   } catch (error) {
-    console.error('Error al obtener suministro por ID:', error);
-    res.status(500).json({ error: 'Error al obtener suministro por ID' });
+    res.status(500).json({ error: error.message });
   }
 };
 
-// Crear un nuevo suministro
-exports.crearSuministro = async (req, res) => {
-  const { nombre, descripcion, cantidad, precioUnitario, idProveedor } = req.body;
+exports.updateSuministro = async (req, res) => {
   try {
-    const nuevoSuministro = await Suministro.create({ nombre, descripcion, cantidad, precioUnitario, idProveedor });
-    res.status(201).json(nuevoSuministro);
-  } catch (error) {
-    console.error('Error al crear suministro:', error);
-    res.status(500).json({ error: 'Error al crear suministro' });
-  }
-};
-
-// Actualizar un suministro por ID
-exports.actualizarSuministro = async (req, res) => {
-  const { id } = req.params;
-  const { nombre, descripcion, cantidad, precioUnitario, idProveedor } = req.body;
-  try {
-    const suministro = await Suministro.findByPk(id);
-    if (!suministro) {
-      return res.status(404).json({ error: 'Suministro no encontrado' });
+    const suministro = await Suministro.findByPk(req.params.id);
+    if (suministro) {
+      await suministro.update(req.body);
+      res.status(200).json(suministro);
+    } else {
+      res.status(404).json({ error: 'Suministro not found' });
     }
-    await suministro.update({ nombre, descripcion, cantidad, precioUnitario, idProveedor });
-    res.status(200).json(suministro);
   } catch (error) {
-    console.error('Error al actualizar suministro:', error);
-    res.status(500).json({ error: 'Error al actualizar suministro' });
+    res.status(500).json({ error: error.message });
   }
 };
 
-// Eliminar un suministro por ID
-exports.eliminarSuministro = async (req, res) => {
-  const { id } = req.params;
+exports.deleteSuministro = async (req, res) => {
   try {
-    const suministro = await Suministro.findByPk(id);
-    if (!suministro) {
-      return res.status(404).json({ error: 'Suministro no encontrado' });
+    const suministro = await Suministro.findByPk(req.params.id);
+    if (suministro) {
+      await suministro.destroy();
+      res.status(200).json({ message: 'Suministro deleted' });
+    } else {
+      res.status(404).json({ error: 'Suministro not found' });
     }
-    await suministro.destroy();
-    res.status(200).json({ mensaje: 'Suministro eliminado correctamente' });
   } catch (error) {
-    console.error('Error al eliminar suministro:', error);
-    res.status(500).json({ error: 'Error al eliminar suministro' });
+    res.status(500).json({ error: error.message });
   }
 };
 
-
+exports.getSuministroByNombre = async (req, res) => {
+  try {
+    const nombre = req.query.nombre;
+    const suministros = await Suministro.findAll({
+      where: {
+        nombreSuministro: {
+          [Op.like]: `%${nombre}%`
+        }
+      }
+    });
+    if (suministros.length > 0) {
+      res.status(200).json(suministros);
+    } else {
+      res.status(404).json({ error: 'No se encontraron suministros con ese nombre' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

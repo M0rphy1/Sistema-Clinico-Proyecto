@@ -7,7 +7,7 @@ const Proveedor = sequelize.define('Proveedor', {
     autoIncrement: true,
     primaryKey: true
   },
-  nombre: {
+  nombreProveedor: {
     type: DataTypes.STRING(100),
     allowNull: false
   },

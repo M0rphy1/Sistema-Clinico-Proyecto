@@ -1,7 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
     <title>Generar Reporte</title>
     <style>
         body {
@@ -27,11 +33,9 @@
     <select id="tipoReporte">
         <option value="clientes">Clientes</option>
         <option value="mascotas">Mascotas</option>
-        <option value="inventario">Inventario</option>
         <option value="medicamentos">Medicamentos</option>
         <option value="suministros">Suministros</option>
         <option value="proveedores">Proveedores</option>
-        <option value="citas">Citas</option>
     </select>
     <br>
     <button onclick="generarReporte()">Generar Reporte</button>
@@ -42,18 +46,31 @@
         async function generarReporte() {
             const tipoReporte = document.getElementById('tipoReporte').value;
             try {
-                const response = await fetch(`/api/reportes/${tipoReporte}`);
-                const data = await response.json();
-                mostrarResultado(data);
+                const response = await fetch(`/api/reportes/${tipoReporte}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = `${tipoReporte}-reporte.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                } else {
+                    const errorData = await response.json();
+                    mostrarError(errorData.error);
+                }
             } catch (error) {
                 console.error('Error al generar el reporte:', error);
                 mostrarError('Error al generar el reporte. Por favor, intenta nuevamente.');
             }
-        }
-
-        function mostrarResultado(data) {
-            const resultadoDiv = document.getElementById('resultado');
-            resultadoDiv.innerHTML = `<p><strong>Reporte generado:</strong> ${data.mensaje}</p>`;
         }
 
         function mostrarError(mensaje) {

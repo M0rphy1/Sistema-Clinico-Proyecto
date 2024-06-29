@@ -1,20 +1,14 @@
 const Mascota = require('../models/mascota');
+const { Op } = require('sequelize');
 
 exports.createMascota = async (req, res) => {
   try {
-    const nuevaMascota = await Mascota.create({
-      nombre: req.body.nombre,
-      especie: req.body.especie,
-      raza: req.body.raza,
-      fechaNacimiento: req.body.fechaNacimiento,
-      idCliente: req.body.idCliente  // Asegúrate de asignar correctamente el ID del cliente
-    });
-
+    const nuevaMascota = await Mascota.create(req.body);
     res.status(201).json(nuevaMascota);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+}; 
 
 exports.getMascotas = async (req, res) => {
   try {
@@ -66,3 +60,23 @@ exports.deleteMascota = async (req, res) => {
   }
 };
 
+// Buscar mascotas por nombre
+exports.getMascotaByNombre = async (req, res) => {
+  try {
+    const nombre = req.query.nombre;
+    const mascotas = await Mascota.findAll({
+      where: {
+        nombreMascota: {
+          [Op.like]: `%${nombre}%`
+        }
+      }
+    });
+    if (mascotas.length > 0) {
+      res.status(200).json(mascotas);
+    } else {
+      res.status(404).json({ error: 'No se encontraron mascotas con ese nombre' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

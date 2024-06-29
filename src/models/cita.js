@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { DataTypes } = require('sequelize');
-const sequelize = require('../database/conexiones'); // Ajusta la ruta según tu estructura
+const sequelize = require('../database/conexiones'); // Asegúrate de tener la configuración correcta de Sequelize
 
 const Cita = sequelize.define('Cita', {
   idCita: {
@@ -11,32 +11,55 @@ const Cita = sequelize.define('Cita', {
   },
   idMascota: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     references: {
       model: 'Mascota',
       key: 'idMascota'
     }
   },
-  idEmpleado: {
-    type: DataTypes.INTEGER,
+  nombreUsuario: {
+    type: DataTypes.STRING,
+    allowNull: false,
     references: {
-      model: 'Empleado',
-      key: 'idEmpleado'
+      model: 'Usuario',
+      key: 'idUsuario'
     }
   },
-  fechaHora: {
+  idCliente: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'Cliente',
+      key: 'idCliente'
+    }
+  },
+  idMedicamento: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'Medicamento',
+      key: 'idMedicamento'
+    }
+  },
+  idSuministro: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: 'Suministro',
+      key: 'idSuministro'
+    }
+  },
+  fechaCita: {
     type: DataTypes.DATE,
     allowNull: false
   },
   motivo: {
     type: DataTypes.TEXT,
-    allowNull: false
+    allowNull: true
   },
-  idInventario: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'Inventario',
-      key: 'idInventario'
-    }
+  horaCita: {
+    type: DataTypes.TIME,
+    allowNull: true
   }
 }, {
   tableName: 'Cita',
@@ -44,23 +67,6 @@ const Cita = sequelize.define('Cita', {
 });
 
 module.exports = Cita;
-
-sequelize.sync();
-
-// Endpoint para agendar una cita
-app.post('/agendar', async (req, res) => {
-  const { nombre, fecha, motivo } = req.body;
-  try {
-    const nuevaCita = await Cita.create({ nombre, fecha, motivo });
-    res.send('Cita agendada');
-  } catch (error) {
-    res.status(500).send('Error al agendar la cita');
-  }
-});
-
-app.listen(3000, () => {
-  console.log('Servidor escuchando en el puerto 3000');
-});
 /////
 // const { DataTypes } = require('sequelize');
 // const sequelize = require('../database/conexiones');

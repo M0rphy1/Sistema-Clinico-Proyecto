@@ -24,20 +24,11 @@ Mascota.hasMany(HistoriaClinica, { foreignKey: 'idMascota' });
 HistoriaClinica.belongsTo(Mascota, { foreignKey: 'idMascota' });
 
 // Cita y otras tablas
-Cita.belongsTo(Mascota, { foreignKey: 'idMascota' });
-Mascota.hasMany(Cita, { foreignKey: 'idMascota' });
-
-Cita.belongsTo(Usuario, { foreignKey: 'nombreUsuario' });
-Usuario.hasMany(Cita, { foreignKey: 'nombreUsuario' });
-
-Cita.belongsTo(Cliente, { foreignKey: 'idCliente' });
-Cliente.hasMany(Cita, { foreignKey: 'idCliente' });
-
+Cita.belongsTo(Mascota, { foreignKey: 'idMascota' }); // Esto asume que `idMascota` es la clave foránea en la tabla de Cita
+Cita.belongsTo(Usuario, { foreignKey: 'idUsuario' });
 Cita.belongsTo(Medicamento, { foreignKey: 'idMedicamento' });
-Medicamento.hasMany(Cita, { foreignKey: 'idMedicamento' });
-
 Cita.belongsTo(Suministro, { foreignKey: 'idSuministro' });
-Suministro.hasMany(Cita, { foreignKey: 'idSuministro' });
+
 
 // Proveedor y Medicamento
 Proveedor.hasMany(Medicamento, { foreignKey: 'idProveedor' });
@@ -47,8 +38,16 @@ Medicamento.belongsTo(Proveedor, { foreignKey: 'idProveedor' });
 Proveedor.hasMany(Suministro, { foreignKey: 'idProveedor' });
 Suministro.belongsTo(Proveedor, { foreignKey: 'idProveedor' });
 
+// Mascota y Cita
+Mascota.hasMany(Cita, { foreignKey: 'idMascota' }); // Esto asume que `idMascota` es la clave foránea en la tabla de Cita
+Cita.belongsTo(Mascota, { foreignKey: 'idMascota' });
+
+// Medicamento y Cita
+Medicamento.hasMany(Cita, { foreignKey: 'idMedicamento' });
+Cita.belongsTo(Medicamento, { foreignKey: 'idMedicamento' });
+
 // Sincronización de modelos con la base de datos
-sequelize.sync({ force: false }) // force: true eliminará las tablas existentes y las volverá a crear
+sequelize.sync({ force: true }) // force: true eliminará las tablas existentes y las volverá a crear
   .then(() => {
     console.log('Tablas sincronizadas correctamente.');
   })
@@ -67,6 +66,3 @@ module.exports = {
   Medicamento,
   Suministro
 };
-
-
-

@@ -1,14 +1,15 @@
 // routes/medicamentoRoutes.js
+
 const express = require('express');
 const router = express.Router();
 const medicamentoController = require('../controllers/medicamentoController');
 
-// Rutas para suministros
-router.get('/', medicamentoController.obtenerMedicamentos);
-router.get('/:id', medicamentoController.obtenerMedicamentoPorId);
-router.post('/', medicamentoController.crearMedicamento);
-router.put('/:id', medicamentoController.actualizarMedicamento);
-router.delete('/:id', medicamentoController.eliminarMedicamento);
+router.post('/', medicamentoController.createMedicamento);
+router.get('/', medicamentoController.getMedicamentos); // Ruta para obtener todos los medicamentos
+router.get('/buscar', medicamentoController.getMedicamentoByNombre); // Ruta para buscar medicamento por nombre
+router.get('/:id', medicamentoController.getMedicamentoById); // Ruta para obtener un medicamento por ID
+router.put('/:id', medicamentoController.updateMedicamento);
+router.delete('/:id', medicamentoController.deleteMedicamento);
 
 module.exports = router;
 

@@ -1,9 +1,10 @@
-///////////
+// app.js
+
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const sequelize = require('./database/conexiones'); // Asegúrate de tener correctamente configurada la conexión a Sequelize
-
+const bodyParser = require('body-parser');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const authRoutes = require('./routes/authRoutes');
 const mascotaRoutes = require('./routes/mascotaRoutes');
@@ -12,7 +13,6 @@ const historiaClinicaRoutes = require('./routes/historiaClinicaRoutes');
 const proveedorRoutes = require('./routes/proveedorRoutes');
 const suministroRoutes = require('./routes/suministroRoutes');
 const medicamentoRoutes = require('./routes/medicamentoRoutes');
-const inventarioRoutes = require('./routes/inventarioRoutes');
 const reporteRoutes = require('./routes/reporteRoutes');
 const citaRoutes = require('./routes/citaRoutes');
 
@@ -20,6 +20,7 @@ const app = express();
 
 // Middleware para manejar JSON en las solicitudes
 app.use(express.json());
+app.use(bodyParser.json());
 
 // Configuración de la sesión
 app.use(session({
@@ -59,9 +60,6 @@ app.use('/api/suministros', suministroRoutes);
 // Middleware para manejar las rutas de medicamentos
 app.use('/api/medicamentos', medicamentoRoutes);
 
-// Middleware para manejar las rutas de inventarios
-app.use('/api/inventarios', inventarioRoutes);
-
 // Middleware para manejar las rutas de reportes
 app.use('/api/reportes', reporteRoutes);
 
@@ -87,3 +85,5 @@ sequelize.sync()
   .catch(err => {
     console.error('Error al sincronizar la base de datos:', err);
   });
+
+module.exports = app;

@@ -31,7 +31,7 @@
                 <form id="registerForm">
                     <label>
                         <i class='bx bx-user'></i>
-                        <input type="text" name="nombreUsuario" placeholder="Nombre Completo" required>
+                        <input type="text" name="nombreUsuario" placeholder="Nombre de Usuario" required>
                     </label>
                     <label>
                         <i class='bx bx-envelope'></i>
@@ -40,6 +40,22 @@
                     <label>
                         <i class='bx bxs-lock-alt'></i>
                         <input type="password" name="contrasena" placeholder="Contraseña" required>
+                    </label>
+                    <label>
+                        <i class='bx bx-user'></i>
+                        <input type="text" name="nombre" placeholder="Nombre" required>
+                    </label>
+                    <label>
+                        <i class='bx bx-user'></i>
+                        <input type="text" name="apellido" placeholder="Apellido" required>
+                    </label>
+                    <label>
+                        <i class='bx bx-phone'></i>
+                        <input type="text" name="telefono" placeholder="Teléfono" required>
+                    </label>
+                    <label>
+                        <i class='bx bx-home'></i>
+                        <input type="text" name="direccion" placeholder="Dirección" required>
                     </label>
                     <input type="submit" value="Registrarse">
                 </form>
@@ -54,13 +70,26 @@
             const nombreUsuario = event.target.nombreUsuario.value;
             const correo = event.target.correo.value;
             const contrasena = event.target.contrasena.value;
+            const nombre = event.target.nombre.value;
+            const apellido = event.target.apellido.value;
+            const telefono = event.target.telefono.value;
+            const direccion = event.target.direccion.value;
 
             const response = await fetch('/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nombreUsuario, correo, contrasena, idRol: 1 })
+                body: JSON.stringify({ 
+                    nombreUsuario, 
+                    correo, 
+                    contrasena, 
+                    nombre, 
+                    apellido, 
+                    telefono, 
+                    direccion, 
+                    idRol: 1 
+                })
             });
 
             const data = await response.json();
@@ -76,3 +105,4 @@
     </script>
 </body>
 </html>
+

@@ -13,35 +13,64 @@
         <button class="btn btn-secondary" data-toggle="modal" data-target="#actualizarCitaModal">Actualizar Cita</button>
         <button class="btn btn-info" data-toggle="modal" data-target="#buscarCitaModal">Buscar Cita</button>
         <button class="btn btn-danger" data-toggle="modal" data-target="#eliminarCitaModal">Eliminar Cita</button>
-    </div> 
+        <!-- Contenido de tu página -->
+    <div id="calendar"></div> <!-- Aquí se mostrará el calendario -->
+    </div>
+    <script src="calnedario.js"></script>
 
-    <!-- Modal de Registro Cita -->
-<div class="modal fade" id="registroCitaModal" tabindex="-1" role="dialog" aria-labelledby="registroCitaModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="registroCitaModalLabel">Registrar Cita</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="registroCitaForm">
-                    <input type="text" id="idMascota" placeholder="idMascota" required>
-                    <input type="text" id="idEmpleado" placeholder="idEmpleado" required>
-                    <input type="date" id="fechaHora" placeholder="Fecha" required>
-                    <input type="text" id="motivo" placeholder="Motivo" required>
-                    <input type="text" id="idInventario" placeholder="Inventario" required>
-                    <br><button type="submit">Registrar Cita</button>
-                </form>
+    <!-- Modal para Registrar Cita -->
+    <div class="modal fade" id="registroCitaModal" tabindex="-1" role="dialog" aria-labelledby="registroCitaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registroCitaModalLabel">Registrar Cita</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="registroCitaForm">
+                        <div class="form-group">
+                            <label for="idMascota">ID Mascota</label>
+                            <input type="number" class="form-control" id="idMascota" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombreUsuario">Nombre Usuario</label>
+                            <input type="text" class="form-control" id="nombreUsuario" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="idCliente">ID Cliente</label>
+                            <input type="number" class="form-control" id="idCliente" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="idMedicamento">ID Medicamento</label>
+                            <input type="number" class="form-control" id="idMedicamento" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="idSuministro">ID Suministro</label>
+                            <input type="number" class="form-control" id="idSuministro" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fechaCita">Fecha Cita</label>
+                            <input type="date" class="form-control" id="fechaCita" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="motivo">Motivo</label>
+                            <textarea class="form-control" id="motivo"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="horaCita">Hora Cita</label>
+                            <input type="time" class="form-control" id="horaCita">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-
-    <!-- Modal de Actualización de Cita -->
-    <div class="modal fade" id="actualizarCitaModal" tabindex="-1" role="dialog" aria-labelledby="actualizarClienteModalLabel" aria-hidden="true">
+    <!-- Modal para Actualizar Cita -->
+    <div class="modal fade" id="actualizarCitaModal" tabindex="-1" role="dialog" aria-labelledby="actualizarCitaModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -52,20 +81,50 @@
                 </div>
                 <div class="modal-body">
                     <form id="actualizarCitaForm">
-                        <input type="number" id="idCitaAct" placeholder="idCita" required>
-                        <input type="number" id="idMascotaAct" placeholder="idMascota" required>
-                        <input type="number" id="idEmpleadoAct" placeholder="idEmpleado" required>
-                        <input type="date" id="fechaHoraAct" placeholder="Fecha" required>
-                        <input type="text" id="motivoAct" placeholder="Motivo" required>
-                        <input type="number" id="idInventarioAct" placeholder="Inventario" required>
-                        <button type="submit" class="btn btn-secondary">Actualizar Citas</button>
+                        <div class="form-group">
+                            <label for="updateIdCita">ID Cita</label>
+                            <input type="number" class="form-control" id="updateIdCita" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateIdMascota">ID Mascota</label>
+                            <input type="number" class="form-control" id="updateIdMascota" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateNombreUsuario">Nombre Usuario</label>
+                            <input type="text" class="form-control" id="updateNombreUsuario" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateIdCliente">ID Cliente</label>
+                            <input type="number" class="form-control" id="updateIdCliente" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateIdMedicamento">ID Medicamento</label>
+                            <input type="number" class="form-control" id="updateIdMedicamento" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateIdSuministro">ID Suministro</label>
+                            <input type="number" class="form-control" id="updateIdSuministro" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateFechaCita">Fecha Cita</label>
+                            <input type="date" class="form-control" id="updateFechaCita" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateMotivo">Motivo</label>
+                            <textarea class="form-control" id="updateMotivo"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="updateHoraCita">Hora Cita</label>
+                            <input type="time" class="form-control" id="updateHoraCita">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Búsqueda de Cita -->
+    <!-- Modal para Buscar Cita -->
     <div class="modal fade" id="buscarCitaModal" tabindex="-1" role="dialog" aria-labelledby="buscarCitaModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -77,16 +136,19 @@
                 </div>
                 <div class="modal-body">
                     <form id="buscarCitaForm">
-                        <input type="number" id="idCitaBuscar" placeholder="ID de la Cita" required>
-                        <button type="submit" class="btn btn-info">Buscar Cita</button>
+                        <div class="form-group">
+                            <label for="buscarIdCita">ID Cita</label>
+                            <input type="number" class="form-control" id="buscarIdCita" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Buscar</button>
                     </form>
-                    <div id="resultadoBuscarCita" class="mt-3"></div>
+                    <div id="buscarCitaResultado" class="mt-3"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Eliminación de Cliente -->
+    <!-- Modal para Eliminar Cita -->
     <div class="modal fade" id="eliminarCitaModal" tabindex="-1" role="dialog" aria-labelledby="eliminarCitaModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -98,8 +160,11 @@
                 </div>
                 <div class="modal-body">
                     <form id="eliminarCitaForm">
-                        <input type="number" id="idCitaEliminar" placeholder="ID de la Cita" required>
-                        <button type="submit" class="btn btn-danger">Eliminar Cita</button>
+                        <div class="form-group">
+                            <label for="eliminarIdCita">ID Cita</label>
+                            <input type="number" class="form-control" id="eliminarIdCita" required>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
                 </div>
             </div>
@@ -107,112 +172,149 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
-        // Registro de Citas
-        document.getElementById('registroCitaForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-    const idMascota = document.getElementById('idMascota').value;
-    const idEmpleado = document.getElementById('idEmpleado').value;
-    const fechaHora = document.getElementById('fechaHora').value;
-    const motivo = document.getElementById('motivo').value;
-    const idInventario = document.getElementById('idInventario').value;
-    
-    try {
-        const response = await fetch('/api/citas', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({idMascota, idEmpleado, fechaHora, motivo, idInventario })
-        });
-        
-        if (response.ok) {
-            const nuevoCliente = await response.json();
-            alert('Cita registrada exitosamente');
-            $('#registroCitaModal').modal('hide');
-            document.getElementById('registroCitaForm').reset();
-            // Aquí puedes realizar cualquier acción adicional después del registro exitoso
-        } else {
-            const responseData = await response.json();
-            alert('Error al registrar el cita: ' + responseData.error);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Error al registrar el cita');
-    }
-});
-
-
-        // Actualización de Cita
-        document.getElementById('actualizarCitaForm').addEventListener('submit', async function (event) {
+        // Función para registrar una cita
+        document.getElementById('registroCitaForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const idCita = document.getElementById('idCitaAct').value;
-            const idMascota = document.getElementById('idMascotaAct').value;
-            const idEmpleado = document.getElementById('idEmpleadoAct').value;
-            const fechaHora = document.getElementById('fechaHoraAct').value;
-            const motivo = document.getElementById('motivoAct').value;
-            const idInventario = document.getElementById('idInventarioAct').value;
-            try {
-                const response = await fetch(`/api/citas /${idCita}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ idMascota, idEmpleado, fechaHora, motivo, idInventario })
-                });
-                if (response.ok) {
-                    alert('Cita actualizada exitosamente');
-                    $('#actualizarCitaModal').modal('hide');
-                    document.getElementById('actualizarCitaForm').reset();
-                } else {
-                    alert('Error al actualizar la cita');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al actualizar la cita');
+            const idMascota = document.getElementById('idMascota').value;
+            const nombreUsuario = document.getElementById('nombreUsuario').value;
+            const idCliente = document.getElementById('idCliente').value;
+            const idMedicamento = document.getElementById('idMedicamento').value;
+            const idSuministro = document.getElementById('idSuministro').value;
+            const fechaCita = document.getElementById('fechaCita').value;
+            const motivo = document.getElementById('motivo').value;
+            const horaCita = document.getElementById('horaCita').value;
+
+            fetch('/api/citas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    idMascota: parseInt(idMascota),
+                    nombreUsuario: nombreUsuario,
+                    idCliente: parseInt(idCliente),
+                    idMedicamento: parseInt(idMedicamento),
+                    idSuministro: parseInt(idSuministro),
+                    fechaCita: fechaCita,
+                    motivo: motivo,
+                    horaCita: horaCita
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Cita registrada:', data);
+                alert('Cita registrada correctamente.');
+
+                // Verificar si hay alertas de stock bajo para medicamento y suministro
+            if (data.alertaMedicamento) {
+                alert(`¡Alerta! Quedan pocos ${data.medicamento.nombreMedicamento} en stock. Contactar al proveedor.`);
             }
+            if (data.alertaSuministro) {
+                alert(`¡Alerta! Quedan pocos ${data.suministro.nombreSuministro} en stock. Contactar al proveedor.`);
+            }
+                // Aquí puedes agregar código adicional para actualizar la interfaz o limpiar el formulario
+            })
+            .catch((error) => {
+                console.error('Error al registrar la cita:', error);
+                alert('Error al registrar la cita. Verifica la consola para más detalles.');
+            });
         });
 
-        // Búsqueda de Citas
-        document.getElementById('buscarCitaForm').addEventListener('submit', async function (event) {
+        // Función para buscar una cita por ID
+        document.getElementById('buscarCitaForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const idCita = document.getElementById('idCitaBuscar').value;
-            try {
-                const response = await fetch(`/api/citas/${idCita}`);
-                if (response.ok) {
-                    const cita = await response.json();
-                    document.getElementById('resultadoBuscarCita').innerHTML = `
-                        <p>ID: ${cita.idCita}</p>
-                        <p>ID Mascota: ${cita.idMascota}</p>
-                        <p>Fecha y Hora: ${cita.fechaHora}</p>
-                        <p>Motivo: ${cita.motivo}</p>
-                    `;
-                } else {
-                    document.getElementById('resultadoBuscarCita').textContent = 'Cita no encontrada';
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al buscar la cita');
-            }
+            const buscarIdCita = document.getElementById('buscarIdCita').value;
+
+        fetch(`/api/citas/${buscarIdCita}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log('Cita encontrada:', data);
+
+            const resultado = document.getElementById('buscarCitaResultado');
+            resultado.innerHTML = `
+            <h5>ID Cita: ${data.idCita}</h5>
+            <p>ID Mascota: ${data.Mascotum.idMascota} - ${data.Mascotum.nombreMascota}</p>
+            <p>Nombre Usuario: ${data.Usuario.nombreUsuario}</p>
+            <p>ID Cliente: ${data.Cliente.idCliente} - ${data.Cliente.nombreCliente}</p>
+            <p>ID Medicamento: ${data.Medicamento.idMedicamento} - ${data.Medicamento.nombreMedicamento}</p>
+            <p>ID Suministro: ${data.Suministro.idSuministro} - ${data.Suministro.nombreSuministro}</p>
+            <p>Fecha Cita: ${data.fechaCita}</p>
+            <p>Motivo: ${data.motivo}</p>
+            <p>Hora Cita: ${data.horaCita}</p>
+            `;
+        })
+        .catch((error) => {
+            console.error('Error al buscar la cita:', error);
+            const resultado = document.getElementById('buscarCitaResultado');
+            resultado.innerHTML = '<p>No se encontró ninguna cita con ese ID.</p>';
         });
 
-        // Eliminación de Citas
-        document.getElementById('eliminarCitaForm').addEventListener('submit', async function (event) {
+        });
+
+        // Función para actualizar una cita
+        document.getElementById('actualizarCitaForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            const idCita = document.getElementById('idCitaEliminar').value;
-            try {
-                const response = await fetch(`/api/citas/${idCita}`, {
-                    method: 'DELETE'
-                });
-                if (response.ok) {
-                    alert('Cita eliminada exitosamente');
-                    $('#eliminarCitaModal').modal('hide');
-                    document.getElementById('eliminarCitaForm').reset();
-                } else {
-                    alert('Error al eliminar la cita');
+            const updateIdCita = document.getElementById('updateIdCita').value;
+            const updateIdMascota = document.getElementById('updateIdMascota').value;
+            const updateNombreUsuario = document.getElementById('updateNombreUsuario').value;
+            const updateIdCliente = document.getElementById('updateIdCliente').value;
+            const updateIdMedicamento = document.getElementById('updateIdMedicamento').value;
+            const updateIdSuministro = document.getElementById('updateIdSuministro').value;
+            const updateFechaCita = document.getElementById('updateFechaCita').value;
+            const updateMotivo = document.getElementById('updateMotivo').value;
+            const updateHoraCita = document.getElementById('updateHoraCita').value;
+
+            fetch(`/api/citas/${updateIdCita}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    idMascota: parseInt(updateIdMascota),
+                    nombreUsuario: updateNombreUsuario,
+                    idCliente: parseInt(updateIdCliente),
+                    idMedicamento: parseInt(updateIdMedicamento),
+                    idSuministro: parseInt(updateIdSuministro),
+                    fechaCita: updateFechaCita,
+                    motivo: updateMotivo,
+                    horaCita: updateHoraCita
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Cita actualizada:', data);
+                alert('Cita actualizada correctamente.');
+                // Aquí puedes agregar código adicional para actualizar la interfaz o limpiar el formulario
+            })
+            .catch((error) => {
+                console.error('Error al actualizar la cita:', error);
+                alert('Error al actualizar la cita. Verifica la consola para más detalles.');
+            });
+        });
+
+        // Función para eliminar una cita
+        document.getElementById('eliminarCitaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const eliminarIdCita = document.getElementById('eliminarIdCita').value;
+
+            fetch(`/api/citas/${eliminarIdCita}`, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudo eliminar la cita.');
                 }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al eliminar la cita');
-            }
+                console.log('Cita eliminada.');
+                alert('Cita eliminada correctamente.');
+                // Aquí puedes agregar código adicional para actualizar la interfaz o limpiar el formulario
+            })
+            .catch((error) => {
+                console.error('Error al eliminar la cita:', error);
+                alert('Error al eliminar la cita. Verifica la consola para más detalles.');
+            });
         });
     </script>
 </body>

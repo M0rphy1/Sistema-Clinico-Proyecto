@@ -1,4 +1,5 @@
 const Cliente = require('../models/cliente');
+const { Op } = require('sequelize');
 
 exports.createCliente = async (req, res) => {
   try {
@@ -53,6 +54,27 @@ exports.deleteCliente = async (req, res) => {
       res.status(200).json({ message: 'Cliente deleted' });
     } else {
       res.status(404).json({ error: 'Cliente not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Nuevo controlador para buscar cliente por nombre
+exports.getClienteByNombre = async (req, res) => {
+  try {
+    const nombre = req.query.nombre;
+    const clientes = await Cliente.findAll({
+      where: {
+        nombreCliente: {
+          [Op.like]: `%${nombre}%`
+        }
+      }
+    });
+    if (clientes.length > 0) {
+      res.status(200).json(clientes);
+    } else {
+      res.status(404).json({ error: 'No se encontraron clientes con ese nombre' });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
