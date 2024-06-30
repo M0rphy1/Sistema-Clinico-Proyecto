@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Generador de texto con Google Gemini y Registro de Cita</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Botón para abrir el modal de Registro de Cita -->
+        <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#registroCitaModal">
+            Registrar Cita
+        </button>
+
+        <!-- Modal para Registrar Cita -->
+        <div class="modal fade" id="registroCitaModal" tabindex="-1" role="dialog" aria-labelledby="registroCitaModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registroCitaModalLabel">Registrar Cita</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="registroCitaForm">
+                            <div class="form-group">
+                                <label for="idMascota">ID Mascota</label>
+                                <input type="number" class="form-control" id="idMascota" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombreUsuario">Nombre Usuario</label>
+                                <input type="text" class="form-control" id="nombreUsuario" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="idCliente">ID Cliente</label>
+                                <input type="number" class="form-control" id="idCliente" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="idMedicamento">ID Medicamento</label>
+                                <input type="number" class="form-control" id="idMedicamento" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="idSuministro">ID Suministro</label>
+                                <input type="number" class="form-control" id="idSuministro" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaCita">Fecha Cita</label>
+                                <input type="date" class="form-control" id="fechaCita" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="motivo">Motivo</label>
+                                <textarea class="form-control" id="motivo"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="horaCita">Hora Cita</label>
+                                <input type="time" class="form-control" id="horaCita">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Registrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generador de texto con Google Gemini -->
+        <h1>Generador de texto con Google Gemini</h1>
+        <div class="form-group">
+            <input type="text" id="inputText" class="form-control mb-3" placeholder="Escribe algo aquí...">
+            <button id="generateButton" class="btn btn-primary">Generar</button>
+        </div>
+        <p id="responseText"></p>
+    </div>
+
+    <!-- Importación y configuración del chatbot de Google Gemini -->
+    <script type="importmap">
+        {
+          "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+          }
+        }
+    </script>
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+
+        // Reemplaza 'YOUR_API_KEY' con tu clave de API real
+        const API_KEY = 'AIzaSyDwdrYfiXINja1lnh_RlwZF6KkqSg_2oYY';
+        const genAI = new GoogleGenerativeAI(API_KEY);
+
+        document.getElementById('generateButton').addEventListener('click', async () => {
+            const inputText = document.getElementById('inputText').value;
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest"});
+            const prompt = inputText;
+
+            try {
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                document.getElementById('responseText').innerText = response.text();
+            } catch (error) {
+                console.error('Error al generar contenido:', error);
+            }
+        });
+
+        // Manejo del formulario para registrar la cita
+        document.getElementById('registroCitaForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const idMascota = document.getElementById('idMascota').value;
+            const nombreUsuario = document.getElementById('nombreUsuario').value;
+            const idCliente = document.getElementById('idCliente').value;
+            const idMedicamento = document.getElementById('idMedicamento').value;
+            const idSuministro = document.getElementById('idSuministro').value;
+            const fechaCita = document.getElementById('fechaCita').value;
+            const motivo = document.getElementById('motivo').value;
+            const horaCita = document.getElementById('horaCita').value;
+
+            try {
+                const response = await fetch('/api/citas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        idMascota,
+                        nombreUsuario,
+                        idCliente,
+                        idMedicamento,
+                        idSuministro,
+                        fechaCita,
+                        motivo,
+                        horaCita
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Cita registrada exitosamente');
+                    $('#registroCitaModal').modal('hide'); // Ocultar el modal después de registrar
+                } else {
+                    alert('Error al registrar la cita');
+                }
+            } catch (error) {
+                console.error('Error en la solicitud:', error);
+            }
+        });
+    </script>
+</body>
+</html>
