@@ -54,12 +54,16 @@
           <form id="registroMedicamentoForm">
             <input type="hidden" id="idMedicamento" value="">
             <input type="text" id="nombreMedicamento" class="form-control mb-2" placeholder="Nombre" required>
+            <button type="button" class="btn btn-primary ml-2" onclick="verificarNombreMedicamento()">Verificar</button>
+          <div id="errorNombreMedicamento" class="invalid-feedback">
+            El nombre del medicamento ya está en uso. Por favor, intenta con otro.
+          </div>
             <textarea id="descripcionMedicamento" class="form-control mb-2" placeholder="Descripción"></textarea>
-            <input type="number" id="precioMedicamento" class="form-control mb-2" placeholder="Precio" required>
-            <input type="number" id="stockMedicamento" class="form-control mb-2" placeholder="Stock" required>
+            <input type="number" id="precioMedicamento" class="form-control mb-2" placeholder="Precio" min="0.01" step="0.01" required>
+            <input type="number" id="stockMedicamento" class="form-control mb-2" placeholder="Stock" min="1" required>
             <input type="date" id="fechaVencimientoMedicamento" class="form-control mb-2" placeholder="Fecha de Vencimiento">
             <input type="text" id="fabricanteMedicamento" class="form-control mb-2" placeholder="Fabricante">
-            <input type="number" id="idProveedorMedicamento" class="form-control mb-2" placeholder="ID Proveedor" required>
+            <input type="number" id="idProveedorMedicamento" class="form-control mb-2" placeholder="ID Proveedor" min="1" required>
             <button type="submit" class="btn btn-primary">Registrar</button>
             <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Cancelar</button>
           </form>
@@ -142,6 +146,23 @@
         console.error('Error:', error);
       }
     }
+
+    //
+    async function verificarNombreMedicamento() {
+    const nombreMedicamento = document.getElementById('nombreMedicamento').value;
+
+    try {
+      const response = await fetch(`/api/medicamentos/verificar-nombre?nombre=${nombreMedicamento}`);
+      if (response.ok) {
+        document.getElementById('errorNombreMedicamento').style.display = 'none';
+        alert('El nombre de medicamento está disponible.');
+      } else {
+        document.getElementById('errorNombreMedicamento').style.display = 'block';
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
     async function buscarMedicamento() {
       const nombreMedicamento = document.getElementById('buscarNombre').value;

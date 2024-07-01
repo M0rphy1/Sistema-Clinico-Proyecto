@@ -18,7 +18,7 @@
             <form id="registroHistorialForm">
                 <div class="form-group">
                     <label for="idMascota">ID de la Mascota</label>
-                    <input type="number" class="form-control" id="idMascota" placeholder="ID de la Mascota" required>
+                    <input type="number" class="form-control" id="idMascota" placeholder="ID de la Mascota" min="1" required>
                 </div>
                 <div class="form-group">
                     <label for="fecha">Fecha</label>
@@ -38,11 +38,11 @@
             <form id="actualizarHistorialForm">
                 <div class="form-group">
                     <label for="idHistorialActualizar">ID de Historial Clínico</label>
-                    <input type="number" class="form-control" id="idHistorialActualizar" placeholder="ID de Historial Clínico" required>
+                    <input type="number" class="form-control" id="idHistorialActualizar" placeholder="ID de Historial Clínico" min="1" required>
                 </div>
                 <div class="form-group">
                     <label for="idMascotaActualizar">ID de la Mascota</label>
-                    <input type="number" class="form-control" id="idMascotaActualizar" placeholder="ID de la Mascota" required>
+                    <input type="number" class="form-control" id="idMascotaActualizar" placeholder="ID de la Mascota" min="1" required>
                 </div>
                 <div class="form-group">
                     <label for="fechaActualizar">Fecha</label>
@@ -62,7 +62,7 @@
             <form id="buscarHistorialForm">
                 <div class="form-group">
                     <label for="idHistorialBuscar">ID de Historial Clínico</label>
-                    <input type="number" class="form-control" id="idHistorialBuscar" placeholder="ID de Historial Clínico" required>
+                    <input type="number" class="form-control" id="idHistorialBuscar" placeholder="ID de Historial Clínico" min="1" required>
                 </div>
                 <button type="submit" class="btn btn-info">Buscar Historial Clínico</button>
             </form>
@@ -75,7 +75,7 @@
             <form id="eliminarHistorialForm">
                 <div class="form-group">
                     <label for="idHistorialEliminar">ID de Historial Clínico</label>
-                    <input type="number" class="form-control" id="idHistorialEliminar" placeholder="ID de Historial Clínico" required>
+                    <input type="number" class="form-control" id="idHistorialEliminar" placeholder="ID de Historial Clínico" min="1" required>
                 </div>
                 <button type="submit" class="btn btn-danger">Eliminar Historial Clínico</button>
             </form>
