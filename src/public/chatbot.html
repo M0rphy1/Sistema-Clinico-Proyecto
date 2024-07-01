@@ -9,72 +9,142 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding-top: 20px;
+        }
+        .container {
+            max-width: 800px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: auto;
+        }
+        .chat-container {
+            overflow-y: auto;
+            max-height: 400px;
+            padding: 10px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+        }
+        .chat-message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            max-width: 70%;
+        }
+        .chat-message-user {
+            background-color: #007bff;
+            color: #fff;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .chat-message-bot {
+            background-color: #28a745;
+            color: #fff;
+        }
+        .chat-input {
+            margin-top: 10px;
+        }
+        .chat-input input[type="text"] {
+            width: calc(100% - 80px);
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .chat-input button {
+            width: 80px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+        .chat-response {
+            font-style: italic;
+            color: #6c757d;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
+        <div class="chat-container mb-3">
+            <div class="chat-message chat-message-bot">
+                <p>Bienvenido al servicio de registro de citas.</p>
+            </div>
+        </div>
+
         <!-- Botón para abrir el modal de Registro de Cita -->
         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#registroCitaModal">
             Registrar Cita
         </button>
 
-         <!-- Modal para Registrar Cita -->
-    <div class="modal fade" id="registroCitaModal" tabindex="-1" role="dialog" aria-labelledby="registroCitaModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="registroCitaModalLabel">Registrar Cita</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="registroCitaForm">
-                        <div class="form-group">
-                            <label for="nombreMascota">Nombre de la Mascota</label>
-                            <input type="text" class="form-control" id="nombreMascota" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="nombreUsuario">Nombre del Usuario</label>
-                            <input type="text" class="form-control" id="nombreUsuario" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="nombreCliente">Nombre del Cliente</label>
-                            <input type="text" class="form-control" id="nombreCliente" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="nombreMedicamento">Nombre del Medicamento</label>
-                            <input type="text" class="form-control" id="nombreMedicamento" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="nombreSuministro">Nombre del Suministro</label>
-                            <input type="text" class="form-control" id="nombreSuministro" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="fechaCita">Fecha de la Cita</label>
-                            <input type="date" class="form-control" id="fechaCita" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="motivo">Motivo</label>
-                            <textarea class="form-control" id="motivo"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="horaCita">Hora de la Cita</label>
-                            <input type="time" class="form-control" id="horaCita">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Registrar</button>
-                    </form>
+        <!-- Modal para Registrar Cita -->
+        <div class="modal fade" id="registroCitaModal" tabindex="-1" role="dialog" aria-labelledby="registroCitaModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="registroCitaModalLabel">Registrar Cita</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="registroCitaForm">
+                            <div class="form-group">
+                                <label for="nombreMascota">Nombre de la Mascota</label>
+                                <input type="text" class="form-control" id="nombreMascota" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombreUsuario">Nombre del Usuario</label>
+                                <input type="text" class="form-control" id="nombreUsuario" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombreCliente">Nombre del Cliente</label>
+                                <input type="text" class="form-control" id="nombreCliente" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombreMedicamento">Nombre del Medicamento</label>
+                                <input type="text" class="form-control" id="nombreMedicamento" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombreSuministro">Nombre del Suministro</label>
+                                <input type="text" class="form-control" id="nombreSuministro" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaCita">Fecha de la Cita</label>
+                                <input type="date" class="form-control" id="fechaCita" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="motivo">Motivo</label>
+                                <textarea class="form-control" id="motivo"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="horaCita">Hora de la Cita</label>
+                                <input type="time" class="form-control" id="horaCita">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Registrar</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-        <!-- Generador de texto con Google Gemini -->
-        <h1>Generador de texto con Google Gemini</h1>
-        <div class="form-group">
-            <input type="text" id="inputText" class="form-control mb-3" placeholder="Escribe algo aquí...">
-            <button id="generateButton" class="btn btn-primary">Generar</button>
+    <!-- Generador de texto con Google Gemini -->
+    <div class="container mt-3">
+        <h2>Generador de texto con Google Gemini</h2>
+        <div class="chat-container">
+            <div class="chat-message chat-message-bot">
+                <p>Escribe algo para generar texto:</p>
+            </div>
+            <div class="chat-message chat-input">
+                <input type="text" id="inputText" class="form-control" placeholder="Escribe algo aquí...">
+                <button id="generateButton" class="btn btn-primary">Generar</button>
+            </div>
+            <div class="chat-message">
+                <p id="responseText" class="chat-response"></p>
+            </div>
         </div>
-        <p id="responseText"></p>
     </div>
 
     <!-- Importación y configuración del chatbot de Google Gemini -->
@@ -107,46 +177,59 @@
         });
 
         // Manejo del formulario para registrar la cita
-        // Función para registrar una cita
-document.getElementById('registroCitaForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const nombreMascota = document.getElementById('nombreMascota').value;
-    const nombreUsuario = document.getElementById('nombreUsuario').value;
-    const nombreCliente = document.getElementById('nombreCliente').value;
-    const nombreMedicamento = document.getElementById('nombreMedicamento').value;
-    const nombreSuministro = document.getElementById('nombreSuministro').value;
-    const fechaCita = document.getElementById('fechaCita').value;
-    const motivo = document.getElementById('motivo').value;
-    const horaCita = document.getElementById('horaCita').value;
+        document.getElementById('registroCitaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const nombreMascota = document.getElementById('nombreMascota').value;
+            const nombreUsuario = document.getElementById('nombreUsuario').value;
+            const nombreCliente = document.getElementById('nombreCliente').value;
+            const nombreMedicamento = document.getElementById('nombreMedicamento').value;
+            const nombreSuministro = document.getElementById('nombreSuministro').value;
+            const fechaCita = document.getElementById('fechaCita').value;
+            const motivo = document.getElementById('motivo').value;
+            const horaCita = document.getElementById('horaCita').value;
 
-    fetch('/api/citas', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            nombreMascota: nombreMascota,
-            nombreUsuario: nombreUsuario,
-            nombreCliente: nombreCliente,
-            nombreMedicamento: nombreMedicamento,
-            nombreSuministro: nombreSuministro,
-            fechaCita: fechaCita,
-            motivo: motivo,
-            horaCita: horaCita
-        }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Cita registrada:', data);
-        alert('Cita registrada correctamente.');
+            // Validar fecha y hora
+            const currentDate = new Date();
+            const selectedDate = new Date(fechaCita + 'T' + horaCita);
+            if (selectedDate <= currentDate) {
+                alert('La fecha y hora de la cita ya están registradas, por favor cambie la fecha.');
+                return;
+            }
 
-        // Puedes agregar código adicional aquí para actualizar la interfaz o limpiar el formulario
-    })
-    .catch((error) => {
-        console.error('Error al registrar la cita:', error);
-        alert('Error al registrar la cita. Verifica la consola para más detalles.');
-    });
-});
+            // Enviar solicitud al servidor
+            fetch('/api/citas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nombreMascota: nombreMascota,
+                    nombreUsuario: nombreUsuario,
+                    nombreCliente: nombreCliente,
+                    nombreMedicamento: nombreMedicamento,
+                    nombreSuministro: nombreSuministro,
+                    fechaCita: fechaCita,
+                    motivo: motivo,
+                    horaCita: horaCita
+                }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al registrar la cita');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Cita registrada:', data);
+                alert('Cita registrada correctamente.');
+
+                // Puedes agregar código adicional aquí para actualizar la interfaz o limpiar el formulario
+            })
+            .catch((error) => {
+                console.error('Error al registrar la cita:', error);
+                alert('Error al registrar la cita. Verifica la consola para más detalles.');
+            });
+        });
     </script>
 </body>
 </html>
