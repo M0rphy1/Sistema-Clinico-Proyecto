@@ -33,11 +33,11 @@
                             <input type="text" class="form-control" id="nombreMascota" required>
                         </div>
                         <div class="form-group">
-                            <label for="nombreUsuario">Nombre del Usuario</label>
+                            <label for="nombreUsuario">Nombre del Médico</label>
                             <input type="text" class="form-control" id="nombreUsuario" required>
                         </div>
                         <div class="form-group">
-                            <label for="nombreCliente">Nombre del Cliente</label>
+                            <label for="nombreCliente">Nombre del Dueño de Mascota</label>
                             <input type="text" class="form-control" id="nombreCliente" required>
                         </div>
                         <div class="form-group">
@@ -168,14 +168,25 @@
             </div>
         </div>
     </div>
+<!-- Contenedor para mensajes -->
+<div id="mensajeResultado" class="alert" role="alert" style="display:none;"></div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
-        // Función para registrar una cita
-document.getElementById('registroCitaForm').addEventListener('submit', function(event) {
+    // Función para mostrar mensajes
+    function mostrarMensaje(mensaje, tipo) {
+        const mensajeResultado = document.getElementById('mensajeResultado');
+        mensajeResultado.textContent = mensaje;
+        mensajeResultado.className = `alert alert-${tipo}`;
+        mensajeResultado.style.display = 'block';
+    }
+
+// Función para registrar una cita
+document.getElementById('registroCitaForm').addEventListener('submit', async function(event) {
     event.preventDefault();
+
     const nombreMascota = document.getElementById('nombreMascota').value;
     const nombreUsuario = document.getElementById('nombreUsuario').value;
     const nombreCliente = document.getElementById('nombreCliente').value;
@@ -185,12 +196,62 @@ document.getElementById('registroCitaForm').addEventListener('submit', function(
     const motivo = document.getElementById('motivo').value;
     const horaCita = document.getElementById('horaCita').value;
 
-    fetch('/api/citas', {
-        method: 'POST',
+    try {
+        const response = await fetch('/api/citas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nombreMascota,
+                nombreUsuario,
+                nombreCliente,
+                nombreMedicamento,
+                nombreSuministro,
+                fechaCita,
+                motivo,
+                horaCita
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message);
+        }
+
+        mostrarMensaje('Cita registrada correctamente.', 'success');
+        document.getElementById('registroCitaForm').reset(); // Limpiar formulario después de registro
+
+    } catch (error) {
+        console.error('Error al registrar la cita:', error);
+        if (error.message.includes('Ya hay una cita programada para esa fecha y hora')) {
+            mostrarMensaje('Ya hay una cita programada para esa fecha y hora. Por favor, elige otra fecha u hora.', 'danger');
+        } else {
+            mostrarMensaje('Error al registrar la cita. Verifica la consola para más detalles.', 'danger');
+        }
+    }
+});
+
+// Función para actualizar una cita
+document.getElementById('actualizarCitaForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const idCita = document.getElementById('updateIdCita').value;
+    const nombreMascota = document.getElementById('updateNombreMascota').value;
+    const nombreUsuario = document.getElementById('updateNombreUsuario').value;
+    const nombreCliente = document.getElementById('updateNombreCliente').value;
+    const nombreMedicamento = document.getElementById('updateNombreMedicamento').value;
+    const nombreSuministro = document.getElementById('updateNombreSuministro').value;
+    const fechaCita = document.getElementById('updateFechaCita').value;
+    const motivo = document.getElementById('updateMotivo').value;
+    const horaCita = document.getElementById('updateHoraCita').value;
+
+    fetch(`/api/citas/${idCita}`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+            idCita: idCita,
             nombreMascota: nombreMascota,
             nombreUsuario: nombreUsuario,
             nombreCliente: nombreCliente,
@@ -203,42 +264,19 @@ document.getElementById('registroCitaForm').addEventListener('submit', function(
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Cita registrada:', data);
-        alert('Cita registrada correctamente.');
-
-        // Puedes agregar código adicional aquí para actualizar la interfaz o limpiar el formulario
+        if (data.error) {
+            mostrarMensaje(data.error, 'danger');
+        } else {
+            mostrarMensaje('Cita actualizada correctamente.', 'success');
+        }
     })
     .catch((error) => {
-        console.error('Error al registrar la cita:', error);
-        alert('Error al registrar la cita. Verifica la consola para más detalles.');
+        console.error('Error al actualizar la cita:', error);
+        mostrarMensaje('Error al actualizar la cita. Verifica la consola para más detalles.', 'danger');
     });
 });
 
-
-        // Función para actualizar una cita
-        document.getElementById('actualizarCitaForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            let formData = new FormData(this);
-            let data = {};
-            formData.forEach((value, key) => data[key] = value);
-
-            fetch('/api/citas/' + data.idCita, {
-                method: 'PUT',
-                body: JSON.stringify(data),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }).then(response => response.json())
-              .then(result => {
-                  alert(result.message || 'Cita actualizada con éxito');
-                  $('#actualizarCitaModal').modal('hide');
-              }).catch(error => {
-                  console.error('Error:', error);
-                  alert('Error al actualizar la cita');
-              });
-        });
-
-        // Función para buscar una cita por ID
+// Función para buscar una cita por ID
 document.getElementById('buscarCitaForm').addEventListener('submit', function(event) {
     event.preventDefault();
     const buscarIdCita = document.getElementById('buscarIdCita').value;
@@ -246,52 +284,96 @@ document.getElementById('buscarCitaForm').addEventListener('submit', function(ev
     fetch(`/api/citas/${buscarIdCita}`)
     .then(response => response.json())
     .then(data => {
-        console.log('Cita encontrada:', data);
-
-        const resultado = document.getElementById('buscarCitaResultado');
-        resultado.innerHTML = `
-        <h5>ID Cita: ${data.idCita}</h5>
-        <p>${data.Mascotum ? `Nombre Mascota: ${data.Mascotum.nombreMascota}` : 'Nombre Mascota: No especificado'}</p>
-        <p>Nombre Usuario: ${data.Usuario.nombreUsuario}</p>
-        <p>${data.Cliente ? `Nombre Cliente: ${data.Cliente.nombreCliente}` : 'Nombre Cliente: No especificado'}</p>
-        <p>${data.Medicamento ? `Nombre Medicamento: ${data.Medicamento.nombreMedicamento}` : 'Nombre Medicamento: No especificado'}</p>
-        <p>${data.Suministro ? `Nombre Suministro: ${data.Suministro.nombreSuministro}` : 'Nombre Suministro: No especificado'}</p>
-        <p>Fecha Cita: ${data.fechaCita}</p>
-        <p>Motivo: ${data.motivo}</p>
-        <p>Hora Cita: ${data.horaCita}</p>
-        `;
+        if (data.error) {
+            mostrarMensaje(data.error, 'danger');
+        } else {
+            const resultado = document.getElementById('buscarCitaResultado');
+            resultado.innerHTML = `
+                <h5>ID Cita: ${data.idCita}</h5>
+                <p>Nombre Mascota: ${data.Mascotum ? data.Mascotum.nombreMascota : 'No especificado'}</p>
+                <p>Nombre Usuario: ${data.Usuario.nombreUsuario}</p>
+                <p>Nombre Cliente: ${data.Cliente ? data.Cliente.nombreCliente : 'No especificado'}</p>
+                <p>Nombre Medicamento: ${data.Medicamento ? data.Medicamento.nombreMedicamento : 'No especificado'}</p>
+                <p>Nombre Suministro: ${data.Suministro ? data.Suministro.nombreSuministro : 'No especificado'}</p>
+                <p>Fecha Cita: ${data.fechaCita}</p>
+                <p>Motivo: ${data.motivo}</p>
+                <p>Hora Cita: ${data.horaCita}</p>
+            `;
+            mostrarMensaje('Cita encontrada.', 'success');
+        }
     })
     .catch((error) => {
         console.error('Error al buscar la cita:', error);
-        const resultado = document.getElementById('buscarCitaResultado');
-        resultado.innerHTML = '<p>No se encontró ninguna cita con ese ID.</p>';
+        mostrarMensaje('Error al buscar la cita. Verifica la consola para más detalles.', 'danger');
     });
-
 });
 
+// Función para eliminar una cita por ID
+document.getElementById('eliminarCitaForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const idCita = document.getElementById('eliminarIdCita').value;
 
-        // Función para eliminar una cita por ID
-        document.getElementById('eliminarCitaForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            let idCita = document.getElementById('eliminarIdCita').value;
+    if (confirm(`¿Estás seguro de eliminar la cita con ID ${idCita}?`)) {
+        try {
+            const response = await fetch(`/api/citas/${idCita}`, {
+                method: 'DELETE',
+            });
 
-            if (confirm(`¿Estás seguro de eliminar la cita con ID ${idCita}?`)) {
-                fetch('/api/citas/' + idCita, {
-                    method: 'DELETE'
-                }).then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error al eliminar la cita');
-                    }
-                    return response.json();
-                }).then(result => {
-                    alert(result.message || 'Cita eliminada con éxito');
-                    $('#eliminarCitaModal').modal('hide');
-                }).catch(error => {
-                    console.error('Error:', error);
-                    alert('Error al eliminar la cita');
-                });
+            if (response.status === 204) {
+                mostrarMensaje('Cita eliminada exitosamente.', 'success');
+            } else {
+                const errorData = await response.json();
+                throw new Error(errorData.message);
             }
-        });
+        } catch (error) {
+            console.error('Error al eliminar la cita:', error);
+            mostrarMensaje('Error al eliminar la cita. Verifica la consola para más detalles.', 'danger');
+        }
+    }
+});
+
+document.getElementById('buscarCitaForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const buscarIdCita = document.getElementById('buscarIdCita').value;
+
+    try {
+        const response = await fetch(`/api/citas/${buscarIdCita}`);
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message);
+        }
+
+        const data = await response.json();
+        const resultado = document.getElementById('buscarCitaResultado');
+        resultado.innerHTML = `
+            <h5>ID Cita: ${data.id}</h5>
+            <p>Nombre Mascota: ${data.Mascotum ? data.Mascotum.nombreMascota : 'No especificado'}</p>
+            <p>Nombre Usuario: ${data.Usuario ? data.Usuario.nombreUsuario : 'No especificado'}</p>
+            <p>Nombre Cliente: ${data.Cliente ? data.Cliente.nombreCliente : 'No especificado'}</p>
+            <p>Nombre Medicamento: ${data.Medicamento ? data.Medicamento.nombreMedicamento : 'No especificado'}</p>
+            <p>Nombre Suministro: ${data.Suministro ? data.Suministro.nombreSuministro : 'No especificado'}</p>
+            <p>Fecha Cita: ${data.fechaCita}</p>
+            <p>Motivo: ${data.motivo}</p>
+            <p>Hora Cita: ${data.horaCita}</p>
+        `;
+        mostrarMensaje('Cita encontrada.', 'success');
+    } catch (error) {
+        console.error('Error al buscar la cita:', error);
+        mostrarMensaje('Error al buscar la cita. Verifica la consola para más detalles.', 'danger');
+    }
+});
+
+function mostrarMensaje(mensaje, tipo) {
+    const mensajeResultado = document.getElementById('mensajeResultado');
+    mensajeResultado.textContent = mensaje;
+    mensajeResultado.className = `alert alert-${tipo}`;
+    mensajeResultado.style.display = 'block';
+    setTimeout(() => {
+        mensajeResultado.style.display = 'none';
+    }, 3000);
+}
+
     </script>
 </body>
 </html>

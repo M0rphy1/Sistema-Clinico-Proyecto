@@ -17,6 +17,12 @@ const createCita = async (req, res) => {
       return res.status(400).json({ message: 'Uno o más nombres no fueron encontrados.' });
     }
 
+    // Verificar si ya existe una cita para la misma fecha y hora
+    const existingCita = await Cita.findOne({ where: { fechaCita, horaCita } });
+    if (existingCita) {
+      return res.status(400).json({ message: 'Ya hay una cita programada para esa fecha y hora.' });
+    }
+
     // Guardar la nueva cita en la base de datos
     const nuevaCita = await Cita.create({
       idMascota,
@@ -118,6 +124,7 @@ const updateCita = async (req, res) => {
 };
 
 // Eliminar una cita
+// Eliminar una cita
 const deleteCita = async (req, res) => {
   try {
     const { id } = req.params;
@@ -126,11 +133,14 @@ const deleteCita = async (req, res) => {
       return res.status(404).json({ message: 'Cita no encontrada' });
     }
     await cita.destroy();
-    res.status(204).json();
+    res.status(204).json({ message: 'Cita eliminada exitosamente' }); // Agregamos un mensaje aquí
   } catch (error) {
+    console.error('Error al eliminar la cita:', error);
     res.status(500).json({ message: 'Error al eliminar la cita', error });
   }
 };
+
+
 
 module.exports = {
   createCita,

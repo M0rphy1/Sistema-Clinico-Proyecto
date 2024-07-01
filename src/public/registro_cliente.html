@@ -59,6 +59,10 @@
             <input type="text" id="direccionCliente" class="form-control mb-2" placeholder="Dirección">
             <input type="tel" id="telefonoCliente" class="form-control mb-2" placeholder="Teléfono" required>
             <input type="correo" id="correoCliente" class="form-control mb-2" placeholder="Correo">
+            <button type="button" class="btn btn-primary ml-2" onclick="verificarCorreoCliente()">Verificar</button>
+          <div id="errorCorreoCliente" class="invalid-feedback">
+            El correo electrónico ya está en uso. Por favor, intenta con otro.
+          </div>
             <button type="submit" class="btn btn-primary">Registrar</button>
             <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Cancelar</button>
           </form>
@@ -116,6 +120,22 @@
         }
       });
     });
+
+    async function verificarCorreoCliente() {
+    const correoCliente = document.getElementById('correoCliente').value;
+
+    try {
+      const response = await fetch(`/api/clientes/verificar-correo?correo=${correoCliente}`);
+      if (response.ok) {
+        document.getElementById('errorCorreoCliente').style.display = 'none';
+        alert('El correo electrónico está disponible.');
+      } else {
+        document.getElementById('errorCorreoCliente').style.display = 'block';
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
     // Función para cargar la lista de clientes desde la API
     async function cargarClientes() {

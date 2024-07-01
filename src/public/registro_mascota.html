@@ -52,11 +52,15 @@
           <form id="registroMascotaForm">
             <input type="hidden" id="idMascota" value="">
             <input type="text" id="nombreMascota" class="form-control mb-2" placeholder="Nombre" required>
+            <button type="button" class="btn btn-primary ml-2" onclick="verificarNombreMascota()">Verificar</button>
+            <div id="errorNombreMascota" class="invalid-feedback">
+              El nombre de mascota ya está en uso. Por favor, intenta con otro.
+            </div>
             <input type="text" id="especieMascota" class="form-control mb-2" placeholder="Especie" required>
             <input type="text" id="razaMascota" class="form-control mb-2" placeholder="Raza">
             <input type="date" id="fechaNacimientoMascota" class="form-control mb-2" placeholder="Fecha de Nacimiento">
             <input type="number" id="idClienteMascota" class="form-control mb-2" placeholder="ID Cliente" required>
-            <button type="submit" class="btn btn-primary">Conirmar</button>
+            <button type="submit" class="btn btn-primary">Confirmar</button>
             <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Cancelar</button>
           </form>
         </div>
@@ -106,6 +110,22 @@
         }
       });
     });
+
+    async function verificarNombreMascota() {
+      const nombreMascota = document.getElementById('nombreMascota').value;
+
+      try {
+        const response = await fetch(`/api/mascotas/verificar-nombre?nombre=${nombreMascota}`);
+        if (response.ok) {
+          document.getElementById('errorNombreMascota').style.display = 'none';
+          alert('El nombre de mascota está disponible.');
+        } else {
+          document.getElementById('errorNombreMascota').style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
 
     async function cargarMascotas() {
       try {
@@ -201,4 +221,6 @@
   </script>
 </body>
 </html>
+
+
 
