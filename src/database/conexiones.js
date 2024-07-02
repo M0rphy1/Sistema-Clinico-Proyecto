@@ -5,7 +5,7 @@ const { Sequelize } = require('sequelize');
 const dbConfig = {
   database: process.env.DB_NAME || 'Veterinaria',
   username: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'admin',
+  password: process.env.DB_PASSWORD || 'espoch',
   host: process.env.DB_HOST || 'localhost',
   port: process.env.DB_PORT || 5432,
   dialect: 'postgres'

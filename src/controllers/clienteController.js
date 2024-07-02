@@ -1,21 +1,6 @@
 const Cliente = require('../models/cliente');
 const { Op } = require('sequelize');
 
-// Ruta para verificar si el correo del cliente ya existe
-exports.verificarCorreoCliente = async (req, res) => {
-  const { correo } = req.query;
-
-  try {
-    const clienteExistente = await Cliente.findOne({ where: { correo } });
-    if (clienteExistente) {
-      res.status(400).json({ message: 'El correo electrónico ya está en uso. Por favor, intenta con otro.' });
-    } else {
-      res.status(200).json({ message: 'El correo electrónico está disponible.' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 exports.createCliente = async (req, res) => {
   try {
     const nuevoCliente = await Cliente.create(req.body);

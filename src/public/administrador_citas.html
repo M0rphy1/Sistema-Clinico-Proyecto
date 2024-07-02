@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="shortcut icon" href="./static/image/icon-header.svg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./static/style/normalize.css" />
+    <link rel="stylesheet" href="./static/style/reset.css" />
+    <link rel="stylesheet" href="./static/style/base.css" />
+    <link rel="stylesheet" href="./static/style/header.css" />
+    <link rel="stylesheet" href="./static/style/admin_index.css" />
+    <!-- Estilo específico para admin_index -->
+    <title>Administrador del Sistema</title>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header id="">
+      <div
+        class="bg-warning d-flex justify-content-around p-3 align items-center"
+      >
+        <h1>
+          <a href="/admin_index.html">
+            <img
+              src="./static/image/logotipo.png"
+              alt="logo-company"
+              class="logo-company"
+            />
+          </a>
+        </h1>
+        <div class="mt-2">
+          <!-- Enlaces de navegación -->
+          <a class="menu-item" href="/configuracion_sistema.html"
+          >Administración del sistema</a
+          >
+          <a class="menu-item" href="/administrador_usuarios.html"
+            >Administración de usuarios</a
+          >
+          <a class="menu-item" href="/administrador_citas.html"
+            >Administración de citas</a
+          >
+          <a class="menu-item" href="/reportes.html">Reportes</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container mt-5">
+      <h1 class="my-5">ADMINISTRADOR DE CITAS MÉDICAS</h1>
+      <div class="my-5">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#crearCitaModal"
+        >
+          Crear cita médica
+        </button>
+      </div>
+
+      <!-- Modal Crear Cita Médica -->
+      <div
+        class="modal fade"
+        id="crearCitaModal"
+        tabindex="-1"
+        aria-labelledby="crearCitaModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="crearCitaModalLabel">
+                Crear Cita Médica
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <form id="crearCitaForm">
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="idMascota" class="form-label">Mascota</label>
+
+                  <select
+                    name="idMascota"
+                    id="idMascota"
+                    class="form-select"
+                    required
+                  >
+                    <option value="">Seleccionar mascota</option>
+                    <!-- Opciones llenadas dinámicamente desde JavaScript -->
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="nombreUsuario" class="form-label"
+                    >Encargado</label
+                  >
+                  <select
+                    name="nombreUsuario"
+                    id="nombreUsuario"
+                    class="form-select"
+                    required
+                  >
+                    <option value="">Seleccionar mascota</option>
+                    <!-- Opciones llenadas dinámicamente desde JavaScript -->
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="idCliente" class="form-label">Cliente</label>
+                  <select
+                    name="idCliente"
+                    id="idCliente"
+                    class="form-select"
+                    required
+                  >
+                    <option value="">Seleccionar mascota</option>
+                    <!-- Opciones llenadas dinámicamente desde JavaScript -->
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="idMedicamento" class="form-label"
+                    >Medicamento</label
+                  >
+                  <select
+                    name="idMedicamento"
+                    id="idMedicamento"
+                    class="form-select"
+                    required
+                  >
+                    <option value="">Seleccionar mascota</option>
+                    <!-- Opciones llenadas dinámicamente desde JavaScript -->
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="idSuministro" class="form-label"
+                    >Suministro</label
+                  >
+                  <select
+                    name="idSuministro"
+                    id="idSuministro"
+                    class="form-select"
+                    required
+                  >
+                    <option value="">Seleccionar mascota</option>
+                    <!-- Opciones llenadas dinámicamente desde JavaScript -->
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="fechaCita" class="form-label">Fecha Cita</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="fechaCita"
+                    name="fechaCita"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="motivo" class="form-label">Motivo</label>
+                  <textarea
+                    class="form-control"
+                    id="motivo"
+                    name="motivo"
+                  ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="horaCita" class="form-label">Hora Cita</label>
+                  <input
+                    type="time"
+                    class="form-control"
+                    id="horaCita"
+                    name="horaCita"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cerrar
+                </button>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Modificar Cita Médica -->
+      <div
+        class="modal fade"
+        id="modificarCitaModal"
+        tabindex="-1"
+        aria-labelledby="modificarCitaModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modificarCitaModalLabel">
+                Modificar Cita Médica
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <form id="modificarCitaForm">
+              <div class="modal-body">
+                <input id="modificarCitaId" name="idCita" disabled />
+                <div class="mb-3">
+                  <label for="modificarIdMascota" class="form-label"
+                    >Mascota</label
+                  >
+                  <select
+                    name="idMascota"
+                    id="modificarIdMascota"
+                    class="form-select"
+                    required
+                  ></select>
+                </div>
+                <div class="mb-3">
+                  <label for="modificarNombreUsuario" class="form-label"
+                    >Encargado</label
+                  >
+                  <select
+                    name="nombreUsuario"
+                    id="modificarNombreUsuario"
+                    class="form-select"
+                    required
+                  ></select>
+                </div>
+                <div class="mb-3">
+                  <label for="modificarIdCliente" class="form-label"
+                    >Cliente</label
+                  >
+                  <select
+                    name="idCliente"
+                    id="modificarIdCliente"
+                    class="form-select"
+                    required
+                  ></select>
+                </div>
+                <div class="mb-3">
+                  <label for="modificarIdMedicamento" class="form-label"
+                    >Medicamento</label
+                  >
+                  <select
+                    name="idMedicamento"
+                    id="modificarIdMedicamento"
+                    class="form-select"
+                    required
+                  ></select>
+                </div>
+                <div class="mb-3">
+                  <label for="modificarIdSuministro" class="form-label"
+                    >Suministro</label
+                  >
+                  <select
+                    name="idSuministro"
+                    id="modificarIdSuministro"
+                    class="form-select"
+                    required
+                  ></select>
+                </div>
+                <div class="mb-3">
+                  <label for="modificarFechaCita" class="form-label"
+                    >Fecha Cita</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="modificarFechaCita"
+                    name="fechaCita"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="modificarMotivo" class="form-label">Motivo</label>
+                  <textarea
+                    class="form-control"
+                    id="modificarMotivo"
+                    name="motivo"
+                  ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="modificarHoraCita" class="form-label"
+                    >Hora Cita</label
+                  >
+                  <input
+                    type="time"
+                    class="form-control"
+                    id="modificarHoraCita"
+                    name="horaCita"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cerrar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  Guardar Cambios
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Eliminar Cita Médica -->
+      <div
+        class="modal fade"
+        id="eliminarCitaModal"
+        tabindex="-1"
+        aria-labelledby="eliminarCitaModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="eliminarCitaModalLabel">
+                Eliminar Cita Médica
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <form id="eliminarCitaForm">
+              <div class="modal-body">
+                <p>¿Estás seguro que deseas eliminar esta cita médica?</p>
+                <input type="hidden" id="eliminarCitaId" name="idCita" />
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">ID CITA</th>
+              <th scope="col">MASCOTA</th>
+              <th scope="col">NOMBRE USUARIO</th>
+              <th scope="col">CLIENTE</th>
+              <th scope="col">MEDICAMENTO</th>
+              <th scope="col">SUMINISTRO</th>
+              <th scope="col">FECHA CITA</th>
+              <th scope="col">MOTIVO</th>
+              <th scope="col">HORA CITA</th>
+              <th scope="col">ACCIONES</th>
+            </tr>
+          </thead>
+          <tbody id="tablaCitasBody">
+            <!-- Aquí se cargarán dinámicamente las citas médicas -->
+          </tbody>
+        </table>
+      </div>
+    </main>
+    <footer>
+      <!-- place footer here -->
+    </footer>
+    <!-- Bootstrap JavaScript Libraries -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+      integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      async function fetchClientes() {
+        const response = await fetch("http://localhost:4000/api/clientes");
+        const clientes = await response.json();
+        return clientes;
+      }
+
+      async function fetchMascotas() {
+        const response = await fetch("http://localhost:4000/api/mascotas");
+        const mascotas = await response.json();
+        console.log("mascotas", mascotas);
+        return mascotas;
+      }
+      async function fetchMedicamentos() {
+        const response = await fetch("http://localhost:4000/api/medicamentos");
+        const medicamentos = await response.json();
+        return medicamentos;
+      }
+
+      async function fetchSuministros() {
+        const response = await fetch("http://localhost:4000/api/suministros");
+        const suministros = await response.json();
+        return suministros;
+      }
+      async function fetchUsuarios() {
+        const response = await fetch("http://localhost:4000/api/usuarios");
+        const usuarios = await response.json();
+        return usuarios;
+      }
+      // Función para obtener todas las citas médicas desde la API y renderizarlas en la tabla
+      async function renderCitas() {
+        try {
+          const response = await axios.get("http://localhost:4000/api/citas"); // Cambia la URL por la de tu API
+          const citas = response.data;
+          const tablaCitasBody = document.getElementById("tablaCitasBody");
+          tablaCitasBody.innerHTML = ""; // Limpiar tabla antes de renderizar
+
+          citas.forEach((cita) => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+        <td>${cita.idCita}</td>
+        <td>${cita.idMascota}</td>
+        <td>${cita.nombreUsuario}</td>
+        <td>${cita.idCliente}</td>
+        <td>${cita.idMedicamento}</td>
+        <td>${cita.idSuministro}</td>
+        <td>${cita.fechaCita}</td>
+        <td>${cita.motivo}</td>
+        <td>${cita.horaCita}</td>
+        <td>
+         <button
+                  type="button"
+                  class="btn btn-warning"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modificarCitaModal"
+                  onclick="populateModificarModal('${cita.idCita}', '${cita.idMascota}', '${cita.nombreUsuario}', '${cita.idCliente}', '${cita.idMedicamento}', '${cita.idSuministro}', '${cita.fechaCita}', '${cita.motivo}', '${cita.horaCita}')"
+              
+                  >
+                  Modificar
+                </button>
+         
+         
+          <button
+                  type="button"
+                  class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#eliminarCitaModal"
+                  onclick="populateEliminarModal('${cita.idCita}')"
+                >
+                  Eliminar
+                </button>
+
+          </td>
+      `;
+            tablaCitasBody.appendChild(fila);
+          });
+
+          // Llenar select de ID Mascota en formulario de crear cita médica
+          const idMascotaSelect = document.getElementById("idMascota");
+          const idMascotaSelect2 =
+            document.getElementById("modificarIdMascota");
+
+          idMascotaSelect.innerHTML = "";
+          idMascotaSelect2.innerHTML = "";
+
+          const mascotas = await fetchMascotas();
+          mascotas.forEach((mascota) => {
+            const option = document.createElement("option");
+            option.value = mascota.idMascota;
+            option.textContent = `${mascota.raza} - ${mascota.nombreMascota}`; // Ajusta según la estructura de tus datos
+            idMascotaSelect.appendChild(option);
+          });
+          mascotas.forEach((mascota) => {
+            const option = document.createElement("option");
+            option.value = mascota.idMascota;
+            option.textContent = `${mascota.raza} - ${mascota.nombreMascota}`; // Ajusta según la estructura de tus datos
+            idMascotaSelect2.appendChild(option);
+          });
+
+          // Llenar select de Nombre de Usuario en formulario de crear cita médica
+          const nombreUsuarioSelect = document.getElementById("nombreUsuario");
+          const nombreUsuarioSelect2 = document.getElementById(
+            "modificarNombreUsuario"
+          );
+          nombreUsuarioSelect.innerHTML = "";
+          nombreUsuarioSelect2.innerHTML = "";
+
+          const usuarios = await fetchUsuarios();
+          usuarios.forEach((usuario) => {
+            const option = document.createElement("option");
+            option.value = usuario.nombreUsuario;
+            option.textContent = usuario.nombreUsuario;
+            nombreUsuarioSelect.appendChild(option);
+          });
+          usuarios.forEach((usuario) => {
+            const option = document.createElement("option");
+            option.value = usuario.nombreUsuario;
+            option.textContent = usuario.nombreUsuario;
+            nombreUsuarioSelect2.appendChild(option);
+          });
+
+          // Llenar select de ID Cliente en formulario de crear cita médica
+          const idClienteSelect = document.getElementById("idCliente");
+          const idClienteSelect2 =
+            document.getElementById("modificarIdCliente");
+
+          idClienteSelect.innerHTML = "";
+          idClienteSelect2.innerHTML = "";
+          const clientes = await fetchClientes();
+          clientes.forEach((cliente) => {
+            const option = document.createElement("option");
+            option.value = cliente.idCliente;
+            option.textContent = `${cliente.nombreCliente} - ${cliente.correo}`; // Ajusta según la estructura de tus datos
+            idClienteSelect.appendChild(option);
+          });
+          clientes.forEach((cliente) => {
+            const option = document.createElement("option");
+            option.value = cliente.idCliente;
+            option.textContent = `${cliente.nombreCliente} - ${cliente.correo}`; // Ajusta según la estructura de tus datos
+            idClienteSelect2.appendChild(option);
+          });
+
+          // Llenar select de ID Medicamento en formulario de crear cita médica
+          const idMedicamentoSelect = document.getElementById("idMedicamento");
+          const idMedicamentoSelect2 = document.getElementById(
+            "modificarIdMedicamento"
+          );
+
+          idMedicamentoSelect.innerHTML = "";
+          idMedicamentoSelect2.innerHTML = "";
+          const medicamentos = await fetchMedicamentos();
+          medicamentos.forEach((medicamento) => {
+            const option = document.createElement("option");
+            option.value = medicamento.idMedicamento;
+            option.textContent = `${medicamento.nombreMedicamento}`; // Ajusta según la estructura de tus datos
+            idMedicamentoSelect.appendChild(option);
+          });
+          medicamentos.forEach((medicamento) => {
+            const option = document.createElement("option");
+            option.value = medicamento.idMedicamento;
+            option.textContent = `${medicamento.nombreMedicamento}`; // Ajusta según la estructura de tus datos
+            idMedicamentoSelect2.appendChild(option);
+          });
+
+          // Llenar select de ID Suministro en formulario de crear cita médica
+          const idSuministroSelect = document.getElementById("idSuministro");
+          const idSuministroSelect2 = document.getElementById(
+            "modificarIdSuministro"
+          );
+
+          idSuministroSelect.innerHTML = "";
+          idSuministroSelect2.innerHTML = "";
+          const suministros = await fetchSuministros();
+          suministros.forEach((suministro) => {
+            const option = document.createElement("option");
+            option.value = suministro.idSuministro;
+            option.textContent = `${suministro.nombreSuministro}`; // Ajusta según la estructura de tus datos
+            idSuministroSelect.appendChild(option);
+          });
+          suministros.forEach((suministro) => {
+            const option = document.createElement("option");
+            option.value = suministro.idSuministro;
+            option.textContent = `${suministro.nombreSuministro}`; // Ajusta según la estructura de tus datos
+            idSuministroSelect2.appendChild(option);
+          });
+        } catch (error) {
+          console.error("Error al obtener las citas médicas:", error);
+        }
+      }
+
+      // Función para crear una nueva cita médica
+      async function crearCita(event) {
+        event.preventDefault();
+        const form = new FormData(document.getElementById("crearCitaForm"));
+        const nuevaCita = {
+          idMascota: form.get("idMascota"),
+          nombreUsuario: form.get("nombreUsuario"),
+          idCliente: form.get("idCliente"),
+          idMedicamento: form.get("idMedicamento"),
+          idSuministro: form.get("idSuministro"),
+          fechaCita: form.get("fechaCita"),
+          motivo: form.get("motivo"),
+          horaCita: form.get("horaCita"),
+        };
+
+        try {
+          const response = await axios.post(
+            "http://localhost:4000/api/citas",
+            nuevaCita
+          ); // Cambia la URL por la de tu API
+          if (response.ok) {
+            renderCitas();
+            console.log("Cita médica creada:", response.data);
+          }
+          bootstrap.Modal.getInstance(
+            document.getElementById("crearCitaModal")
+          ).hide();
+          // Actualizar tabla después de crear
+        } catch (error) {
+          console.error("Error al crear la cita médica:", error);
+        }
+      }
+
+      // Función para modificar una cita médica
+      async function modificarCita(event) {
+        event.preventDefault();
+        const form = new FormData(document.getElementById("modificarCitaForm"));
+        const idCita = document.getElementById("modificarCitaId").value;
+        const citaModificada = {
+          idMascota: form.get("idMascota"),
+          nombreUsuario: form.get("nombreUsuario"),
+          idCliente: form.get("idCliente"),
+          idMedicamento: form.get("idMedicamento"),
+          idSuministro: form.get("idSuministro"),
+          fechaCita: form.get("fechaCita"),
+          motivo: form.get("motivo"),
+          horaCita: form.get("horaCita"),
+        };
+        console.log("idCita", idCita);
+
+        try {
+          const response = await axios.put(
+            `http://localhost:4000/api/citas/${idCita}`,
+            citaModificada
+          ); // Cambia la URL por la de tu API
+          if (response.ok) {
+            renderCitas();
+          }
+          bootstrap.Modal.getInstance(
+            document.getElementById("modificarCitaModal")
+          ).hide();
+          renderCitas();
+
+        } catch (error) {
+          console.error("Error al modificar la cita médica:", error);
+        }
+      }
+
+      // Función para eliminar una cita médica
+      async function eliminarCita(event) {
+        event.preventDefault();
+        const form = new FormData(document.getElementById("eliminarCitaForm"));
+        const idCita = form.get("idCita");
+
+        try {
+          const response = await axios.delete(
+            `http://localhost:4000/api/citas/${idCita}`
+          ); // Cambia la URL por la de tu API
+          console.log("Cita médica eliminada:", response.data);
+          if (response.ok) {
+            renderCitas();
+          }
+          bootstrap.Modal.getInstance(
+            document.getElementById("eliminarCitaModal")
+          ).hide();
+          renderCitas();
+        } catch (error) {
+          console.error("Error al eliminar la cita médica:", error);
+        }
+      }
+
+      // Función para llenar el modal de modificar con los datos de la cita seleccionada
+      function populateModificarModal(
+        idCita,
+        idMascota,
+        nombreUsuario,
+        idCliente,
+        idMedicamento,
+        idSuministro,
+        fechaCita,
+        motivo,
+        horaCita
+      ) {
+        document.getElementById("modificarCitaId").value = idCita;
+        document.getElementById("modificarIdMascota").value = idMascota;
+        document.getElementById("modificarNombreUsuario").value = nombreUsuario;
+        document.getElementById("modificarIdCliente").value = idCliente;
+        document.getElementById("modificarIdMedicamento").value = idMedicamento;
+        document.getElementById("modificarIdSuministro").value = idSuministro;
+        document.getElementById("modificarFechaCita").value =
+          fechaCita.split("T")[0];
+        document.getElementById("modificarMotivo").value = motivo;
+        document.getElementById("modificarHoraCita").value = horaCita;
+        console.log("fechaCita", fechaCita);
+      }
+
+      // Función para llenar el modal de eliminar con el ID de la cita seleccionada
+      function populateEliminarModal(idCita) {
+        document.getElementById("eliminarCitaId").value = idCita;
+      }
+
+      // Inicializar la tabla de citas al cargar la página
+      window.onload = renderCitas;
+
+      // Event listeners para formularios de crear, modificar y eliminar
+      document
+        .getElementById("crearCitaForm")
+        .addEventListener("submit", crearCita);
+      document
+        .getElementById("modificarCitaForm")
+        .addEventListener("submit", modificarCita);
+      document
+        .getElementById("eliminarCitaForm")
+        .addEventListener("submit", eliminarCita);
+    </script>
+  </body>
+</html>

@@ -2,38 +2,13 @@ const Mascota = require('../models/mascota');
 const { Op } = require('sequelize');
 
 exports.createMascota = async (req, res) => {
-  const { nombreMascota } = req.body;
-
   try {
-    // Verificar si el nombre de la mascota ya existe
-    const mascotaExistente = await Mascota.findOne({ where: { nombreMascota } });
-    if (mascotaExistente) {
-      return res.status(400).json({ message: 'El nombre de mascota ya está en uso. Por favor, intenta con otro.' });
-    }
-
-    // Crear la mascota si no existe
     const nuevaMascota = await Mascota.create(req.body);
     res.status(201).json(nuevaMascota);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
-
-// Ruta para verificar si el nombre de la mascota ya existe
-exports.verificarNombreMascota = async (req, res) => {
-  const { nombre } = req.query;
-
-  try {
-    const mascotaExistente = await Mascota.findOne({ where: { nombreMascota: nombre } });
-    if (mascotaExistente) {
-      res.status(400).json({ message: 'El nombre de mascota ya está en uso. Por favor, intenta con otro.' });
-    } else {
-      res.status(200).json({ message: 'El nombre de mascota está disponible.' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+}; 
 
 exports.getMascotas = async (req, res) => {
   try {

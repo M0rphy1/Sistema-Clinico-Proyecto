@@ -1,21 +1,6 @@
 const Suministro = require('../models/suministro');
 const { Op } = require('sequelize');
 
-// Ruta para verificar si el nombre del medicamento ya existe
-exports.verificarNombreSuministro = async (req, res) => {
-  const { nombre } = req.query;
-
-  try {
-    const suministroExistente = await Medicamento.findOne({ where: { nombreSuministro: nombre } });
-    if (suministroExistente) {
-      res.status(400).json({ message: 'El nombre del suministro ya está en uso. Por favor, intenta con otro.' });
-    } else {
-      res.status(200).json({ message: 'El nombre del suministro está disponible.' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
 exports.createSuministro = async (req, res) => {
   try {
     const nuevoSuministro = await Suministro.create(req.body);

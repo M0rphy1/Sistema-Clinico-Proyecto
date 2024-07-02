@@ -1,108 +1,260 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
     <title>Registro de Usuario</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container-form register">
-        <div class="information">
-            <div class="info-childs">
-                <h2>Bienvenido</h2>
-                <p>Bienvenido a nuestra comunidad</p>
-                <input type="button" value="Iniciar Sesión" onclick="window.location.href = 'login.html';">
-            </div>
+      <div class="information">
+        <div class="info-childs">
+          <h2>Bienvenido</h2>
+          <p>Bienvenido a nuestra comunidad</p>
+          <input
+            type="button"
+            value="Iniciar Sesión"
+            onclick="window.location.href = 'login.html';"
+          />
         </div>
-        <div class="form-information">
-            <div class="form-information-childs">
-                <h2>Crear una cuenta</h2>
-                <div class="icons">
-                    <i class='bx bxl-google'></i>
-                    <i class='bx bxl-github'></i>
-                    <i class='bx bx-unlink'></i>
-                </div>
-                <p>o usa tu email para registrarte</p>
-                <form id="registerForm">
-                    <label>
-                        <i class='bx bx-user'></i>
-                        <input type="text" name="nombreUsuario" placeholder="Nombre de Usuario" required>
-                    </label>
-                    <label>
-                        <i class='bx bx-envelope'></i>
-                        <input type="email" name="correo" placeholder="Correo Electrónico" required>
-                    </label>
-                    <label>
-                        <i class='bx bxs-lock-alt'></i>
-                        <input type="password" name="contrasena" placeholder="Contraseña" required>
-                    </label>
-                    <label>
-                        <i class='bx bx-user'></i>
-                        <input type="text" name="nombre" placeholder="Nombre" required>
-                    </label>
-                    <label>
-                        <i class='bx bx-user'></i>
-                        <input type="text" name="apellido" placeholder="Apellido" required>
-                    </label>
-                    <label>
-                        <i class='bx bx-phone'></i>
-                        <input type="text" name="telefono" placeholder="Teléfono" required>
-                    </label>
-                    <label>
-                        <i class='bx bx-home'></i>
-                        <input type="text" name="direccion" placeholder="Dirección" required>
-                    </label>
-                    <input type="submit" value="Registrarse">
-                </form>
-            </div>
+      </div>
+      <div class="form-information">
+        <div class="form-information-childs">
+          <h2>Crear una cuenta</h2>
+          <div class="icons">
+            <i class="bx bxl-google"></i>
+            <i class="bx bxl-github"></i>
+            <i class="bx bx-unlink"></i>
+          </div>
+          <p>o usa tu email para registrarte</p>
+          <form id="registerForm">
+            <label>
+              <i class="bx bx-user"></i>
+              <input
+                type="text"
+                name="nombreUsuario"
+                placeholder="Nombre de Usuario"
+                required
+              />
+            </label>
+            <label>
+              <i class="bx bx-envelope"></i>
+              <input
+                type="email"
+                name="correo"
+                placeholder="Correo Electrónico"
+                required
+              />
+            </label>
+            <label>
+              <i class="bx bxs-lock-alt"></i>
+              <input
+                type="password"
+                name="contrasena"
+                placeholder="Contraseña"
+                required
+              />
+            </label>
+            <label>
+              <i class="bx bx-user"></i>
+              <input type="text" name="nombre" placeholder="Nombre" required />
+            </label>
+            <label>
+              <i class="bx bx-user"></i>
+              <input
+                type="text"
+                name="apellido"
+                placeholder="Apellido"
+                required
+              />
+            </label>
+            <label>
+              <i class="bx bx-phone"></i>
+              <input
+                type="text"
+                name="telefono"
+                placeholder="Teléfono"
+                required
+              />
+            </label>
+            <label>
+              <i class="bx bx-home"></i>
+              <input
+                type="text"
+                name="direccion"
+                placeholder="Dirección"
+                required
+              />
+            </label>
+            <input type="submit" value="Registrarse" />
+          </form>
         </div>
+      </div>
+
+      <!-- FORM ADMINISTRADOR -->
+      <div class="form-information">
+        <div class="form-information-childs">
+          <h2>Crear una cuenta administrador</h2>
+         
+          <form id="registerFormAdmin">
+            <label>
+              <i class="bx bx-user"></i>
+              <input
+                type="text"
+                name="nombreUsuario"
+                placeholder="Nombre de Usuario"
+                required
+              />
+            </label>
+            <label>
+              <i class="bx bx-envelope"></i>
+              <input
+                type="email"
+                name="correo"
+                placeholder="Correo Electrónico"
+                required
+              />
+            </label>
+            <label>
+              <i class="bx bxs-lock-alt"></i>
+              <input
+                type="password"
+                name="contrasena"
+                placeholder="Contraseña"
+                required
+              />
+            </label>
+            <label>
+              <i class="bx bx-user"></i>
+              <input type="text" name="nombre" placeholder="Nombre" required />
+            </label>
+            <label>
+              <i class="bx bx-user"></i>
+              <input
+                type="text"
+                name="apellido"
+                placeholder="Apellido"
+                required
+              />
+            </label>
+            <label>
+              <i class="bx bx-phone"></i>
+              <input
+                type="text"
+                name="telefono"
+                placeholder="Teléfono"
+                required
+              />
+            </label>
+            <label>
+              <i class="bx bx-home"></i>
+              <input
+                type="text"
+                name="direccion"
+                placeholder="Dirección"
+                required
+              />
+            </label>
+            <input type="submit" value="Registrarse" />
+          </form>
+        </div>
+      </div>
     </div>
 
     <script>
-        document.getElementById('registerForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
 
-            const nombreUsuario = event.target.nombreUsuario.value;
-            const correo = event.target.correo.value;
-            const contrasena = event.target.contrasena.value;
-            const nombre = event.target.nombre.value;
-            const apellido = event.target.apellido.value;
-            const telefono = event.target.telefono.value;
-            const direccion = event.target.direccion.value;
+          const nombreUsuario = event.target.nombreUsuario.value;
+          const correo = event.target.correo.value;
+          const contrasena = event.target.contrasena.value;
+          const nombre = event.target.nombre.value;
+          const apellido = event.target.apellido.value;
+          const telefono = event.target.telefono.value;
+          const direccion = event.target.direccion.value;
 
-            const response = await fetch('/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    nombreUsuario, 
-                    correo, 
-                    contrasena, 
-                    nombre, 
-                    apellido, 
-                    telefono, 
-                    direccion, 
-                    idRol: 1 
-                })
-            });
+          const response = await fetch("/auth/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              nombreUsuario,
+              correo,
+              contrasena,
+              nombre,
+              apellido,
+              telefono,
+              direccion,
+              idRol: 1,
+            }),
+          });
 
-            const data = await response.json();
+          const data = await response.json();
 
-            if (response.ok) {
-                alert(`Registro exitoso, Bienvenido ${nombreUsuario}`);
-                // Redirigir a la página de inicio de sesión
-                window.location.href = 'login.html';
-            } else {
-                alert(data.message);
-            }
+          if (response.ok) {
+            alert(`Registro exitoso, Bienvenido ${nombreUsuario}`);
+            // Redirigir a la página de inicio de sesión
+            window.location.href = "login.html";
+          } else {
+            alert(data.message);
+          }
+        });
+
+      /* REGISTRO ADMINISTRADOR */
+      document
+        .getElementById("registerFormAdmin")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const nombreUsuario = event.target.nombreUsuario.value;
+          const correo = event.target.correo.value;
+          const contrasena = event.target.contrasena.value;
+          const nombre = event.target.nombre.value;
+          const apellido = event.target.apellido.value;
+          const telefono = event.target.telefono.value;
+          const direccion = event.target.direccion.value;
+
+          const response = await fetch("/auth/register/admin", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              nombreUsuario,
+              correo,
+              contrasena,
+              nombre,
+              apellido,
+              telefono,
+              direccion,
+              idRol: 2,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            alert(`Registro exitoso, Bienvenido ${nombreUsuario}`);
+            // Redirigir a la página de inicio de sesión
+            window.location.href = "login.html";
+          } else {
+            alert(data.message);
+          }
         });
     </script>
-</body>
+  </body>
 </html>
-

@@ -1,16 +1,28 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const Usuario = require('../models/usuario');
-const generateToken = require('../utils/generateToken');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const Usuario = require("../models/usuario");
+const generateToken = require("../utils/generateToken");
 
 const register = async (req, res) => {
-  const { nombreUsuario, correo, contrasena, nombre, apellido, telefono, direccion, idRol } = req.body;
+  const {
+    nombreUsuario,
+    correo,
+    contrasena,
+    nombre,
+    apellido,
+    telefono,
+    direccion,
+    idRol,
+  } = req.body;
 
   try {
     // Verificar si el usuario ya existe
     const userExists = await Usuario.findOne({ where: { correo } });
     if (userExists) {
-      return res.status(400).json({ message: 'El correo electrónico ya está en uso. Por favor, intenta con otro.' });
+      return res.status(400).json({
+        message:
+          "El correo electrónico ya está en uso. Por favor, intenta con otro.",
+      });
     }
 
     // Encriptar la contraseña
@@ -28,10 +40,54 @@ const register = async (req, res) => {
       idRol,
     });
 
-    res.status(201).json({ message: 'Usuario registrado exitosamente' });
+    res.status(201).json({ message: "Usuario registrado exitosamente" });
   } catch (error) {
-    console.error('Error al registrar el usuario:', error);
-    res.status(500).json({ message: 'Error al registrar el usuario' });
+    console.error("Error al registrar el usuario:", error);
+    res.status(500).json({ message: "Error al registrar el usuario" });
+  }
+};
+
+const registerAdmin = async (req, res) => {
+  const {
+    nombreUsuario,
+    correo,
+    contrasena,
+    nombre,
+    apellido,
+    telefono,
+    direccion,
+    idRol,
+  } = req.body;
+
+  try {
+    // Verificar si el usuario ya existe
+    const userExists = await Usuario.findOne({ where: { correo } });
+    if (userExists) {
+      return res.status(400).json({
+        message:
+          "El correo electrónico ya está en uso. Por favor, intenta con otro.",
+      });
+    }
+
+    // Encriptar la contraseña
+    const hashedPassword = await bcrypt.hash(contrasena, 10);
+
+    // Crear el usuario
+    const nuevoUsuario = await Usuario.create({
+      nombreUsuario,
+      correo,
+      contrasena: hashedPassword,
+      nombre,
+      apellido,
+      telefono,
+      direccion,
+      idRol,
+    });
+
+    res.status(201).json({ message: "Administrador registrado exitosamente" });
+  } catch (error) {
+    console.error("Error al registrar el admin:", error);
+    res.status(500).json({ message: "Error al registrar el admin" });
   }
 };
 
@@ -42,12 +98,12 @@ const login = async (req, res) => {
     const user = await Usuario.findOne({ where: { correo } });
 
     if (!user) {
-      return res.status(400).json({ message: 'Usuario no encontrado' });
+      return res.status(400).json({ message: "Usuario no encontrado" });
     }
 
     const validPassword = await bcrypt.compare(contrasena, user.contrasena);
     if (!validPassword) {
-      return res.status(400).json({ message: 'Contraseña incorrecta' });
+      return res.status(400).json({ message: "Contraseña incorrecta" });
     }
 
     const token = generateToken(user.idUsuario);
@@ -58,12 +114,46 @@ const login = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.error('Error al iniciar sesión:', error);
-    res.status(500).json({ message: 'Error al iniciar sesión' });
+    console.error("Error al iniciar sesión:", error);
+    res.status(500).json({ message: "Error al iniciar sesión" });
+  }
+};
+
+const loginAdmin = async (req, res) => {
+  const { correo, contrasena } = req.body;
+
+  try {
+    const user = await Usuario.findOne({ where: { correo } });
+
+    if (!user) {
+      return res.status(400).json({ message: "Usuario no encontrado" });
+    }
+
+    const validPassword = await bcrypt.compare(contrasena, user.contrasena);
+    if (!validPassword) {
+      return res.status(400).json({ message: "Contraseña incorrecta" });
+    }
+
+    if (user.idRol !== 2) {
+      return res.status(400).json({ message: "No eres administrador" });
+    }
+
+    const token = generateToken(user.nombreUsuario);
+    res.json({
+      nombreUsuario: user.nombreUsuario,
+      correo: user.correo,
+      token,
+      rol: user.idRol,
+    });
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    res.status(500).json({ message: "Error al iniciar sesión" });
   }
 };
 
 module.exports = {
   register,
   login,
+  loginAdmin,
+  registerAdmin,
 };

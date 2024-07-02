@@ -48,7 +48,7 @@
         <div class="mt-2">
           <!-- Enlaces de navegación -->
           <a class="menu-item" href="/configuracion_sistema.html"
-            >Administración del sistema</a
+            >Configuración del sistema</a
           >
           <a class="menu-item" href="/administrador_usuarios.html"
             >Administración de usuarios</a
@@ -61,6 +61,8 @@
       </div>
     </header>
 
+    <h1 class="text-center p-5">REPORTES DEL SISTEMA</h1>
+
     <div class="container mt-5">
       <div class="d-flex justify-content-around align-items-center gap-3">
         <div
@@ -69,20 +71,29 @@
         >
           <h1 id="usuarios-count" class="my-2">0</h1>
           <h3>USUARIOS</h3>
+          <button class="btn btn-dark my-4" onclick="generarReporte('usuarios')">
+            Descargar reporte
+          </button>
         </div>
         <div
           id="clientes-card"
           class="card col-4 p-5 text-center shadow shadow-lg bg-success text-white"
         >
-          <h1 id="clientes-count" class="my-2" >0</h1>
+          <h1 id="clientes-count" class="my-2">0</h1>
           <h3>CLIENTES</h3>
+          <button class="btn btn-dark my-4" onclick="generarReporte('clientes')">
+            Descargar reporte
+          </button>
         </div>
         <div
           id="mascotas-card"
           class="card col-4 p-5 text-center shadow shadow-lg bg-warning text-white"
         >
-          <h1 id="mascotas-count" class="my-2" >0</h1>
+          <h1 id="mascotas-count" class="my-2">0</h1>
           <h3>MASCOTAS</h3>
+          <button class="btn btn-dark my-4" onclick="generarReporte('mascotas')">
+            Descargar reporte
+          </button>
         </div>
       </div>
       <div class="mt-5 d-flex justify-content-around align-items-center gap-3">
@@ -90,65 +101,37 @@
           id="medicamentos-card"
           class="card col-4 p-5 text-center shadow shadow-lg bg-info text-white"
         >
-          <h1 id="medicamentos-count" class="my-2" >0</h1>
+          <h1 id="medicamentos-count" class="my-2">0</h1>
           <h3>MEDICAMENTOS</h3>
+          <button class="btn btn-dark my-4" onclick="generarReporte('medicamentos')">
+            Descargar reporte
+          </button>
         </div>
         <div
           id="suministros-card"
           class="card col-4 p-5 text-center shadow shadow-lg bg-black text-white"
         >
-          <h1 id="suministros-count" class="my-2" >0</h1>
+          <h1 id="suministros-count" class="my-2">0</h1>
           <h3>SUMINISTROS</h3>
+          <button class="btn btn-warning my-4" onclick="generarReporte('suministros')">
+            Descargar reporte
+          </button>
         </div>
         <div
           id="citas-card"
           class="card col-4 p-5 text-center shadow shadow-lg bg-primary text-white"
         >
-          <h1 id="citas-count" class="my-2" >0</h1>
+          <h1 id="citas-count" class="my-2">0</h1>
           <h3>CITAS</h3>
+          <button class="btn btn-dark my-4" onclick="generarReporte('citas')">
+            Descargar reporte
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="m-5">
-      <h1 class="text-center mt-5">CITAS MEDICAS</h1>
-      <div class="d-flex gap-3 justify-content-around">
-        <img
-          width="700px"
-          height="500px"
-          src="https://www.eluniverso.com/resizer/G5hQA714aOv70zpeANiBw6DCNpo=/1005x670/smart/filters:quality(70)/cloudfront-us-east-1.images.arcpublishing.com/eluniverso/F4URI7Z4J5HU7O7BPFUDAPN3AI.JPG"
-          alt=""
-        />
-        <img
-          width="700px"
-          height="500px"
-          src="https://cdn.www.gob.pe/uploads/document/file/42560/7Q3A6586.jpg"
-          alt=""
-        />
-      </div>
-    </div>
+    <div id="resultado"></div>
 
-    <div class="m-5">
-      <h1 class="text-center mt-5">CITAS MEDICAS</h1>
-      <div class="d-flex gap-3 justify-content-around">
-        <img
-          width="700px"
-          height="500px"
-          src="https://www.eluniverso.com/resizer/G5hQA714aOv70zpeANiBw6DCNpo=/1005x670/smart/filters:quality(70)/cloudfront-us-east-1.images.arcpublishing.com/eluniverso/F4URI7Z4J5HU7O7BPFUDAPN3AI.JPG"
-          alt=""
-        />
-        <img
-          width="700px"
-          height="500px"
-          src="https://cdn.www.gob.pe/uploads/document/file/42560/7Q3A6586.jpg"
-          alt=""
-        />
-      </div>
-    </div>
-    <footer>
-      <!-- place footer here -->
-    </footer>
-    <!-- Bootstrap JavaScript Libraries -->
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -160,6 +143,7 @@
       integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
       crossorigin="anonymous"
     ></script>
+
     <script>
       async function fetchContadores() {
         const response = await fetch(
@@ -181,6 +165,44 @@
       }
 
       document.addEventListener("DOMContentLoaded", fetchContadores);
+    </script>
+
+    <script>
+      async function generarReporte(tipoReporte) {
+        try {
+          const response = await fetch(`/api/reportes/${tipoReporte}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.style.display = "none";
+            a.href = url;
+            a.download = `${tipoReporte}-reporte.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+          } else {
+            const errorData = await response.json();
+            mostrarError(errorData.error);
+          }
+        } catch (error) {
+          console.error("Error al generar el reporte:", error);
+          mostrarError(
+            "Error al generar el reporte. Por favor, intenta nuevamente."
+          );
+        }
+      }
+
+      function mostrarError(mensaje) {
+        const resultadoDiv = document.getElementById("resultado");
+        resultadoDiv.innerHTML = `<p style="color: red;">${mensaje}</p>`;
+      }
     </script>
   </body>
 </html>

@@ -1,112 +1,148 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
     <title>Iniciar Sesión</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container-form login">
-        <div class="information">
-            <div class="info-childs">
-                <h2>Bienvenido Nuevamente</h2>
-                <p>Bienvenido a nuestra comunidad</p>
-                <input type="button" value="Registrarse" onclick="window.location.href = 'index.html';">
-            </div>
+      <div class="information">
+        <div class="info-childs">
+          <h2>Bienvenido Nuevamesnte</h2>
+          <p>Bienvenido a nuestra comunidad</p>
+          <input
+            type="button"
+            value="Registrarse"
+            onclick="window.location.href = 'index.html';"
+          />
         </div>
-        <div class="form-information">
-            <div class="form-information-childs">
-                <h2>Iniciar Sesión</h2>
-                <!-- <div class="icons">
+      </div>
+      <div class="form-information">
+        <div class="form-information-childs">
+          <h2>Iniciar Sesión</h2>
+          <!-- <div class="icons">
                     <i class='bx bxl-google'></i>
                     <i class='bx bxl-github'></i>
                     <i class='bx bx-unlink'></i>
                 </div> -->
-                <p>como USUARIO</p>
-                <form id="loginForm">
-                    <label>
-                        <i class='bx bx-envelope'></i>
-                        <input type="email" name="correo" placeholder="Correo Electrónico" required><br>
-                    </label><br>
-                    <label>
-                        <i class='bx bxs-lock-alt'></i>
-                        <input type="password" name="contrasena" placeholder="Contraseña" required><br>
-                    </label><br>
-                    <input type="submit" value="Iniciar Sesión">
-                </form>
-                <form id="adminLoginForm" style="margin-top: 20px;">
-                    <p>como ADMINISTRADOR</p>
-                    <label>
-                        <i class='bx bx-envelope'></i>
-                        <input type="email" name="correoAdmin" placeholder="Correo Electrónico" required><br>
-                    </label><br>
-                    <label>
-                        <i class='bx bxs-lock-alt'></i>
-                        <input type="password" name="contrasenaAdmin" placeholder="Contraseña" required><br>
-                    </label><br>
-                    <input type="submit" value="Iniciar Admin">
-                </form>
-            </div>
+          <p>como USUARIO</p>
+          <form id="loginForm">
+            <label>
+              <i class="bx bx-envelope"></i>
+              <input
+                type="email"
+                name="correo"
+                placeholder="Correo Electrónico"
+                required
+              /><br /> </label
+            ><br />
+            <label>
+              <i class="bx bxs-lock-alt"></i>
+              <input
+                type="password"
+                name="contrasena"
+                placeholder="Contraseña"
+                required
+              /><br /> </label
+            ><br />
+            <input type="submit" value="Iniciar Sesión" />
+          </form>
+          <form id="adminLoginForm" style="margin-top: 20px">
+            <p>como ADMINISTRADOR</p>
+            <label>
+              <i class="bx bx-envelope"></i>
+              <input
+                type="email"
+                name="correoAdmin"
+                placeholder="Correo Electrónico"
+                required
+              /><br /> </label
+            ><br />
+            <label>
+              <i class="bx bxs-lock-alt"></i>
+              <input
+                type="password"
+                name="contrasenaAdmin"
+                placeholder="Contraseña"
+                required
+              /><br /> </label
+            ><br />
+            <input type="submit" value="Iniciar Admin" />
+          </form>
         </div>
+      </div>
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
 
-            const correo = event.target.correo.value;
-            const contrasena = event.target.contrasena.value;
+          const correo = event.target.correo.value;
+          const contrasena = event.target.contrasena.value;
 
-            const response = await fetch('/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ correo, contrasena })
-            });
+          const response = await fetch("/auth/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ correo, contrasena }),
+          });
 
-            const data = await response.json();
+          const data = await response.json();
 
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                alert(`Inicio de sesión exitoso, ${data.nombreUsuario}`);
-                // Redirigir a la página principal o realizar alguna acción
-                window.location.href = '/vet_index.html';
-            } else {
-                alert(data.message);
-            }
+          if (response.ok) {
+            localStorage.setItem("token", data.token);
+            alert(`Inicio de sesión exitoso, ${data.nombreUsuario}`);
+            // Redirigir a la página principal o realizar alguna acción
+            window.location.href = "/vet_index.html";
+          } else {
+            alert(data.message);
+          }
         });
 
-        document.getElementById('adminLoginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+      document
+        .getElementById("adminLoginForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
 
-            const correoAdmin = event.target.correoAdmin.value;
-            const contrasenaAdmin = event.target.contrasenaAdmin.value;
+          const correo = event.target.correoAdmin.value;
+          const contrasena = event.target.contrasenaAdmin.value;
 
-            const response = await fetch('/auth/admin/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ correo: correoAdmin, contrasena: contrasenaAdmin })
-            });
+          const response = await fetch("/auth/admin/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ correo: correo, contrasena: contrasena }),
+          });
 
-            const data = await response.json();
+          const data = await response.json();
 
-            if (response.ok) {
-                localStorage.setItem('adminToken', data.token);
-                alert(`Inicio de sesión como administrador exitoso, ${data.nombreUsuario}`);
-                // Redirigir a la página de administrador o realizar alguna acción
-                window.location.href = '/admin_index.html';
-            } else {
-                alert(data.message);
-            }
+          if (response.ok) {
+            localStorage.setItem("adminToken", data.token);
+            alert(
+              `Inicio de sesión como administrador exitoso, ${data.nombreUsuario}`
+            );
+            // Redirigir a la página de administrador o realizar alguna acción
+            window.location.href = "/admin_index.html";
+          } else {
+            alert(data.message);
+          }
         });
     </script>
-</body>
+  </body>
 </html>
