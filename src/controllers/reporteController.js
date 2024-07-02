@@ -3,7 +3,7 @@ const Cliente = require("../models/cliente");
 const Mascota = require("../models/mascota");
 const Medicamento = require("../models/medicamento");
 const Suministro = require("../models/suministro");
-const Proveedor = require("../models/Proveedor");
+const Proveedor = require("../models/proveedor");
 const { Usuario, Cita } = require("../models");
 
 // Función para generar el reporte seleccionado
@@ -26,6 +26,7 @@ exports.generarReporte = async (req, res) => {
         break;
       case "usuarios":
         await generarReporteUsuarios(doc);
+        break;
       case "mascotas":
         await generarReporteMascotas(doc);
         break;
@@ -83,9 +84,9 @@ async function generarReporteClientes(doc) {
 async function generarReporteUsuarios(doc) {
   try {
     const usuarios = await Usuario.findAll(); // Obtener datos de usuarios desde la base de datos
-    console.log("usuarios:", usuarios);
+    console.log("Usuarios:", usuarios);
 
-    doc.fontSize(20).text("Reporte de usuarios", { align: "center" });
+    doc.fontSize(20).text("Reporte de Usuarios", { align: "center" });
     doc.moveDown();
 
     if (usuarios.length === 0) {
@@ -94,7 +95,6 @@ async function generarReporteUsuarios(doc) {
       usuarios.forEach((usuario) => {
         doc.fontSize(12).text(`Nombre: ${usuario.nombreusuario}`);
         doc.text(`Apellido: ${usuario.apellido}`);
-        doc.text(`Apellido: ${usuario.nombre}`);
         doc.text(`Correo: ${usuario.correo}`);
         doc.text(`Teléfono: ${usuario.telefono}`);
         doc.text(`Dirección: ${usuario.direccion}`);
@@ -106,71 +106,72 @@ async function generarReporteUsuarios(doc) {
   }
 }
 
+// Función para generar el reporte de citas
 async function generarReporteCitas(doc) {
-    try {
-      const citas = await Cita.findAll({ 
-        include: ['Mascotum', 'Usuario', 'Cliente', 'Medicamento', 'Suministro'] 
-      }); // Obtener datos de citas desde la base de datos con las relaciones incluidas
-      console.log("citas:", citas);
-  
-      doc.fontSize(20).text("Reporte de citas", { align: "center" });
-      doc.moveDown();
-  
-      if (citas.length === 0) {
-        doc.fontSize(12).text("No hay citas para mostrar.");
-      } else {
-        citas.forEach((cita) => {
-          doc.fontSize(14).text(`Cita ID: ${cita.idCita}`, { underline: true });
-          doc.moveDown();
-  
-          doc.fontSize(12).text(`Fecha de la cita: ${new Date(cita.fechaCita).toLocaleDateString()}`);
-          doc.text(`Hora de la cita: ${cita.horaCita}`);
-          doc.text(`Motivo: ${cita.motivo}`);
-          doc.moveDown();
-  
-          doc.fontSize(12).text("Información de la mascota:", { underline: true });
-          doc.text(`Nombre: ${cita.Mascotum.nombreMascota}`);
-          doc.text(`Especie: ${cita.Mascotum.especie}`);
-          doc.text(`Raza: ${cita.Mascotum.raza}`);
-          doc.moveDown();
-  
-          doc.fontSize(12).text("Información del usuario:", { underline: true });
-          doc.text(`Nombre: ${cita.Usuario.nombre}`);
-          doc.text(`Apellido: ${cita.Usuario.apellido}`);
-          doc.text(`Correo: ${cita.Usuario.correo}`);
-          doc.text(`Teléfono: ${cita.Usuario.telefono}`);
-          doc.text(`Dirección: ${cita.Usuario.direccion}`);
-          doc.moveDown();
-  
-          doc.fontSize(12).text("Información del cliente:", { underline: true });
-          doc.text(`Nombre: ${cita.Cliente.nombreCliente}`);
-          doc.text(`Apellido: ${cita.Cliente.apellido}`);
-          doc.text(`Teléfono: ${cita.Cliente.telefono}`);
-          doc.text(`Dirección: ${cita.Cliente.direccion}`);
-          doc.text(`Correo: ${cita.Cliente.correo}`);
-          doc.moveDown();
-  
-          doc.fontSize(12).text("Información del medicamento:", { underline: true });
-          doc.text(`Nombre: ${cita.Medicamento.nombreMedicamento}`);
-          doc.text(`Descripción: ${cita.Medicamento.descripcion}`);
-          doc.text(`Precio: ${cita.Medicamento.precio}`);
-          doc.text(`Fabricante: ${cita.Medicamento.fabricante}`);
-          doc.moveDown();
-  
-          doc.fontSize(12).text("Información del suministro:", { underline: true });
-          doc.text(`Nombre: ${cita.Suministro.nombreSuministro}`);
-          doc.text(`Descripción: ${cita.Suministro.descripcion}`);
-          doc.text(`Precio: ${cita.Suministro.precio}`);
-          doc.text(`Fabricante: ${cita.Suministro.fabricante}`);
-          doc.moveDown();
-  
-          doc.addPage(); // Añade una nueva página para la siguiente cita
-        });
-      }
-    } catch (error) {
-      console.error("Error al generar el reporte de citas:", error);
+  try {
+    const citas = await Cita.findAll({ 
+      include: ['Mascotum', 'Usuario', 'Cliente', 'Medicamento', 'Suministro'] 
+    }); // Obtener datos de citas desde la base de datos con las relaciones incluidas
+    console.log("Citas:", citas);
+
+    doc.fontSize(20).text("Reporte de Citas", { align: "center" });
+    doc.moveDown();
+
+    if (citas.length === 0) {
+      doc.fontSize(12).text("No hay citas para mostrar.");
+    } else {
+      citas.forEach((cita) => {
+        doc.fontSize(14).text(`Cita ID: ${cita.idCita}`, { underline: true });
+        doc.moveDown();
+
+        doc.fontSize(12).text(`Fecha de la cita: ${new Date(cita.fechaCita).toLocaleDateString()}`);
+        doc.text(`Hora de la cita: ${cita.horaCita}`);
+        doc.text(`Motivo: ${cita.motivo}`);
+        doc.moveDown();
+
+        doc.fontSize(12).text("Información de la mascota:", { underline: true });
+        doc.text(`Nombre: ${cita.Mascotum.nombreMascota}`);
+        doc.text(`Especie: ${cita.Mascotum.especie}`);
+        doc.text(`Raza: ${cita.Mascotum.raza}`);
+        doc.moveDown();
+
+        doc.fontSize(12).text("Información del usuario:", { underline: true });
+        doc.text(`Nombre: ${cita.Usuario.nombre}`);
+        doc.text(`Apellido: ${cita.Usuario.apellido}`);
+        doc.text(`Correo: ${cita.Usuario.correo}`);
+        doc.text(`Teléfono: ${cita.Usuario.telefono}`);
+        doc.text(`Dirección: ${cita.Usuario.direccion}`);
+        doc.moveDown();
+
+        doc.fontSize(12).text("Información del cliente:", { underline: true });
+        doc.text(`Nombre: ${cita.Cliente.nombreCliente}`);
+        doc.text(`Apellido: ${cita.Cliente.apellido}`);
+        doc.text(`Teléfono: ${cita.Cliente.telefono}`);
+        doc.text(`Dirección: ${cita.Cliente.direccion}`);
+        doc.text(`Correo: ${cita.Cliente.correo}`);
+        doc.moveDown();
+
+        doc.fontSize(12).text("Información del medicamento:", { underline: true });
+        doc.text(`Nombre: ${cita.Medicamento.nombreMedicamento}`);
+        doc.text(`Descripción: ${cita.Medicamento.descripcion}`);
+        doc.text(`Precio: ${cita.Medicamento.precio}`);
+        doc.text(`Fabricante: ${cita.Medicamento.fabricante}`);
+        doc.moveDown();
+
+        doc.fontSize(12).text("Información del suministro:", { underline: true });
+        doc.text(`Nombre: ${cita.Suministro.nombreSuministro}`);
+        doc.text(`Descripción: ${cita.Suministro.descripcion}`);
+        doc.text(`Precio: ${cita.Suministro.precio}`);
+        doc.text(`Fabricante: ${cita.Suministro.fabricante}`);
+        doc.moveDown();
+
+        doc.addPage(); // Añade una nueva página para la siguiente cita
+      });
     }
+  } catch (error) {
+    console.error("Error al generar el reporte de citas:", error);
   }
+}
 
 // Función para generar el reporte de mascotas
 async function generarReporteMascotas(doc) {
