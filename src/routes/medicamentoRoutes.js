@@ -10,6 +10,8 @@ router.get('/buscar', medicamentoController.getMedicamentoByNombre); // Ruta par
 router.get('/:id', medicamentoController.getMedicamentoById); // Ruta para obtener un medicamento por ID
 router.put('/:id', medicamentoController.updateMedicamento);
 router.delete('/:id', medicamentoController.deleteMedicamento);
+// Nueva ruta para reponer stock de un medicamento por ID
+router.put('/:id/reponer', medicamentoController.reponerStock);
 
 module.exports = router;
 

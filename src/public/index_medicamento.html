@@ -138,15 +138,43 @@
             <td>
               <button class="btn btn-sm btn-info" onclick="editarMedicamento(${medicamento.idMedicamento})">Editar</button>
               <button class="btn btn-sm btn-danger" onclick="eliminarMedicamento(${medicamento.idMedicamento})">Eliminar</button>
+              <button class="btn btn-sm btn-warning" onclick="reponerStock(${medicamento.idMedicamento})">Reponer</button>
             </td>
           `;
           medicamentosList.appendChild(row);
+
+          // Verificar el stock y mostrar alerta si es 5 o menos
+          if (medicamento.stock <= 5) {
+            alert(`El stock del medicamento ${medicamento.nombreMedicamento} es bajo (${medicamento.stock}). Por favor, reponer.`);
+          }
         });
       } catch (error) {
         console.error('Error:', error);
       }
     }
+///
+async function reponerStock(idMedicamento) {
+  try {
+    const response = await fetch(`/api/medicamentos/${idMedicamento}/reponer`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ cantidad: 10 }) // Reponer 10 unidades
+    });
 
+    if (response.ok) {
+      alert(`Se ha reponido el stock del medicamento.`);
+      cargarMedicamentos(); // Actualizar la lista de medicamentos después de reponer
+    } else {
+      console.error('Error al reponer el stock del medicamento:', response.status, response.statusText);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+///
     //
     async function verificarNombreMedicamento() {
     const nombreMedicamento = document.getElementById('nombreMedicamento').value;
@@ -187,6 +215,7 @@
               <td>
                 <button class="btn btn-sm btn-info" onclick="editarMedicamento(${medicamento.idMedicamento})">Editar</button>
                 <button class="btn btn-sm btn-danger" onclick="eliminarMedicamento(${medicamento.idMedicamento})">Eliminar</button>
+                <button class="btn btn-sm btn-warning" onclick="reponerStock(${medicamento.idMedicamento})">Reponer</button>
               </td>
             `;
             medicamentosList.appendChild(row);

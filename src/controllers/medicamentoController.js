@@ -81,3 +81,25 @@ exports.getMedicamentoByNombre = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Función para reponer stock de un medicamento por ID
+exports.reponerStock = async (req, res, next) => {
+  const idMedicamento = req.params.id;
+  const cantidad = req.body.cantidad; // Cantidad a reponer, se espera en el cuerpo de la solicitud
+
+  try {
+    let medicamento = await Medicamento.findByPk(idMedicamento);
+    if (!medicamento) {
+      return res.status(404).json({ error: 'Medicamento no encontrado' });
+    }
+
+    // Actualizar el stock del medicamento
+    medicamento.stock += cantidad;
+    await medicamento.save();
+
+    res.status(200).json({ message: 'Stock reponido exitosamente', medicamento });
+  } catch (error) {
+    console.error('Error al reponer el stock del medicamento:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};

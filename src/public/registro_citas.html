@@ -182,55 +182,61 @@
         mensajeResultado.className = `alert alert-${tipo}`;
         mensajeResultado.style.display = 'block';
     }
+    document.getElementById('registroCitaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-// Función para registrar una cita
-document.getElementById('registroCitaForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
+            const nombreCliente = document.getElementById('nombreCliente').value;
+            const nombreMascota = document.getElementById('nombreMascota').value;
+            const nombreUsuario = document.getElementById('nombreUsuario').value;
+            const nombreMedicamento = document.getElementById('nombreMedicamento').value;
+            const nombreSuministro = document.getElementById('nombreSuministro').value;
+            const fechaCita = document.getElementById('fechaCita').value;
+            const motivo = document.getElementById('motivo').value;
+            const horaCita = document.getElementById('horaCita').value;
 
-    const nombreMascota = document.getElementById('nombreMascota').value;
-    const nombreUsuario = document.getElementById('nombreUsuario').value;
-    const nombreCliente = document.getElementById('nombreCliente').value;
-    const nombreMedicamento = document.getElementById('nombreMedicamento').value;
-    const nombreSuministro = document.getElementById('nombreSuministro').value;
-    const fechaCita = document.getElementById('fechaCita').value;
-    const motivo = document.getElementById('motivo').value;
-    const horaCita = document.getElementById('horaCita').value;
+            // Validar fecha y hora
+            const currentDate = new Date();
+            const selectedDate = new Date(fechaCita + 'T' + horaCita);
+            if (selectedDate <= currentDate) {
+                alert('La fecha y hora de la cita no pueden ser en el pasado.');
+                return;
+            }
 
-    try {
-        const response = await fetch('/api/citas', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                nombreMascota,
-                nombreUsuario,
-                nombreCliente,
-                nombreMedicamento,
-                nombreSuministro,
-                fechaCita,
-                motivo,
-                horaCita
+            // Enviar solicitud al servidor
+            fetch('/api/citas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nombreCliente,
+                    nombreMascota,
+                    nombreUsuario,
+                    nombreMedicamento,
+                    nombreSuministro,
+                    fechaCita,
+                    motivo,
+                    horaCita
+                }),
             })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al registrar la cita');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Cita registrada:', data);
+                alert('Cita registrada correctamente.');
+
+                // Limpiar el formulario
+                document.getElementById('registroCitaForm').reset();
+            })
+            .catch((error) => {
+                console.error('Error al registrar la cita:', error);
+                alert('Error al registrar la cita. Verifica la consola para más detalles.');
+            });
         });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message);
-        }
-
-        mostrarMensaje('Cita registrada correctamente.', 'success');
-        document.getElementById('registroCitaForm').reset(); // Limpiar formulario después de registro
-
-    } catch (error) {
-        console.error('Error al registrar la cita:', error);
-        if (error.message.includes('Ya hay una cita programada para esa fecha y hora')) {
-            mostrarMensaje('Ya hay una cita programada para esa fecha y hora. Por favor, elige otra fecha u hora.', 'danger');
-        } else {
-            mostrarMensaje('Error al registrar la cita. Verifica la consola para más detalles.', 'danger');
-        }
-    }
-});
 
 // Función para actualizar una cita
 document.getElementById('actualizarCitaForm').addEventListener('submit', function(event) {
