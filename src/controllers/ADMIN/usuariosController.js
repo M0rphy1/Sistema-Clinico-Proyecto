@@ -5,6 +5,7 @@ const Suministro = require("../../models/suministro");
 const Medicamento = require("../../models/medicamento");
 const Cliente = require("../../models/cliente");
 const controller = {};
+const { validationResult } = require('express-validator');
 
 controller.getAllUsuarios = async (req, res) => {
   try {
@@ -43,23 +44,31 @@ controller.getContadoresAdmin = async (req, res) => {
 };
 
 controller.createUsuario = async (req, res) => {
-  console.log(req.body);
+  // Validación de datos usando express-validator
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  // Extraer los campos necesarios del cuerpo de la solicitud
+  const { nombreUsuario, correo, contrasena, idRol } = req.body;
+
   try {
-    const { nombreUsuario, correo, contrasena } = req.body;
+    // Cifrar la contraseña con bcrypt
+    const hashedPassword = await bcrypt.hash(contrasena, 10);
+
+    // Crear el usuario en la base de datos
     const nuevoUsuario = await Usuario.create({
       nombreUsuario,
       correo,
-      contrasena,
-      idRol: 1,
+      contrasena: hashedPassword,
+      idRol,
     });
-    res
-      .status(201)
-      .json({ message: "Usuario creado correctamente", usuario: nuevoUsuario });
+
+    res.status(201).json({ message: "Usuario creado correctamente", usuario: nuevoUsuario });
   } catch (error) {
     console.error("Error al crear usuario:", error);
-    res
-      .status(500)
-      .json({ error: "Error interno del servidor al crear usuario" });
+    res.status(500).json({ error: "Error interno del servidor al crear usuario" });
   }
 };
 
