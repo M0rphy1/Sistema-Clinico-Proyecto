@@ -1,4 +1,4 @@
-const pool = require('../database');
+const pool = require('../database/conexiones');
 
 class Admin {
     static async getAdmins() {
