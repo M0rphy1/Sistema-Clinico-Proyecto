@@ -8,6 +8,7 @@ const Cita = require('./cita');
 const Proveedor = require('./proveedor');
 const Medicamento = require('./medicamento');
 const Suministro = require('./suministro');
+const Factura = require('./factura'); // Importar Factura
 
 // Definir relaciones entre modelos
 
@@ -33,11 +34,11 @@ Usuario.hasMany(Cita, { foreignKey: 'nombreUsuario' });
 Cita.belongsTo(Cliente, { foreignKey: 'idCliente' });
 Cliente.hasMany(Cita, { foreignKey: 'idCliente' });
 
-Cita.belongsTo(Medicamento, { foreignKey: 'idMedicamento' });
-Medicamento.hasMany(Cita, { foreignKey: 'idMedicamento' });
+// Cita.belongsTo(Medicamento, { foreignKey: 'idMedicamento' });
+// Medicamento.hasMany(Cita, { foreignKey: 'idMedicamento' });
 
-Cita.belongsTo(Suministro, { foreignKey: 'idSuministro' });
-Suministro.hasMany(Cita, { foreignKey: 'idSuministro' });
+// Cita.belongsTo(Suministro, { foreignKey: 'idSuministro' });
+// Suministro.hasMany(Cita, { foreignKey: 'idSuministro' });
 
 // Proveedor y Medicamento
 Proveedor.hasMany(Medicamento, { foreignKey: 'idProveedor' });
@@ -46,6 +47,19 @@ Medicamento.belongsTo(Proveedor, { foreignKey: 'idProveedor' });
 // Proveedor y Suministro
 Proveedor.hasMany(Suministro, { foreignKey: 'idProveedor' });
 Suministro.belongsTo(Proveedor, { foreignKey: 'idProveedor' });
+
+// Factura y otras tablas
+Factura.belongsTo(Medicamento, { foreignKey: 'idMedicamento' });
+Medicamento.hasMany(Factura, { foreignKey: 'idMedicamento' });
+
+Factura.belongsTo(Suministro, { foreignKey: 'idSuministro' });
+Suministro.hasMany(Factura, { foreignKey: 'idSuministro' });
+
+Factura.belongsTo(Cliente, { foreignKey: 'idCliente' });
+Cliente.hasMany(Factura, { foreignKey: 'idCliente' });
+
+Factura.belongsTo(Mascota, { foreignKey: 'idMascota' });
+Mascota.hasMany(Factura, { foreignKey: 'idMascota' });
 
 // Sincronización de modelos con la base de datos
 sequelize.sync({ force: false }) // force: true eliminará las tablas existentes y las volverá a crear
@@ -65,5 +79,6 @@ module.exports = {
   Cita,
   Proveedor,
   Medicamento,
-  Suministro
+  Suministro,
+  Factura // Exportar Factura
 };

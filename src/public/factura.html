@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Índice de Facturas</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>Índice de Facturas</h1>
+
+    <!-- Formulario de búsqueda -->
+    <div class="mb-3">
+      <input id="buscarFecha" class="form-control" type="date" placeholder="Buscar por fecha">
+      <button class="btn btn-primary mt-2" onclick="buscarFactura()">Buscar</button>
+    </div>
+
+    <!-- Botón para abrir el modal de registro -->
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#registroModal">Registrar Factura</button>
+
+    <!-- Tabla para mostrar la lista de facturas -->
+    <table class="table table-striped table-dark">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Fecha</th>
+          <th>Cliente</th>
+          <th>Mascota</th>
+          <th>Medicamento</th>
+          <th>Suministro</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="facturasList">
+        <!-- Aquí se añadirán dinámicamente las facturas -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal de Registro -->
+  <div class="modal fade" id="registroModal" tabindex="-1" role="dialog" aria-labelledby="registroModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="registroModalLabel">Registrar Factura</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="registroFacturaForm">
+            <input type="hidden" id="idFactura" value="">
+            <input type="date" id="fechaFactura" class="form-control mb-2" placeholder="Fecha" required>
+            <input type="number" id="idClienteFactura" class="form-control mb-2" placeholder="ID Cliente" min="1" required>
+            <input type="number" id="idMascotaFactura" class="form-control mb-2" placeholder="ID Mascota" min="1" required>
+            <input type="number" id="idMedicamentoFactura" class="form-control mb-2" placeholder="ID Medicamento" min="1">
+            <input type="number" id="idSuministroFactura" class="form-control mb-2" placeholder="ID Suministro" min="1">
+            <input type="text" id="descripcionFactura" class="form-control mb-2" placeholder="Descripción">
+            <button type="submit" class="btn btn-primary">Confirmar</button>
+            <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Cancelar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      cargarFacturas();
+
+      document.getElementById('registroFacturaForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const formData = {
+          fecha: document.getElementById('fechaFactura').value,
+          idCliente: document.getElementById('idClienteFactura').value,
+          idMascota: document.getElementById('idMascotaFactura').value,
+          idMedicamento: document.getElementById('idMedicamentoFactura').value,
+          idSuministro: document.getElementById('idSuministroFactura').value,
+          descripcion: document.getElementById('descripcionFactura').value
+        };
+        try {
+          let url = '/api/facturas';
+          let method = 'POST';
+          const idFactura = document.getElementById('idFactura').value;
+          if (idFactura) {
+            url += `/${idFactura}`;
+            method = 'PUT';
+          }
+          const response = await fetch(url, {
+            method: method,
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          });
+          if (response.ok) {
+            $('#registroModal').modal('hide');
+            cargarFacturas();
+          } else {
+            console.error('Error al guardar la factura');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+
+    async function cargarFacturas() {
+      try {
+        const response = await fetch('/api/facturas');
+        const data = await response.json();
+        const facturasList = document.getElementById('facturasList');
+        facturasList.innerHTML = '';
+        data.forEach(factura => {
+          const row = document.createElement('tr');
+          row.id = `factura-${factura.idFactura}`;
+          row.innerHTML = `
+            <td>${factura.idFactura}</td>
+            <td>${factura.fecha}</td>
+            <td>${factura.idCliente}</td>
+            <td>${factura.idMascota}</td>
+            <td>${factura.idMedicamento}</td>
+            <td>${factura.idSuministro}</td>
+            <td>${factura.descripcion}</td>
+            <td>
+              <button class="btn btn-sm btn-info" onclick="editarFactura(${factura.idFactura})">Editar</button>
+              <button class="btn btn-sm btn-danger" onclick="eliminarFactura(${factura.idFactura})">Eliminar</button>
+            </td>
+          `;
+          facturasList.appendChild(row);
+        });
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    async function buscarFactura() {
+      const fechaFactura = document.getElementById('buscarFecha').value;
+      try {
+        const response = await fetch(`/api/facturas/buscar?fecha=${fechaFactura}`);
+        const data = await response.json();
+        const facturasList = document.getElementById('facturasList');
+        facturasList.innerHTML = '';
+        if (data.length > 0) {
+          data.forEach(factura => {
+            const row = document.createElement('tr');
+            row.id = `factura-${factura.idFactura}`;
+            row.innerHTML = `
+              <td>${factura.idFactura}</td>
+              <td>${factura.fecha}</td>
+              <td>${factura.idCliente}</td>
+              <td>${factura.idMascota}</td>
+              <td>${factura.idMedicamento}</td>
+              <td>${factura.idSuministro}</td>
+              <td>${factura.descripcion}</td>
+              <td>
+                <button class="btn btn-sm btn-info" onclick="editarFactura(${factura.idFactura})">Editar</button>
+                <button class="btn btn-sm btn-danger" onclick="eliminarFactura(${factura.idFactura})">Eliminar</button>
+              </td>
+            `;
+            facturasList.appendChild(row);
+          });
+        } else {
+          facturasList.innerHTML = '<tr><td colspan="8" class="text-center">No se encontraron facturas para la fecha especificada</td></tr>';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    async function eliminarFactura(idFactura) {
+      if (confirm('¿Estás seguro de eliminar esta factura?')) {
+        try {
+          const response = await fetch(`/api/facturas/${idFactura}`, { method: 'DELETE' });
+          if (response.ok) {
+            document.getElementById(`factura-${idFactura}`).remove();
+          } else {
+            console.error('Error al eliminar la factura');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
+    }
+
+    async function editarFactura(idFactura) {
+      try {
+        const response = await fetch(`/api/facturas/${idFactura}`);
+        const factura = await response.json();
+        document.getElementById('idFactura').value = factura.idFactura;
+        document.getElementById('fechaFactura').value = factura.fecha;
+        document.getElementById('idClienteFactura').value = factura.idCliente;
+        document.getElementById('idMascotaFactura').value = factura.idMascota;
+        document.getElementById('idMedicamentoFactura').value = factura.idMedicamento || '';
+        document.getElementById('idSuministroFactura').value = factura.idSuministro || '';
+        document.getElementById('descripcionFactura').value = factura.descripcion || '';
+        $('#registroModal').modal('show');
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  </script>
+</body>
+</html>

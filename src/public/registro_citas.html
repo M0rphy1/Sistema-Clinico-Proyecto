@@ -40,14 +40,14 @@
                             <label for="nombreCliente">Nombre del Dueño de Mascota</label>
                             <input type="text" class="form-control" id="nombreCliente" required>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="nombreMedicamento">Nombre del Medicamento</label>
                             <input type="text" class="form-control" id="nombreMedicamento" required>
                         </div>
                         <div class="form-group">
                             <label for="nombreSuministro">Nombre del Suministro</label>
                             <input type="text" class="form-control" id="nombreSuministro" required>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label for="fechaCita">Fecha de la Cita</label>
                             <input type="date" class="form-control" id="fechaCita" required>
@@ -95,14 +95,14 @@
                             <label for="updateNombreCliente">Nombre del Cliente</label>
                             <input type="text" class="form-control" id="updateNombreCliente" required>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="updateNombreMedicamento">Nombre del Medicamento</label>
                             <input type="text" class="form-control" id="updateNombreMedicamento" required>
                         </div>
                         <div class="form-group">
                             <label for="updateNombreSuministro">Nombre del Suministro</label>
                             <input type="text" class="form-control" id="updateNombreSuministro" required>
-                        </div>
+                        </div> -->
                         <div class="form-group">
                             <label for="updateFechaCita">Fecha de la Cita</label>
                             <input type="date" class="form-control" id="updateFechaCita" required>
@@ -188,8 +188,8 @@
             const nombreCliente = document.getElementById('nombreCliente').value;
             const nombreMascota = document.getElementById('nombreMascota').value;
             const nombreUsuario = document.getElementById('nombreUsuario').value;
-            const nombreMedicamento = document.getElementById('nombreMedicamento').value;
-            const nombreSuministro = document.getElementById('nombreSuministro').value;
+            // const nombreMedicamento = document.getElementById('nombreMedicamento').value;
+            // const nombreSuministro = document.getElementById('nombreSuministro').value;
             const fechaCita = document.getElementById('fechaCita').value;
             const motivo = document.getElementById('motivo').value;
             const horaCita = document.getElementById('horaCita').value;
@@ -212,8 +212,8 @@
                     nombreCliente,
                     nombreMascota,
                     nombreUsuario,
-                    nombreMedicamento,
-                    nombreSuministro,
+                    // nombreMedicamento,
+                    // nombreSuministro,
                     fechaCita,
                     motivo,
                     horaCita
@@ -245,8 +245,8 @@ document.getElementById('actualizarCitaForm').addEventListener('submit', functio
     const nombreMascota = document.getElementById('updateNombreMascota').value;
     const nombreUsuario = document.getElementById('updateNombreUsuario').value;
     const nombreCliente = document.getElementById('updateNombreCliente').value;
-    const nombreMedicamento = document.getElementById('updateNombreMedicamento').value;
-    const nombreSuministro = document.getElementById('updateNombreSuministro').value;
+    // const nombreMedicamento = document.getElementById('updateNombreMedicamento').value;
+    // const nombreSuministro = document.getElementById('updateNombreSuministro').value;
     const fechaCita = document.getElementById('updateFechaCita').value;
     const motivo = document.getElementById('updateMotivo').value;
     const horaCita = document.getElementById('updateHoraCita').value;
@@ -261,8 +261,8 @@ document.getElementById('actualizarCitaForm').addEventListener('submit', functio
             nombreMascota: nombreMascota,
             nombreUsuario: nombreUsuario,
             nombreCliente: nombreCliente,
-            nombreMedicamento: nombreMedicamento,
-            nombreSuministro: nombreSuministro,
+            // nombreMedicamento: nombreMedicamento,
+            // nombreSuministro: nombreSuministro,
             fechaCita: fechaCita,
             motivo: motivo,
             horaCita: horaCita
@@ -299,8 +299,6 @@ document.getElementById('buscarCitaForm').addEventListener('submit', function(ev
                 <p>Nombre Mascota: ${data.Mascotum ? data.Mascotum.nombreMascota : 'No especificado'}</p>
                 <p>Nombre Usuario: ${data.Usuario.nombreUsuario}</p>
                 <p>Nombre Cliente: ${data.Cliente ? data.Cliente.nombreCliente : 'No especificado'}</p>
-                <p>Nombre Medicamento: ${data.Medicamento ? data.Medicamento.nombreMedicamento : 'No especificado'}</p>
-                <p>Nombre Suministro: ${data.Suministro ? data.Suministro.nombreSuministro : 'No especificado'}</p>
                 <p>Fecha Cita: ${data.fechaCita}</p>
                 <p>Motivo: ${data.motivo}</p>
                 <p>Hora Cita: ${data.horaCita}</p>
@@ -357,8 +355,6 @@ document.getElementById('buscarCitaForm').addEventListener('submit', async funct
             <p>Nombre Mascota: ${data.Mascotum ? data.Mascotum.nombreMascota : 'No especificado'}</p>
             <p>Nombre Usuario: ${data.Usuario ? data.Usuario.nombreUsuario : 'No especificado'}</p>
             <p>Nombre Cliente: ${data.Cliente ? data.Cliente.nombreCliente : 'No especificado'}</p>
-            <p>Nombre Medicamento: ${data.Medicamento ? data.Medicamento.nombreMedicamento : 'No especificado'}</p>
-            <p>Nombre Suministro: ${data.Suministro ? data.Suministro.nombreSuministro : 'No especificado'}</p>
             <p>Fecha Cita: ${data.fechaCita}</p>
             <p>Motivo: ${data.motivo}</p>
             <p>Hora Cita: ${data.horaCita}</p>
