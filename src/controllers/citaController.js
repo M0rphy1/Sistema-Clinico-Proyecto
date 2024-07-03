@@ -1,70 +1,55 @@
 const { Cita, Mascota, Usuario, Cliente, Medicamento, Suministro } = require('../models');
+const { getIdClienteByName, getIdMascotaByName, getIdMedicamentoByName, getIdSuministroByName } = require('../utils/helpers');
 
 // Crear una nueva cita
 const createCita = async (req, res) => {
-  const {
-    nombreCliente,
-    nombreMascota,
-    nombreUsuario,
-    nombreMedicamento,
-    nombreSuministro,
-    fechaCita,
-    motivo,
-    horaCita
-  } = req.body;
+  // Obtener datos de la cita desde el cuerpo de la solicitud
+  const { nombreMascota, nombreUsuario, nombreCliente, nombreMedicamento, nombreSuministro, fechaCita, motivo, horaCita } = req.body;
 
   try {
-    // Buscar o crear el cliente
-    let cliente = await Cliente.findOne({ where: { nombreCliente } });
-    if (!cliente) {
-      cliente = await Cliente.create({ nombreCliente });
+    // Obtener IDs basados en los nombres proporcionados
+    const idMascota = await getIdMascotaByName(nombreMascota);
+    const idCliente = await getIdClienteByName(nombreCliente);
+    const idMedicamento = await getIdMedicamentoByName(nombreMedicamento);
+    const idSuministro = await getIdSuministroByName(nombreSuministro);
+
+    if (!idMascota || !idCliente || !idMedicamento || !idSuministro) {
+      return res.status(400).json({ message: 'Uno o más nombres no fueron encontrados.' });
     }
 
-    // Buscar o crear la mascota
-    let mascota = await Mascota.findOne({ where: { nombreMascota } });
-    if (!mascota) {
-      mascota = await Mascota.create({ nombreMascota, idCliente: cliente.idCliente });
-    }
-
-    // Buscar el usuario
-    const usuario = await Usuario.findOne({ where: { nombreUsuario } });
-    if (!usuario) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
-    }
-
-    // Buscar el medicamento
-    const medicamento = await Medicamento.findOne({ where: { nombreMedicamento } });
-    if (!medicamento) {
-      return res.status(404).json({ error: 'Medicamento no encontrado' });
-    }
-
-    // Buscar el suministro
-    const suministro = await Suministro.findOne({ where: { nombreSuministro } });
-    if (!suministro) {
-      return res.status(404).json({ error: 'Suministro no encontrado' });
+    // Verificar si ya existe una cita para la misma fecha y hora
+    const existingCita = await Cita.findOne({ where: { fechaCita, horaCita } });
+    if (existingCita) {
+      return res.status(400).json({ message: 'Ya hay una cita programada para esa fecha y hora.' });
     }
 
     // Guardar la nueva cita en la base de datos
     const nuevaCita = await Cita.create({
-      idMascota: mascota.idMascota,
+      idMascota,
       nombreUsuario,
-      idCliente: cliente.idCliente,
-      idMedicamento: medicamento.idMedicamento,
-      idSuministro: suministro.idSuministro,
+      idCliente,
+      idMedicamento,
+      idSuministro,
       fechaCita,
       motivo,
       horaCita
     });
 
     // Actualizar el stock de medicamento
-    medicamento.stock -= 1; // O la cantidad que se desee reducir
-    await medicamento.save();
+    const medicamento = await Medicamento.findByPk(idMedicamento);
+    if (medicamento) {
+      medicamento.stock -= 1; // O la cantidad que se desee reducir
+      await medicamento.save();
+    }
 
     // Actualizar el stock de suministro
-    suministro.stock -= 1; // O la cantidad que se desee reducir
-    await suministro.save();
+    const suministro = await Suministro.findByPk(idSuministro);
+    if (suministro) {
+      suministro.stock -= 1; // O la cantidad que se desee reducir
+      await suministro.save();
+    }
 
-    // Responder con la cita registrada
+    // Aquí puedes enviar una respuesta con la cita registrada, si es necesario
     res.status(201).json(nuevaCita);
   } catch (error) {
     console.error('Error al registrar la cita:', error);
@@ -72,16 +57,17 @@ const createCita = async (req, res) => {
   }
 };
 
+
 // Obtener todas las citas
 const getCitas = async (req, res) => {
   try {
     const citas = await Cita.findAll({
       include: [
-        { model: Mascota, attributes: ['idMascota', 'nombreMascota'] },
-        { model: Usuario, attributes: ['nombreUsuario'] },
-        { model: Cliente, attributes: ['idCliente', 'nombreCliente'] },
-        { model: Medicamento, attributes: ['idMedicamento', 'nombreMedicamento'] },
-        { model: Suministro, attributes: ['idSuministro', 'nombreSuministro'] }
+        { model: Mascota },
+        { model: Usuario },
+        { model: Cliente },
+        { model: Medicamento },
+        { model: Suministro }
       ]
     });
     res.status(200).json(citas);
@@ -116,70 +102,28 @@ const getCitaById = async (req, res) => {
 const updateCita = async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      nombreCliente,
-      nombreMascota,
-      nombreUsuario,
-      nombreMedicamento,
-      nombreSuministro,
-      fechaCita,
-      motivo,
-      horaCita
-    } = req.body;
-
+    const { idMascota, nombreUsuario, idCliente, idMedicamento, idSuministro, fechaCita, motivo, horaCita } = req.body;
     const cita = await Cita.findByPk(id);
     if (!cita) {
       return res.status(404).json({ message: 'Cita no encontrada' });
     }
-
-    // Buscar o crear el cliente
-    let cliente = await Cliente.findOne({ where: { nombreCliente } });
-    if (!cliente) {
-      cliente = await Cliente.create({ nombreCliente });
-    }
-
-    // Buscar o crear la mascota
-    let mascota = await Mascota.findOne({ where: { nombreMascota } });
-    if (!mascota) {
-      mascota = await Mascota.create({ nombreMascota, idCliente: cliente.idCliente });
-    }
-
-    // Buscar el usuario
-    const usuario = await Usuario.findOne({ where: { nombreUsuario } });
-    if (!usuario) {
-      return res.status(404).json({ error: 'Usuario no encontrado' });
-    }
-
-    // Buscar el medicamento
-    const medicamento = await Medicamento.findOne({ where: { nombreMedicamento } });
-    if (!medicamento) {
-      return res.status(404).json({ error: 'Medicamento no encontrado' });
-    }
-
-    // Buscar el suministro
-    const suministro = await Suministro.findOne({ where: { nombreSuministro } });
-    if (!suministro) {
-      return res.status(404).json({ error: 'Suministro no encontrado' });
-    }
-
-    // Actualizar la cita en la base de datos
     await cita.update({
-      idMascota: mascota.idMascota,
+      idMascota,
       nombreUsuario,
-      idCliente: cliente.idCliente,
-      idMedicamento: medicamento.idMedicamento,
-      idSuministro: suministro.idSuministro,
+      idCliente,
+      idMedicamento,
+      idSuministro,
       fechaCita,
       motivo,
       horaCita
     });
-
     res.status(200).json(cita);
   } catch (error) {
     res.status(500).json({ message: 'Error al actualizar la cita', error });
   }
 };
 
+// Eliminar una cita
 // Eliminar una cita
 const deleteCita = async (req, res) => {
   try {
@@ -189,11 +133,14 @@ const deleteCita = async (req, res) => {
       return res.status(404).json({ message: 'Cita no encontrada' });
     }
     await cita.destroy();
-    res.status(204).json();
+    res.status(204).json({ message: 'Cita eliminada exitosamente' }); // Agregamos un mensaje aquí
   } catch (error) {
+    console.error('Error al eliminar la cita:', error);
     res.status(500).json({ message: 'Error al eliminar la cita', error });
   }
 };
+
+
 
 module.exports = {
   createCita,
@@ -202,4 +149,3 @@ module.exports = {
   updateCita,
   deleteCita
 };
-
