@@ -22,7 +22,7 @@ const Cita = sequelize.define('Cita', {
     allowNull: false,
     references: {
       model: 'Usuario',
-      key: 'idUsuario'
+      key: 'nombreUsuario'
     }
   },
   idCliente: {
