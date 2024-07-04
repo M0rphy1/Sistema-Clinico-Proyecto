@@ -1,209 +1,342 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Índice de Facturas</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Facturas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-  <div class="container mt-5">
-    <h1>Índice de Facturas</h1>
-
-    <!-- Formulario de búsqueda -->
-    <div class="mb-3">
-      <input id="buscarFecha" class="form-control" type="date" placeholder="Buscar por fecha">
-      <button class="btn btn-primary mt-2" onclick="buscarFactura()">Buscar</button>
+    <div class="container mt-5">
+        <h1>Gestión de Facturas</h1>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#registroFacturaModal">Registrar Factura</button>
+        <button class="btn btn-secondary" data-toggle="modal" data-target="#actualizarFacturaModal">Actualizar Factura</button>
+        <button class="btn btn-info" data-toggle="modal" data-target="#buscarFacturaModal">Buscar Factura</button>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#eliminarFacturaModal">Eliminar Factura</button>
     </div>
-
-    <!-- Botón para abrir el modal de registro -->
-    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#registroModal">Registrar Factura</button>
-
-    <!-- Tabla para mostrar la lista de facturas -->
-    <table class="table table-striped table-dark">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Fecha</th>
-          <th>Cliente</th>
-          <th>Mascota</th>
-          <th>Medicamento</th>
-          <th>Suministro</th>
-          <th>Descripción</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="facturasList">
-        <!-- Aquí se añadirán dinámicamente las facturas -->
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Modal de Registro -->
-  <div class="modal fade" id="registroModal" tabindex="-1" role="dialog" aria-labelledby="registroModalLabel" aria-hidden="true">
+    
+    <!-- Modal para Registrar Factura -->
+<div class="modal fade" id="registroFacturaModal" tabindex="-1" role="dialog" aria-labelledby="registroFacturaModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="registroModalLabel">Registrar Factura</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registroFacturaModalLabel">Registrar Factura</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="registroFacturaForm">
+                    <div class="form-group">
+                        <label for="nombreCliente">Nombre del Cliente</label>
+                        <input type="text" class="form-control" id="nombreCliente" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombreMascota">Nombre de la Mascota</label>
+                        <input type="text" class="form-control" id="nombreMascota" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="motivo">Motivo</label>
+                        <textarea class="form-control" id="motivo"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaFactura">Fecha de la Factura</label>
+                        <input type="date" class="form-control" id="fechaFactura" required>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="precioTotal">Precio Total</label>
+                        <input type="number" step="0.01" class="form-control" id="precioTotal" required>
+                    </div> -->
+                    <!-- Campos para medicamentos -->
+                    <div class="form-group">
+                        <label for="nombreMedicamento">Nombre del Medicamento</label>
+                        <input type="text" class="form-control" id="nombreMedicamento">
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidadMedicamento">Cantidad del Medicamento</label>
+                        <input type="number" class="form-control" id="cantidadMedicamento">
+                    </div>
+                    <!-- Campos para suministros -->
+                    <div class="form-group">
+                        <label for="nombreSuministro">Nombre del Suministro</label>
+                        <input type="text" class="form-control" id="nombreSuministro">
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidadSuministro">Cantidad del Suministro</label>
+                        <input type="number" class="form-control" id="cantidadSuministro">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Registrar</button>
+                </form>
+            </div>
         </div>
-        <div class="modal-body">
-          <form id="registroFacturaForm">
-            <input type="hidden" id="idFactura" value="">
-            <input type="date" id="fechaFactura" class="form-control mb-2" placeholder="Fecha" required>
-            <input type="number" id="idClienteFactura" class="form-control mb-2" placeholder="ID Cliente" min="1" required>
-            <input type="number" id="idMascotaFactura" class="form-control mb-2" placeholder="ID Mascota" min="1" required>
-            <input type="number" id="idMedicamentoFactura" class="form-control mb-2" placeholder="ID Medicamento" min="1">
-            <input type="number" id="idSuministroFactura" class="form-control mb-2" placeholder="ID Suministro" min="1">
-            <input type="text" id="descripcionFactura" class="form-control mb-2" placeholder="Descripción">
-            <button type="submit" class="btn btn-primary">Confirmar</button>
-            <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">Cancelar</button>
-          </form>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      cargarFacturas();
+    <!-- Modal para Actualizar Factura -->
+<div class="modal fade" id="actualizarFacturaModal" tabindex="-1" role="dialog" aria-labelledby="actualizarFacturaModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actualizarFacturaModalLabel">Actualizar Factura</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="actualizarFacturaForm">
+                    <div class="form-group">
+                        <label for="updateIdFactura">ID Factura</label>
+                        <input type="number" class="form-control" id="updateIdFactura" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateNombreCliente">Nombre del Cliente</label>
+                        <input type="text" class="form-control" id="updateNombreCliente" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateNombreMascota">Nombre de la Mascota</label>
+                        <input type="text" class="form-control" id="updateNombreMascota" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateMotivo">Motivo</label>
+                        <textarea class="form-control" id="updateMotivo"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateFechaFactura">Fecha de la Factura</label>
+                        <input type="date" class="form-control" id="updateFechaFactura" required>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="updatePrecioTotal">Precio Total</label>
+                        <input type="number" step="0.01" class="form-control" id="updatePrecioTotal" required>
+                    </div> -->
+                    <!-- Campos para medicamentos -->
+                    <div class="form-group">
+                        <label for="updateNombreMedicamento">Nombre del Medicamento</label>
+                        <input type="text" class="form-control" id="updateNombreMedicamento">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateCantidadMedicamento">Cantidad del Medicamento</label>
+                        <input type="number" class="form-control" id="updateCantidadMedicamento">
+                    </div>
+                    <!-- Campos para suministros -->
+                    <div class="form-group">
+                        <label for="updateNombreSuministro">Nombre del Suministro</label>
+                        <input type="text" class="form-control" id="updateNombreSuministro">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateCantidadSuministro">Cantidad del Suministro</label>
+                        <input type="number" class="form-control" id="updateCantidadSuministro">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-      document.getElementById('registroFacturaForm').addEventListener('submit', async function (event) {
-        event.preventDefault();
-        const formData = {
-          fecha: document.getElementById('fechaFactura').value,
-          idCliente: document.getElementById('idClienteFactura').value,
-          idMascota: document.getElementById('idMascotaFactura').value,
-          idMedicamento: document.getElementById('idMedicamentoFactura').value,
-          idSuministro: document.getElementById('idSuministroFactura').value,
-          descripcion: document.getElementById('descripcionFactura').value
-        };
-        try {
-          let url = '/api/facturas';
-          let method = 'POST';
-          const idFactura = document.getElementById('idFactura').value;
-          if (idFactura) {
-            url += `/${idFactura}`;
-            method = 'PUT';
-          }
-          const response = await fetch(url, {
-            method: method,
+
+    <!-- Modal para Buscar Factura -->
+    <div class="modal fade" id="buscarFacturaModal" tabindex="-1" role="dialog" aria-labelledby="buscarFacturaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="buscarFacturaModalLabel">Buscar Factura</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="buscarFacturaForm">
+                        <div class="form-group">
+                            <label for="buscarIdFactura">ID Factura</label>
+                            <input type="number" class="form-control" id="buscarIdFactura" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Buscar</button>
+                    </form>
+                    <div id="buscarFacturaResultado" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Eliminar Factura -->
+    <div class="modal fade" id="eliminarFacturaModal" tabindex="-1" role="dialog" aria-labelledby="eliminarFacturaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarFacturaModalLabel">Eliminar Factura</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="eliminarFacturaForm">
+                        <div class="form-group">
+                            <label for="eliminarIdFactura">ID Factura</label>
+                            <input type="number" class="form-control" id="eliminarIdFactura" required>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenedor para mensajes -->
+    <div id="mensajeResultado" class="alert" role="alert" style="display:none;"></div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        // Función para mostrar mensajes
+        function mostrarMensaje(mensaje, tipo) {
+            const mensajeResultado = document.getElementById('mensajeResultado');
+            mensajeResultado.textContent = mensaje;
+            mensajeResultado.className = `alert alert-${tipo}`;
+            mensajeResultado.style.display = 'block';
+            setTimeout(() => {
+                mensajeResultado.style.display = 'none';
+            }, 3000);
+        }
+
+        // Función para registrar una factura
+document.getElementById('registroFacturaForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const nombreCliente = document.getElementById('nombreCliente').value;
+    const nombreMascota = document.getElementById('nombreMascota').value;
+    const motivo = document.getElementById('motivo').value;
+    const fechaFactura = document.getElementById('fechaFactura').value;
+    // const precioTotal = document.getElementById('precioTotal').value;
+    const nombreMedicamento = document.getElementById('nombreMedicamento').value;
+    const cantidadMedicamento = document.getElementById('cantidadMedicamento').value;
+    const nombreSuministro = document.getElementById('nombreSuministro').value;
+    const cantidadSuministro = document.getElementById('cantidadSuministro').value;
+
+    try {
+        const response = await fetch('/api/facturas', {
+            method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(formData)
-          });
-          if (response.ok) {
-            $('#registroModal').modal('hide');
-            cargarFacturas();
-          } else {
-            console.error('Error al guardar la factura');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-        }
-      });
-    });
-
-    async function cargarFacturas() {
-      try {
-        const response = await fetch('/api/facturas');
-        const data = await response.json();
-        const facturasList = document.getElementById('facturasList');
-        facturasList.innerHTML = '';
-        data.forEach(factura => {
-          const row = document.createElement('tr');
-          row.id = `factura-${factura.idFactura}`;
-          row.innerHTML = `
-            <td>${factura.idFactura}</td>
-            <td>${factura.fecha}</td>
-            <td>${factura.idCliente}</td>
-            <td>${factura.idMascota}</td>
-            <td>${factura.idMedicamento}</td>
-            <td>${factura.idSuministro}</td>
-            <td>${factura.descripcion}</td>
-            <td>
-              <button class="btn btn-sm btn-info" onclick="editarFactura(${factura.idFactura})">Editar</button>
-              <button class="btn btn-sm btn-danger" onclick="eliminarFactura(${factura.idFactura})">Eliminar</button>
-            </td>
-          `;
-          facturasList.appendChild(row);
+            body: JSON.stringify({
+                nombreCliente,
+                nombreMascota,
+                motivo,
+                fechaFactura,
+                // precioTotal,
+                nombreMedicamento,
+                cantidadMedicamento,
+                nombreSuministro,
+                cantidadSuministro
+            })
         });
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }
-
-    async function buscarFactura() {
-      const fechaFactura = document.getElementById('buscarFecha').value;
-      try {
-        const response = await fetch(`/api/facturas/buscar?fecha=${fechaFactura}`);
         const data = await response.json();
-        const facturasList = document.getElementById('facturasList');
-        facturasList.innerHTML = '';
-        if (data.length > 0) {
-          data.forEach(factura => {
-            const row = document.createElement('tr');
-            row.id = `factura-${factura.idFactura}`;
-            row.innerHTML = `
-              <td>${factura.idFactura}</td>
-              <td>${factura.fecha}</td>
-              <td>${factura.idCliente}</td>
-              <td>${factura.idMascota}</td>
-              <td>${factura.idMedicamento}</td>
-              <td>${factura.idSuministro}</td>
-              <td>${factura.descripcion}</td>
-              <td>
-                <button class="btn btn-sm btn-info" onclick="editarFactura(${factura.idFactura})">Editar</button>
-                <button class="btn btn-sm btn-danger" onclick="eliminarFactura(${factura.idFactura})">Eliminar</button>
-              </td>
-            `;
-            facturasList.appendChild(row);
-          });
+        if (response.ok) {
+            mostrarMensaje('Factura registrada correctamente.', 'success');
         } else {
-          facturasList.innerHTML = '<tr><td colspan="8" class="text-center">No se encontraron facturas para la fecha especificada</td></tr>';
+            mostrarMensaje(data.message || 'Hubo un error al registrar la factura.', 'danger');
         }
-      } catch (error) {
-        console.error('Error:', error);
-      }
+        $('#registroFacturaModal').modal('hide');
+    } catch (error) {
+        mostrarMensaje('Hubo un error al conectar con el servidor.', 'danger');
     }
+});
 
-    async function eliminarFactura(idFactura) {
-      if (confirm('¿Estás seguro de eliminar esta factura?')) {
-        try {
-          const response = await fetch(`/api/facturas/${idFactura}`, { method: 'DELETE' });
-          if (response.ok) {
-            document.getElementById(`factura-${idFactura}`).remove();
-          } else {
-            console.error('Error al eliminar la factura');
-          }
-        } catch (error) {
-          console.error('Error:', error);
+        // Función para buscar una factura
+        document.getElementById('buscarFacturaForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const buscarIdFactura = document.getElementById('buscarIdFactura').value;
+
+            try {
+                const response = await fetch(`/api/facturas/${buscarIdFactura}`);
+                const data = await response.json();
+                if (response.ok) {
+                    const factura = data.factura;
+                    const resultadoHtml = `
+                        <p>ID: ${factura.idFactura}</p>
+                        <p>Cliente: ${factura.nombreCliente}</p>
+                        <p>Mascota: ${factura.nombreMascota}</p>
+                        <p>Motivo: ${factura.motivo}</p>
+                        <p>Fecha: ${factura.fechaFactura}</p>
+                        
+                    `;
+                    document.getElementById('buscarFacturaResultado').innerHTML = resultadoHtml;
+                } else {
+                    mostrarMensaje(data.message || 'Factura no encontrada.', 'danger');
+                }
+            } catch (error) {
+                mostrarMensaje('Hubo un error al conectar con el servidor.', 'danger');
+            }
+        });
+
+        // Función para actualizar una factura
+document.getElementById('actualizarFacturaForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const updateIdFactura = document.getElementById('updateIdFactura').value;
+    const updateNombreCliente = document.getElementById('updateNombreCliente').value;
+    const updateNombreMascota = document.getElementById('updateNombreMascota').value;
+    const updateMotivo = document.getElementById('updateMotivo').value;
+    const updateFechaFactura = document.getElementById('updateFechaFactura').value;
+    // const updatePrecioTotal = document.getElementById('updatePrecioTotal').value;
+    const updateNombreMedicamento = document.getElementById('updateNombreMedicamento').value;
+    const updateCantidadMedicamento = document.getElementById('updateCantidadMedicamento').value;
+    const updateNombreSuministro = document.getElementById('updateNombreSuministro').value;
+    const updateCantidadSuministro = document.getElementById('updateCantidadSuministro').value;
+
+    try {
+        const response = await fetch(`/api/facturas/${updateIdFactura}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nombreCliente: updateNombreCliente,
+                nombreMascota: updateNombreMascota,
+                motivo: updateMotivo,
+                fechaFactura: updateFechaFactura,
+                // precioTotal: updatePrecioTotal,
+                nombreMedicamento: updateNombreMedicamento,
+                cantidadMedicamento: updateCantidadMedicamento,
+                nombreSuministro: updateNombreSuministro,
+                cantidadSuministro: updateCantidadSuministro
+            })
+        });
+        const data = await response.json();
+        if (response.ok) {
+            mostrarMensaje('Factura actualizada correctamente.', 'success');
+        } else {
+            mostrarMensaje(data.message || 'Hubo un error al actualizar la factura.', 'danger');
         }
-      }
+        $('#actualizarFacturaModal').modal('hide');
+    } catch (error) {
+        mostrarMensaje('Hubo un error al conectar con el servidor.', 'danger');
     }
+});
 
-    async function editarFactura(idFactura) {
-      try {
-        const response = await fetch(`/api/facturas/${idFactura}`);
-        const factura = await response.json();
-        document.getElementById('idFactura').value = factura.idFactura;
-        document.getElementById('fechaFactura').value = factura.fecha;
-        document.getElementById('idClienteFactura').value = factura.idCliente;
-        document.getElementById('idMascotaFactura').value = factura.idMascota;
-        document.getElementById('idMedicamentoFactura').value = factura.idMedicamento || '';
-        document.getElementById('idSuministroFactura').value = factura.idSuministro || '';
-        document.getElementById('descripcionFactura').value = factura.descripcion || '';
-        $('#registroModal').modal('show');
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }
-  </script>
+        // Función para eliminar una factura
+        document.getElementById('eliminarFacturaForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const eliminarIdFactura = document.getElementById('eliminarIdFactura').value;
+
+            try {
+                const response = await fetch(`/api/facturas/${eliminarIdFactura}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    mostrarMensaje('Factura eliminada correctamente.', 'success');
+                } else {
+                    mostrarMensaje(data.message || 'Hubo un error al eliminar la factura.', 'danger');
+                }
+                $('#eliminarFacturaModal').modal('hide');
+            } catch (error) {
+                mostrarMensaje('Hubo un error al conectar con el servidor.', 'danger');
+            }
+        });
+    </script>
 </body>
 </html>

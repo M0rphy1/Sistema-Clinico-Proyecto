@@ -1,11 +1,13 @@
 const express = require('express');
-const router = express.Router();
-const facturaController = require('../controllers/facturaController'); // Ajusta la ruta según tu estructura de proyecto
+const { createFactura, getFacturas, getFacturaById, updateFactura, deleteFactura } = require('../controllers/facturaController');
 
-router.post('/', facturaController.createFactura);
-router.get('/', facturaController.getFacturas);
-router.get('/:id', facturaController.getFacturaById);
-router.put('/:id', facturaController.updateFactura);
-router.delete('/:id', facturaController.deleteFactura);
+const router = express.Router();
+
+router.post('/', createFactura);
+router.get('/', getFacturas);
+//router.get('/:id', getCitaById);
+router.get('/:id', getFacturaById);
+router.put('/:id', updateFactura);
+router.delete('/:id', deleteFactura);
 
 module.exports = router;

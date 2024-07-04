@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../database/conexiones');
 
 const Factura = sequelize.define('Factura', {
-  numeroFactura: {
+  idFactura: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true // Si deseas que sea autoincremental, de lo contrario, quita esto
@@ -36,7 +36,7 @@ const Factura = sequelize.define('Factura', {
       key: 'idMascota'
     }
   },
-  Fecha: {
+  fechaFactura: {
     type: DataTypes.DATE,
     allowNull: false
   },
