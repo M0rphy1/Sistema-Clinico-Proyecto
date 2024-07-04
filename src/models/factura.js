@@ -40,8 +40,9 @@ const Factura = sequelize.define('Factura', {
     type: DataTypes.DATE,
     allowNull: false
   },
-  Descripcion: {
-    type: DataTypes.STRING
+  descripcionFactura: {
+    type: DataTypes.TEXT,
+    allowNull: true
   }
 });
 
