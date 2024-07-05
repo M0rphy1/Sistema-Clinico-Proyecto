@@ -110,7 +110,7 @@ async function generarReporteUsuarios(doc) {
 async function generarReporteCitas(doc) {
   try {
     const citas = await Cita.findAll({ 
-      include: ['Mascotum', 'Usuario', 'Cliente', 'Medicamento', 'Suministro'] 
+      include: ['Mascotum', 'Usuario', 'Cliente' ] 
     }); // Obtener datos de citas desde la base de datos con las relaciones incluidas
     console.log("Citas:", citas);
 
@@ -149,20 +149,6 @@ async function generarReporteCitas(doc) {
         doc.text(`Teléfono: ${cita.Cliente.telefono}`);
         doc.text(`Dirección: ${cita.Cliente.direccion}`);
         doc.text(`Correo: ${cita.Cliente.correo}`);
-        doc.moveDown();
-
-        doc.fontSize(12).text("Información del medicamento:", { underline: true });
-        doc.text(`Nombre: ${cita.Medicamento.nombreMedicamento}`);
-        doc.text(`Descripción: ${cita.Medicamento.descripcion}`);
-        doc.text(`Precio: ${cita.Medicamento.precio}`);
-        doc.text(`Fabricante: ${cita.Medicamento.fabricante}`);
-        doc.moveDown();
-
-        doc.fontSize(12).text("Información del suministro:", { underline: true });
-        doc.text(`Nombre: ${cita.Suministro.nombreSuministro}`);
-        doc.text(`Descripción: ${cita.Suministro.descripcion}`);
-        doc.text(`Precio: ${cita.Suministro.precio}`);
-        doc.text(`Fabricante: ${cita.Suministro.fabricante}`);
         doc.moveDown();
 
         doc.addPage(); // Añade una nueva página para la siguiente cita
