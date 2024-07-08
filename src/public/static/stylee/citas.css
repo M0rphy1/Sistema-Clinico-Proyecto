@@ -1,0 +1,32 @@
+/* Estilos para hacer responsive el diseño */
+
+/* Ajuste general */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 900px; /* Máximo ancho para el contenido */
+    margin: 0 auto; /* Centrar el contenido */
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+/* Estilos para los modales, si es necesario */
+
+/* Media queries para diferentes tamaños de pantalla */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 5px;
+    }
+}
+

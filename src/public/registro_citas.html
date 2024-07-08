@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Citas</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./static/stylee/citas.css">
 </head>
 <body>
     <div class="container mt-5">
@@ -50,7 +51,7 @@
                         </div>
                         <div class="form-group">
                             <label for="horaCita">Hora de la Cita</label>
-                            <input type="time" class="form-control" id="horaCita">
+                            <input type="time" class="form-control" id="horaCita" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Registrar</button>
                     </form>
@@ -58,7 +59,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Modal para Actualizar Cita -->
     <div class="modal fade" id="actualizarCitaModal" tabindex="-1" role="dialog" aria-labelledby="actualizarCitaModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -72,19 +73,19 @@
                 <div class="modal-body">
                     <form id="actualizarCitaForm">
                         <div class="form-group">
-                            <label for="updateIdCita">ID Cita</label>
-                            <input type="number" class="form-control" id="updateIdCita" required>
+                            <label for="updateIdCita">ID de la Cita</label>
+                            <input type="text" class="form-control" id="updateIdCita" required>
                         </div>
                         <div class="form-group">
                             <label for="updateNombreMascota">Nombre de la Mascota</label>
                             <input type="text" class="form-control" id="updateNombreMascota" required>
                         </div>
                         <div class="form-group">
-                            <label for="updateNombreUsuario">Nombre del Usuario</label>
+                            <label for="updateNombreUsuario">Nombre del Médico</label>
                             <input type="text" class="form-control" id="updateNombreUsuario" required>
                         </div>
                         <div class="form-group">
-                            <label for="updateNombreCliente">Nombre del Cliente</label>
+                            <label for="updateNombreCliente">Nombre del Dueño de Mascota</label>
                             <input type="text" class="form-control" id="updateNombreCliente" required>
                         </div>
                         <div class="form-group">
@@ -97,7 +98,7 @@
                         </div>
                         <div class="form-group">
                             <label for="updateHoraCita">Hora de la Cita</label>
-                            <input type="time" class="form-control" id="updateHoraCita">
+                            <input type="time" class="form-control" id="updateHoraCita" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Actualizar</button>
                     </form>
@@ -105,7 +106,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Modal para Buscar Cita -->
     <div class="modal fade" id="buscarCitaModal" tabindex="-1" role="dialog" aria-labelledby="buscarCitaModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -119,8 +120,8 @@
                 <div class="modal-body">
                     <form id="buscarCitaForm">
                         <div class="form-group">
-                            <label for="buscarIdCita">ID Cita</label>
-                            <input type="number" class="form-control" id="buscarIdCita" required>
+                            <label for="buscarIdCita">ID de la Cita</label>
+                            <input type="text" class="form-control" id="buscarIdCita" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Buscar</button>
                     </form>
@@ -129,7 +130,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Modal para Eliminar Cita -->
     <div class="modal fade" id="eliminarCitaModal" tabindex="-1" role="dialog" aria-labelledby="eliminarCitaModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -143,8 +144,8 @@
                 <div class="modal-body">
                     <form id="eliminarCitaForm">
                         <div class="form-group">
-                            <label for="eliminarIdCita">ID Cita</label>
-                            <input type="number" class="form-control" id="eliminarIdCita" required>
+                            <label for="eliminarIdCita">ID de la Cita</label>
+                            <input type="text" class="form-control" id="eliminarIdCita" required>
                         </div>
                         <button type="submit" class="btn btn-danger">Eliminar</button>
                     </form>
@@ -152,149 +153,12 @@
             </div>
         </div>
     </div>
-    <!-- Contenedor para mensajes -->
-    <div id="mensajeResultado" class="alert" role="alert" style="display:none;"></div>
-
+    
+    <div id="mensajeResultado" style="display: none;"></div>
+    
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script>
-    // Función para mostrar mensajes
-    function mostrarMensaje(mensaje, tipo) {
-        const mensajeResultado = document.getElementById('mensajeResultado');
-        mensajeResultado.textContent = mensaje;
-        mensajeResultado.className = `alert alert-${tipo}`;
-        mensajeResultado.style.display = 'block';
-    }
-
-    // Función para establecer el rango de fechas permitido en los inputs de fecha
-    function establecerRangoFechas() {
-        const fechaActual = new Date();
-        const añoActual = fechaActual.getFullYear();
-        const mesActual = (fechaActual.getMonth() + 1).toString().padStart(2, '0');
-        const diaActual = fechaActual.getDate().toString().padStart(2, '0');
-        const fechaMaxima = `${añoActual}-12-31`;
-        const fechaMinima = `${añoActual}-${mesActual}-${diaActual}`;
-
-        document.getElementById('fechaCita').setAttribute('min', fechaMinima);
-        document.getElementById('fechaCita').setAttribute('max', fechaMaxima);
-        document.getElementById('updateFechaCita').setAttribute('min', fechaMinima);
-        document.getElementById('updateFechaCita').setAttribute('max', fechaMaxima);
-    }
-
-    // Llamar a la función para establecer el rango de fechas cuando se cargue la página
-    document.addEventListener('DOMContentLoaded', establecerRangoFechas);
-
-    // Validación de fecha dentro del año actual
-    function validarFechaCita(fechaCita) {
-        const fechaIngresada = new Date(fechaCita);
-        const fechaActual = new Date();
-        const añoActual = fechaActual.getFullYear();
-        const inicioAño = new Date(añoActual, 0, 1);
-        const finAño = new Date(añoActual, 11, 31);
-
-        return fechaIngresada >= inicioAño && fechaIngresada <= finAño;
-    }
-
-    document.getElementById('registroCitaForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const fechaCita = document.getElementById('fechaCita').value;
-
-        if (!validarFechaCita(fechaCita)) {
-            mostrarMensaje('La fecha de la cita debe estar dentro del año actual.', 'danger');
-            return;
-        }
-
-        const nombreMascota = document.getElementById('nombreMascota').value;
-        const nombreUsuario = document.getElementById('nombreUsuario').value;
-        const nombreCliente = document.getElementById('nombreCliente').value;
-        const motivo = document.getElementById('motivo').value;
-        const horaCita = document.getElementById('horaCita').value;
-
-        $.post('/registrar-cita', {
-            nombreMascota: nombreMascota,
-            nombreUsuario: nombreUsuario,
-            nombreCliente: nombreCliente,
-            fechaCita: fechaCita,
-            motivo: motivo,
-            horaCita: horaCita
-        }).done(function(response) {
-            mostrarMensaje('Cita registrada exitosamente.', 'success');
-            $('#registroCitaModal').modal('hide');
-        }).fail(function(error) {
-            mostrarMensaje('Error al registrar la cita.', 'danger');
-        });
-    });
-
-    document.getElementById('actualizarCitaForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const updateIdCita = document.getElementById('updateIdCita').value;
-        const updateFechaCita = document.getElementById('updateFechaCita').value;
-
-        if (!validarFechaCita(updateFechaCita)) {
-            mostrarMensaje('La fecha de la cita debe estar dentro del año actual.', 'danger');
-            return;
-        }
-
-        const updateNombreMascota = document.getElementById('updateNombreMascota').value;
-        const updateNombreUsuario = document.getElementById('updateNombreUsuario').value;
-        const updateNombreCliente = document.getElementById('updateNombreCliente').value;
-        const updateMotivo = document.getElementById('updateMotivo').value;
-        const updateHoraCita = document.getElementById('updateHoraCita').value;
-
-        $.post('/actualizar-cita', {
-            idCita: updateIdCita,
-            nombreMascota: updateNombreMascota,
-            nombreUsuario: updateNombreUsuario,
-            nombreCliente: updateNombreCliente,
-            fechaCita: updateFechaCita,
-            motivo: updateMotivo,
-            horaCita: updateHoraCita
-        }).done(function(response) {
-            mostrarMensaje('Cita actualizada exitosamente.', 'success');
-            $('#actualizarCitaModal').modal('hide');
-        }).fail(function(error) {
-            mostrarMensaje('Error al actualizar la cita.', 'danger');
-        });
-    });
-
-    document.getElementById('buscarCitaForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const buscarIdCita = document.getElementById('buscarIdCita').value;
-
-        $.get(`/buscar-cita/${buscarIdCita}`).done(function(response) {
-            const resultado = document.getElementById('buscarCitaResultado');
-            resultado.innerHTML = `
-                <p>Nombre de la Mascota: ${response.nombreMascota}</p>
-                <p>Nombre del Médico: ${response.nombreUsuario}</p>
-                <p>Nombre del Dueño de Mascota: ${response.nombreCliente}</p>
-                <p>Fecha de la Cita: ${response.fechaCita}</p>
-                <p>Motivo: ${response.motivo}</p>
-                <p>Hora de la Cita: ${response.horaCita}</p>
-            `;
-        }).fail(function(error) {
-            mostrarMensaje('Error al buscar la cita.', 'danger');
-        });
-    });
-
-    document.getElementById('eliminarCitaForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const eliminarIdCita = document.getElementById('eliminarIdCita').value;
-
-        $.post('/eliminar-cita', {
-            idCita: eliminarIdCita
-        }).done(function(response) {
-            mostrarMensaje('Cita eliminada exitosamente.', 'success');
-            $('#eliminarCitaModal').modal('hide');
-        }).fail(function(error) {
-            mostrarMensaje('Error al eliminar la cita.', 'danger');
-        });
-    });
-    </script>
+    <script src="./static/script/citas.js"></script> <!-- Archivo JavaScript externo -->
 </body>
 </html>
-
