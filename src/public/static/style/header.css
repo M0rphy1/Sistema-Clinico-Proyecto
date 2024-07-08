@@ -9,8 +9,12 @@ nav {
 }
 
 .logo-company {
-  height: 50px;
-  width: 210px;
+  object-fit: fill;
+  border-radius: 30%;
+  width: 20%;
+  aspect-ratio: 1/1;
+  margin-left: 150px;
+  display: grid;
 }
 
 .menu {
