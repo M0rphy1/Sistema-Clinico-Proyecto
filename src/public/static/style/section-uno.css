@@ -1,5 +1,6 @@
+/* SECTION-UNO */
 .section-1 {
-  background-color: #ffc400;
+  background-color: #81b2ad; /* Cambiado de #ffc400 a #070D0D */
   display: flex;
   padding: 130px 0px;
   justify-content: center;
@@ -10,7 +11,7 @@
 }
 
 .texto-section {
-  color: #ffffff;
+  color: #E9F2F1; /* Cambiado de #ffffff a #E9F2F1 */
 }
 .texto-titulo {
   font-size: 65px;
@@ -26,23 +27,21 @@
 
 .button-section1 a {
   text-decoration: none;
-  color: #ffffff;
+  color: #E9F2F1; /* Cambiado de #ffffff a #E9F2F1 */
   font-size: 20px;
-
   margin-right: 10px;
   border-radius: 5px;
   font-weight: bolder;
 }
 
 .button-section1 .button-1 {
-  background-color: #00bfcb;
+  background-color: #182626; /* Cambiado de #00bfcb a #182626 */
   padding: 19px 30px 19px 30px;
 }
 
 .button-section1 .button-2 {
-  border: #ffffff 3px solid;
+  border: #E9F2F1 3px solid; /* Cambiado de #ffffff a #E9F2F1 */
   padding: 16px 30px 16px 30px;
-
 }
 
 .button-section1 a:hover {
@@ -59,10 +58,9 @@
   opacity: 80%;
 }
 
-/*  celulares */
+/* celulares */
 @media (max-width: 700px) {
   .section-1 {
-
     padding: 50px 0px;
     flex-direction: column;
   }
@@ -94,18 +92,17 @@
 
   .button-section1 a {
     font-size: 16px;
-    
     border-radius: 5px;
     font-weight: bolder;
   }
 
   .button-section1 .button-1 {
-    background-color: #00bfcb;
+    background-color: #182626; /* Cambiado de #00bfcb a #182626 */
     padding: 12px 20px 12px 20px;
   }
 
   .button-section1 .button-2 {
-    border: #ffffff 2px solid;
+    border: #E9F2F1 2px solid; /* Cambiado de #ffffff a #E9F2F1 */
     padding: 10px 20px 10px 20px;
   }
 
@@ -118,6 +115,7 @@
     height: 300px;
   }
 }
+
 /* tablet */
 @media (min-width: 700px) and (max-width: 1000px) {
   .section-1 {
@@ -130,7 +128,7 @@
   }
 
   .texto-section {
-    color: #ffffff;
+    color: #E9F2F1; /* Cambiado de #ffffff a #E9F2F1 */
   }
   .texto-titulo {
     font-size: 65px;
@@ -146,7 +144,7 @@
 
   .button-section1 a {
     text-decoration: none;
-    color: #ffffff;
+    color: #E9F2F1; /* Cambiado de #ffffff a #E9F2F1 */
     font-size: 20px;
     margin-right: 10px;
     border-radius: 5px;
@@ -154,12 +152,11 @@
   }
 
   .button-section1 .button-1 {
-    background-color: #00bfcb;
-  
+    background-color: #182626; /* Cambiado de #00bfcb a #182626 */
   }
 
   .button-section1 .button-2 {
-    border: #ffffff 3px solid;
+    border: #E9F2F1 3px solid; /* Cambiado de #ffffff a #E9F2F1 */
   }
 
   .button-section1 a:hover {
@@ -169,7 +166,6 @@
 
   .imagen-section-1 {
     height: 500px;
-    /* border: solid 10px red; */
   }
 
   .imagen-section-1:hover {
