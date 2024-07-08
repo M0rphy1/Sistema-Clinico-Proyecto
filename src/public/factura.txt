@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Facturas</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Gestión de Facturas</h1>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#registroFacturaModal">Registrar Factura</button>
+        <button class="btn btn-secondary" data-toggle="modal" data-target="#actualizarFacturaModal">Actualizar Factura</button>
+        <button class="btn btn-info" data-toggle="modal" data-target="#buscarFacturaModal">Buscar Factura</button>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#eliminarFacturaModal">Eliminar Factura</button>
+    </div>
+    
+    <!-- Modal para Registrar Factura -->
+    <div class="modal fade" id="registroFacturaModal" tabindex="-1" role="dialog" aria-labelledby="registroFacturaModalLabel" aria-hidden="true">
+        <!-- Código del modal omitido para brevedad -->
+    </div>
+
+    <!-- Modal para Actualizar Factura -->
+    <div class="modal fade" id="actualizarFacturaModal" tabindex="-1" role="dialog" aria-labelledby="actualizarFacturaModalLabel" aria-hidden="true">
+        <!-- Código del modal omitido para brevedad -->
+    </div>
+
+    <!-- Modal para Buscar Factura -->
+    <div class="modal fade" id="buscarFacturaModal" tabindex="-1" role="dialog" aria-labelledby="buscarFacturaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="buscarFacturaModalLabel">Buscar Factura</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="buscarFacturaForm">
+                        <div class="form-group">
+                            <label for="buscarIdFactura">ID Factura</label>
+                            <input type="number" class="form-control" id="buscarIdFactura" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Buscar</button>
+                    </form>
+                    <div id="buscarFacturaResultado" class="mt-3">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Campo</th>
+                                    <th scope="col">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaResultado">
+                                <!-- Aquí se mostrarán los detalles de la factura -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Eliminar Factura -->
+    <div class="modal fade" id="eliminarFacturaModal" tabindex="-1" role="dialog" aria-labelledby="eliminarFacturaModalLabel" aria-hidden="true">
+        <!-- Código del modal omitido para brevedad -->
+    </div>
+
+    <!-- Contenedor para mensajes -->
+    <div id="mensajeResultado" class="alert" role="alert" style="display:none;"></div>
+
+    <!-- Tabla para mostrar resultados de búsqueda -->
+    <div class="container mt-5">
+        <h2>Resultado de Búsqueda de Factura</h2>
+        <table id="tablaResultados" class="table">
+            <thead>
+                <tr>
+                    <th>ID Factura</th>
+                    <th>Nombre Cliente</th>
+                    <th>Nombre Mascota</th>
+                    <th>Descripción Factura</th>
+                    <th>Fecha Factura</th>
+                    <th>Nombre Medicamento</th>
+                    <th>Nombre Suministro</th>
+                    <th>Acciones</th> <!-- Nueva columna para acciones -->
+                </tr>
+            </thead>
+            <tbody id="tablaResultadosBody">
+                <!-- Aquí se agregarán las filas dinámicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        // Función para mostrar mensajes
+        function mostrarMensaje(mensaje, tipo) {
+            const mensajeResultado = document.getElementById('mensajeResultado');
+            mensajeResultado.textContent = mensaje;
+            mensajeResultado.className = `alert alert-${tipo}`;
+            mensajeResultado.style.display = 'block';
+            setTimeout(() => {
+                mensajeResultado.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Función para buscar una factura por ID y mostrar en la tabla
+        document.getElementById('buscarFacturaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const buscarIdFactura = document.getElementById('buscarIdFactura').value;
+
+            fetch(`/api/facturas/${buscarIdFactura}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    mostrarMensaje(data.error, 'danger');
+                } else {
+                    const tablaResultadosBody = document.getElementById('tablaResultadosBody');
+                    tablaResultadosBody.innerHTML = ''; // Limpiar tabla antes de agregar resultados
+
+                    const newRow = tablaResultadosBody.insertRow();
+                    newRow.innerHTML = `
+                        <td>${data.idFactura}</td>
+                        <td>${data.Cliente ? data.Cliente.nombreCliente : 'No especificado'}</td>
+                        <td>${data.Mascotum ? data.Mascotum.nombreMascota : 'No especificado'}</td>
+                        <td>${data.descripcionFactura ? data.descripcionFactura : 'No especificado'}</td>
+                        <td>${data.fechaFactura ? new Date(data.fechaFactura).toLocaleDateString() : 'No especificado'}</td>
+                        <td>${data.Medicamento ? data.Medicamento.nombreMedicamento : 'No especificado'}</td>
+                        <td>${data.Suministro ? data.Suministro.nombreSuministro : 'No especificado'}</td>
+                        <td><a href="#" onclick="descargarFactura(${data.idFactura})">Descargar PDF</a></td>
+                    `;
+                    mostrarMensaje('Factura encontrada.', 'success');
+                }
+            })
+            .catch((error) => {
+                console.error('Error al buscar la factura:', error);
+                mostrarMensaje('Error al buscar la factura. Verifica la consola para más detalles.', 'danger');
+            });
+        });
+
+        // Función para descargar la factura como PDF
+        function descargarFactura(idFactura) {
+            fetch(`/api/facturas/pdf/${idFactura}`)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(new Blob([blob]));
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = `Factura_${idFactura}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+            })
+            .catch((error) => {
+                console.error('Error al descargar la factura en PDF:', error);
+                mostrarMensaje('Error al descargar la factura en PDF. Verifica la consola para más detalles.', 'danger');
+            });
+        }
+
+        // Función para buscar una factura por ID
+        document.getElementById('buscarFacturaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const buscarIdFactura = document.getElementById('buscarIdFactura').value;
+
+            fetch(`/api/facturas/${buscarIdFactura}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    mostrarMensaje(data.error, 'danger');
+                } else {
+                    const tablaResultado = document.getElementById('tablaResultado');
+                    tablaResultado.innerHTML = `
+                        <tr>
+                            <th scope="row">ID Factura</th>
+                            <td>${data.idFactura}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Nombre Cliente</th>
+                            <td>${data.Cliente ? data.Cliente.nombreCliente : 'No especificado'}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Nombre Mascota</th>
+                            <td>${data.Mascotum ? data.Mascotum.nombreMascota : 'No especificado'}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Descripción Factura</th>
+                            <td>${data.descripcionFactura ? data.descripcionFactura : 'No especificado'}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Fecha Factura</th>
+                            <td>${data.fechaFactura ? new Date(data.fechaFactura).toLocaleDateString() : 'No especificado'}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Nombre Medicamento</th>
+                            <td>${data.Medicamento ? data.Medicamento.nombreMedicamento : 'No especificado'}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Nombre Suministro</th>
+                            <td>${data.Suministro ? data.Suministro.nombreSuministro : 'No especificado'}</td>
+                        </tr>
+                    `;
+                    mostrarMensaje('Factura encontrada.', 'success');
+                }
+            })
+            .catch((error) => {
+                console.error('Error al buscar la factura:', error);
+                mostrarMensaje('Error al buscar la factura. Verifica la consola para más detalles.', 'danger');
+            });
+        });
+    </script>
+</body>
+</html>
