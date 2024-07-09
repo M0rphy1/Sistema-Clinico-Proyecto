@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const row = document.createElement('tr');
         row.id = `mascota-${mascota.idMascota}`;
         row.innerHTML = `
-          <td>${mascota.idMascota}</td>
           <td>${mascota.nombreMascota}</td>
           <td>${mascota.especie}</td>
           <td>${mascota.raza || ''}</td>
@@ -93,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
           const row = document.createElement('tr');
           row.id = `mascota-${mascota.idMascota}`;
           row.innerHTML = `
-            <td>${mascota.idMascota}</td>
             <td>${mascota.nombreMascota}</td>
             <td>${mascota.especie}</td>
             <td>${mascota.raza || ''}</td>
@@ -133,7 +131,6 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       const response = await fetch(`/api/mascotas/${idMascota}`);
       const mascota = await response.json();
-      document.getElementById('idMascota').value = mascota.idMascota;
       document.getElementById('nombreMascota').value = mascota.nombreMascota;
       document.getElementById('especieMascota').value = mascota.especie;
       document.getElementById('razaMascota').value = mascota.raza || '';

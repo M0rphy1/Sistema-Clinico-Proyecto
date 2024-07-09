@@ -50,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function () {
       data.forEach(proveedor => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${proveedor.idProveedor}</td>
           <td>${proveedor.nombreProveedor}</td>
           <td>${proveedor.direccion || ''}</td>
           <td>${proveedor.telefono || ''}</td>
@@ -80,7 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
         data.forEach(proveedor => {
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td>${proveedor.idProveedor}</td>
             <td>${proveedor.nombreProveedor}</td>
             <td>${proveedor.direccion || ''}</td>
             <td>${proveedor.telefono || ''}</td>
@@ -121,7 +119,6 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       const response = await fetch(`/api/proveedores/${idProveedor}`);
       const proveedor = await response.json();
-      document.getElementById('idProveedor').value = proveedor.idProveedor;
       document.getElementById('nombreProveedor').value = proveedor.nombreProveedor;
       document.getElementById('direccionProveedor').value = proveedor.direccion || '';
       document.getElementById('telefonoProveedor').value = proveedor.telefono || '';

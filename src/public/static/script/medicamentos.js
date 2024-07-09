@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const row = document.createElement('tr');
         row.id = `medicamento-${medicamento.idMedicamento}`;
         row.innerHTML = `
-          <td>${medicamento.idMedicamento}</td>
           <td>${medicamento.nombreMedicamento}</td>
           <td>${medicamento.descripcion || ''}</td>
           <td>${medicamento.precio}</td>
@@ -126,7 +125,6 @@ try {
           const row = document.createElement('tr');
           row.id = `medicamento-${medicamento.idMedicamento}`;
           row.innerHTML = `
-            <td>${medicamento.idMedicamento}</td>
             <td>${medicamento.nombreMedicamento}</td>
             <td>${medicamento.descripcion || ''}</td>
             <td>${medicamento.precio}</td>
@@ -169,7 +167,6 @@ try {
     try {
       const response = await fetch(`/api/medicamentos/${idMedicamento}`);
       const medicamento = await response.json();
-      document.getElementById('idMedicamento').value = medicamento.idMedicamento;
       document.getElementById('nombreMedicamento').value = medicamento.nombreMedicamento;
       document.getElementById('descripcionMedicamento').value = medicamento.descripcion || '';
       document.getElementById('precioMedicamento').value = medicamento.precio;

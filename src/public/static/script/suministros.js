@@ -65,7 +65,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const row = document.createElement('tr');
         row.id = `suministro-${suministro.idSuministro}`;
         row.innerHTML = `
-          <td>${suministro.idSuministro}</td>
           <td>${suministro.idProveedor}</td>
           <td>${suministro.nombreSuministro}</td>
           <td>${suministro.descripcion || ''}</td>
@@ -96,7 +95,6 @@ document.addEventListener('DOMContentLoaded', function () {
           const row = document.createElement('tr');
           row.id = `suministro-${suministro.idSuministro}`;
           row.innerHTML = `
-            <td>${suministro.idSuministro}</td>
             <td>${suministro.idProveedor}</td>
             <td>${suministro.nombreSuministro}</td>
             <td>${suministro.descripcion || ''}</td>
@@ -137,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       const response = await fetch(`/api/suministros/${idSuministro}`);
       const suministro = await response.json();
-      document.getElementById('idSuministro').value = suministro.idSuministro;
       document.getElementById('idProveedor').value = suministro.idProveedor;
       document.getElementById('nombreSuministro').value = suministro.nombreSuministro;
       document.getElementById('descripcionSuministro').value = suministro.descripcion || '';
