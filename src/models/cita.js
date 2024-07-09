@@ -1,4 +1,4 @@
-const express = require('express');
+ const express = require('express');
 const bodyParser = require('body-parser');
 const { DataTypes } = require('sequelize');
 const sequelize = require('../database/conexiones'); // Asegúrate de tener la configuración correcta de Sequelize
