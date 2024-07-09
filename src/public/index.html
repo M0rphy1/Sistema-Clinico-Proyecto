@@ -12,19 +12,64 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./static/style/normalize.css" />
+    <!-- <link rel="stylesheet" href="./static/style/normalize.css" /> -->
     <link rel="stylesheet" href="./static/style/reset.css" />
     <link rel="stylesheet" href="./static/style/base.css" />
     <link rel="stylesheet" href="./static/style/header.css" />
     <link rel="stylesheet" href="./static/style/section-uno.css" />
     <link rel="stylesheet" href="./static/style/section-dos.css" />
     <link rel="stylesheet" href="./static/style/section-tres.css" />
-    <link rel="stylesheet" href="./static/style/section-cuatro.css" />
-    <link rel="stylesheet" href="./static/style/section-cinco.css" />
     <link rel="stylesheet" href="./static/style/section-seix.css" />
-    <link rel="stylesheet" href="./static/style/section-siete.css">
-    <link rel="stylesheet" href="./static/style/section-ocho.css" />
     <link rel="stylesheet" href="./static/style/footer.css" />
+    <style>
+      /* Estilos para el botón del menú en pantallas pequeñas */
+      .menu-toggle {
+        display: none;
+        cursor: pointer;
+      }
+
+      .menu-toggle div {
+        width: 25px;
+        height: 3px;
+        background-color: #333;
+        margin: 5px;
+      }
+
+      /* Estilos para el menú */
+      .menu {
+        display: flex;
+        list-style: none;
+        padding: 0;
+      }
+
+      .menu-item {
+        margin: 0 15px;
+        text-decoration: none;
+        color: #333;
+      }
+
+      /* Estilos responsivos */
+      @media (max-width: 768px) {
+        .menu {
+          display: none;
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .menu-item {
+          padding: 10px;
+          border-bottom: 1px solid #ddd;
+        }
+
+        .menu.active {
+          display: flex;
+        }
+
+        .menu-toggle {
+          display: block;
+        }
+      }
+    </style>
     <title>Veterinaria</title>
     
     <script
@@ -48,30 +93,26 @@
             />
           </a>
         </h1>
-        <div class="menu">
-          <a class="menu-item" href="#Home">Inicio</a>
-          <a class="menu-item" href="#About">Sobre</a>
-          <a class="menu-item" href="#Service">Servicio</a>
-          <a class="menu-item" href="#Contact">Contacto</a>
-          <a href="registro.html" class="menu-item">Registrarse</a>
-          <a href="login.html" class="menu-item">Iniciar Sesión</a>
-          <a href="chatbot.html" class="menu-item">Chatea</a>
-          <!-- <input type="text" class="input-menu" placeholder="Search.." />
-          <div class="button-menu">
-            <a class="button-menu" href=""
-              ><img
-                src="./static/image/lupa-blanca.png"
-                alt="lupa"
-                class="lupa-button"
-            /></a>
-          </div> -->
+        <div class="menu-toggle" onclick="toggleMenu()">
+          <div></div>
+          <div></div>
+          <div></div>
         </div>
+        <ul class="menu">
+          <li><a class="menu-item" href="#home">Inicio</a></li>
+          <li><a class="menu-item" href="#about">Sobre</a></li>
+          <li><a class="menu-item" href="#service">Servicio</a></li>
+          <li><a class="menu-item" href="#contact">Contacto</a></li>
+          <li><a href="registro.html" class="menu-item">Registrarse</a></li>
+          <li><a href="login.html" class="menu-item">Iniciar Sesión</a></li>
+          <li><a href="chatbot.html" class="menu-item">Chatea</a></li>
+        </ul>
       </nav>
     </header>
     <!-- termina header -->
     <main>
       <!-- inicia section-1 -->
-      <section class="section-1">
+      <section id="home" class="section-1">
         <div class="section-contenido">
           <h2 class="texto-section texto-titulo">
             La mejor atención cuando más la necesitas.
@@ -80,20 +121,20 @@
             Nos dedicamos al cuidado de tus peluditos.
           </h3>
           <div class="button-section1">
-            <a href="" class="button-1">Contactanos</a>
-            <a href="" class="button-2">Nuestros Servicios</a>
+            <a href="#contact" class="button-1">Contactanos</a>
+            <a href="#service" class="button-2">Nuestros Servicios</a>
           </div>
         </div>
         <img
           class="imagen-section-1"
-          src="./static/image/image-header-dog.png"
+          src="./static/image/gato.png"
           alt="perro"
         />
       </section>
       <!-- termina section-1 -->
 
       <!-- inicia section 2  -->
-      <section class="section-dos">
+      <section id="about" class="section-dos">
         <div class="section-dos-left">
           <h2 class="section-dos-titulo">
             Veterinarios y amantes de los animales.
@@ -104,18 +145,14 @@
             las instalaciones adecuadas para atender las necesidades específicas tanto de perros 
             como de gatos. Queremos que todos nuestros pacientes se sientan como en casa.
           </p>
-          <a class="section-dos-button">Nuestros Servicios</a>
+          <a href="#service" class="section-dos-button">Nuestros Servicios</a>
         </div>
-        <img
-          src="./static/image/image-section-2.png"
-          alt="perro con familia"
-          class="img-principal"
-        />
+        <img src="./static/image/image-section-2.png" alt="perro con familia" class="img-principal"/>
       </section>
       <!-- termina section 2  -->
 
       <!-- inicia section 3  -->
-      <section class="section-tres">
+      <section id="service" class="section-tres">
         <h2 class="section-tres-titulo">Servicios Médicos</h2>
         <p class="section-tres-parrafo">
           Contamos con una variedad de servicios médicos para atender a tu mascota en lo que necesite.
@@ -158,203 +195,48 @@
       </section>
       <!-- termina section 3  -->
 
-
-
       <!-- inicia section 5  -->
-      <section class="section-seis">
+      <section id="team" class="section-seis">
         <h2 class="section-seis-titulo">EQUIPO VETERNAY</h2>
         <p class="section-seis-parrafo">
           Medicos Veterinarios especializados en todo tipo de animales de cualquier raza.
         </p>
         <div class="section-seis-cajas">
           <div class="section-seis-caja1">
-            <img src="./static/image/doc-1.png" alt="" class="caja1-img" />
-            <h3 class="nombre">Jennifer Mullen</h3>
-            <p class="ocupacion">VETERINARIA</p>
+            <img src="./static/image/doc-2.jpg" alt="" class="caja1-img" />
+            <h3 class="nombre">Fernando Macas</h3>
+            <p class="ocupacion">VETERINARIO</p>
             <div class="redes-sociales">
               <div class="instagram">
                 <img src="./static/image/Instagram.png" alt="icono instagram " />
               </div>
 
               <div class="facebook">
-                <img src="./static/image/Facebook.png" alt="icono facebook" />
-              </div>
-
-              <div class="twitter">
-                <img src="./static/image/Twitter.png" alt="icono twitter" />
-              </div>
-
-              <div class="whatsapp">
-                <img src="./static/image/WhatsApp.png" alt="icono whatsapp" />
+                <img src="./static/image/Facebook.png" alt="icono facebook " />
               </div>
             </div>
           </div>
-
-          <div class="section-seis-caja2">
-            <img src="./static/image/doc-2.png" alt="" class="caja2-img" />
-            <h3 class="nombre">Sheeren Collins</h3>
-            <p class="ocupacion">ADMINISTRACIÓN</p>
-            <div class="redes-sociales">
-              <div class="instagram">
-                <img src="./static/image/Instagram.png" alt="icono instagram " />
-              </div>
-
-              <div class="facebook">
-                <img src="./static/image/Facebook.png" alt="icono facebook" />
-              </div>
-
-              <div class="twitter">
-                <img src="./static/image/Twitter.png" alt="icono twitter" />
-              </div>
-
-              <div class="whatsapp">
-                <img src="./static/image/WhatsApp.png" alt="icono whatsapp" />
-              </div>
-            </div>
-          </div>
-
-          <div class="section-seis-caja3">
-            <img src="./static/image/doc-3.png " alt="" class="caja3-img" />
-            <h3 class="nombre">Jennifer Mullen</h3>
-            <p class="ocupacion">VETERINARIA</p>
-            <div class="redes-sociales">
-              <div class="instagram">
-                <img src="./static/image/Instagram.png" alt="icono instagram " />
-              </div>
-
-              <div class="facebook">
-                <img src="./static/image/Facebook.png" alt="icono facebook" />
-              </div>
-
-              <div class="twitter">
-                <img src="./static/image/Twitter.png" alt="icono twitter" />
-              </div>
-
-              <div class="whatsapp">
-                <img src="./static/image/WhatsApp.png" alt="icono whatsapp" />
-              </div>
-            </div>
-          </div>
+          
         </div>
       </section>
       <!-- termina section 5  -->
+    </main>
 
-       <!-- inicia section 6  -->
-       <section class="section-siete">
-        
-      
-        <div class="section-siete-cajas">
-          <div class="section-siete-caja1">
-             <img 
-              src="./static/image/Icon-1.png"
-              alt="icono corazon"
-              class="caja-img"
-            /> 
-            <h3 class="caja-cifra uno">+34793</h3>
-            <p class="caja-parrafo uno">
-              Clientes Felices
-            </p>
-          </div>
-          
-          <div class="section-siete-caja2">
-            <img 
-            src="./static/image/Icon-2.png"
-            alt="icono medico"
-            class="caja-img"
-          /> 
-          <h3 class="caja-cifra dos">+45382</h3>
-          <p class="caja-parrafo dos">
-            Departamento
+    <!-- inicia footer -->
+    <footer id="contact">
+      <div class="footer-contenido">
+        <!-- <img src="./static/image/logo-sist.clinico.png" alt="logo" class="logo" /> -->
+        <div class="contacto-right">
+          <h2 class="titulo-contacto">Ubicanos en:</h2>
+          <p class="parrafo-contacto">
+            1045 Morningview Lane, Austin, TX
+            78744 (800) 555-5555
           </p>
-          </div>
-
-          <div class="section-siete-caja3">
-            <img 
-            src="./static/image/Icon-3.png"
-            alt=""
-            class="caja-img"
-          /> 
-          <h3 class="caja-cifra tres">+54762
-            </h3>
-          <p class="caja-parrafo tres">
-            Vacunaciones
-          </p>
-          </div>
-
-        </div> 
-      </section>
-      <!-- termina section 6  -->
-
-      <!-- inicia section 7  -->
-      <section class="section-ocho">
-        <h2 class="section-ocho-titulo">Posts Recientes</h2>
-        <br>
-        <div class="section-ocho-cajas">
-          <div class="section-ocho-caja1">
-            <img src="./static/image/recent-post-1.png" alt="" class="caja1-img"/><div class="caja-informacion">
-              <h3 class="caja-titulo">As a veterinarian and
-                lover of animals</h3>
-              <p class="caja-fecha">FEBRUARY 09, 2020</p>
-              <p class="caja-parrafo">Lorem Ipsum available, but the majo
-                rity have suffered alteration in some
-                words which look.</p>
-              <a href="">Leer más+</a>
-            </div>
-            
-          </div>
-
-          <div class="section-ocho-caja2">
-            <img src="./static/image/recent-post-2.png" alt="" class="caja2-img" />
-            <div class="caja-informacion sin-borde">
-              <h3 class="caja-titulo">As a veterinarian and
-                lover of animals</h3>
-              <p class="caja-fecha">FEBRUARY 09, 2020</p>
-              <p class="caja-parrafo">Lorem Ipsum available, but the majo
-                rity have suffered alteration in some
-                words which look.</p>
-              <a href="">Leer más+</a>
-            </div>
-          </div>
-
-          <div class="section-ocho-caja3">
-            <img src="./static/image/recent-post-3.png" alt="" class="caja3-img" />
-            <div class="caja-informacion">
-              <h3 class="caja-titulo">As a veterinarian and
-                lover of animals</h3>
-              <p class="caja-fecha">FEBRUARY 09, 2020</p>
-              <p class="caja-parrafo">Lorem Ipsum available, but the majo
-                rity have suffered alteration in some
-                words which look.</p>
-              <a href="">Leer más+</a>
-            </div>
-          </div>
         </div>
-      </section>
-      <!-- termina section 7  -->
-
-      <!-- footer -->
-      <footer>
-        <div class="about">
-          <h2 class="titulo">Quiénes Somos</h2>
-          <p class="about-item">Historia</p>
-          <p class="about-item">Nuestro Equipo</p>
-          <p class="about-item">Terminos & Condiciones</p>
-          <p class="about-item">Politicas de Privacidad</p>
-
-        </div>
-       
-        <div class="services">
-          
-        <h2 class="titulo">Servicios</h2>
-        <p class=" services-item">Como agendar Citas</p>
-        <p class="services-item">Servicios Médicos</p>
-        <p class="services-item">Promos</p>
-        </div>
-
         <div class="contact">
           <h2 class="titulo">Visita nuestras redes sociales</h2>
           <p class="parrafo-contact">Y dejanos un comentario.</p>  
-
+  
           <div class="contenedor-buscar">
             <div class="contenedot-input">
               <input type="text" class="input-footer">
@@ -368,21 +250,24 @@
                   class="enviar-button"
               />
             </div>
-
+  
           </div>
-          
-         
-          <div class="footer-redes-sociales">
-             <img class="foooter-instagram" src="./static/image/Instagram-footer.png" alt="icono instagram">
-             <img  class="footer-facebook"src="./static/image/Facebook-footer.png" alt="icono facebook">
-            <img class="footertwitter" src="./static/image/Twitter-footer.png" alt="icono facebook">
-             <img class="footer-whatsapp" src="./static/image/WhatsApp-footer.png" alt="icono whatsapp">
-          </div>
-        </div>
-        
-
-      </footer>
-      <!-- footer -->
-    </main>
+  
+        <div class="footer-redes-sociales">
+          <img class="foooter-instagram" src="./static/image/Instagram-footer.png" alt="icono instagram">
+          <img  class="footer-facebook"src="./static/image/Facebook-footer.png" alt="icono facebook">
+         <img class="footertwitter" src="./static/image/Twitter-footer.png" alt="icono facebook">
+          <img class="footer-whatsapp" src="./static/image/WhatsApp-footer.png" alt="icono whatsapp">
+       </div>
+     </div>
+      </div>
+    </footer>
+    <!-- termina footer -->
+    <script>
+      function toggleMenu() {
+        const menu = document.querySelector('.menu');
+        menu.classList.toggle('active');
+      }
+    </script>
   </body>
 </html>

@@ -1,5 +1,6 @@
+/* HEADER */
 nav {
-  background-color: #eaae00;
+  background-color: #6fcdc2; /* Cambiado de #eaae00 a #182626 */
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -24,7 +25,7 @@ nav {
 }
 
 .menu-item {
-  color: #fefaf5;
+  color: #3e4948; /* Cambiado de #fefaf5 a #E9F2F1 */
   text-decoration: none;
   margin-right: 50px;
   font-size: 25px;
@@ -40,24 +41,24 @@ input.input-menu {
   padding-bottom: 5px;
   padding-top: 10px;
   padding-left: 10px;
-  background-color: #ffc400;
+  background-color: #6A7273; /* Cambiado de #ffc400 a #6A7273 */
   border: none;
-  color: #ffffff;
+  color: #E9F2F1; /* Cambiado de #ffffff a #E9F2F1 */
   font-size: 19px;
   box-shadow: 30px 30px 190px -1px #000000;
 }
 
 input.input-menu::placeholder {
-  color: #fff;
+  color: #E9F2F1; /* Cambiado de #fff a #E9F2F1 */
   font-size: 19px;
 }
 
 input.input-menu:focus {
-  outline: none; /* quita el borde  cuandp hay  un focus */
+  outline: none; /* quita el borde cuando hay un focus */
 }
 
 .button-menu {
-  background-color: #00bfcc;
+  background-color: #070D0D; /* Cambiado de #00bfcc a #070D0D */
   height: 45px;
   width: 50px;
   border: none;
@@ -72,18 +73,18 @@ input.input-menu:focus {
   margin-top: 10px;
 }
 
-/*  celulares */
+/* celulares */
 @media (max-width: 700px) {
   nav {
-    background-color: #eaae00;
+    background-color: #182626; /* Cambiado de #eaae00 a #182626 */
     height: 60px;
   }
 
   .menu {
     display: none;
   }
-
 }
+
 /* tablet */
 @media (min-width: 700px) and (max-width: 1000px) {
   .logo-company {

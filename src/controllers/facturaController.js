@@ -4,7 +4,7 @@ const { getIdClienteByName, getIdMascotaByName, getIdMedicamentoByName, getIdSum
 // Crear una nueva cita
 const createFactura = async (req, res) => {
   // Obtener datos de la cita desde el cuerpo de la solicitud
-  const { nombreMascota, nombreCliente, nombreMedicamento, nombreSuministro, fechaFactura, Descripcion } = req.body;
+  const { nombreMascota, nombreCliente, nombreMedicamento, nombreSuministro, fechaFactura, descripcionFactura } = req.body;
 
   try {
     // Obtener IDs basados en los nombres proporcionados
@@ -24,7 +24,7 @@ const createFactura = async (req, res) => {
       idMedicamento,
       idSuministro,
       fechaFactura,
-      Descripcion
+      descripcionFactura
     });
 
     // Actualizar el stock de medicamento
@@ -92,7 +92,7 @@ const getFacturaById = async (req, res) => {
 const updateFactura = async (req, res) => {
   try {
     const { id } = req.params;
-    const { idMascota, idCliente, idMedicamento, idSuministro, fechaFactura, Descripcion } = req.body;
+    const { idMascota, idCliente, idMedicamento, idSuministro, fechaFactura, descripcionFactura } = req.body;
     const factura = await Factura.findByPk(id);
     if (!factura) {
       return res.status(404).json({ message: 'Factura no encontrada' });
@@ -103,7 +103,7 @@ const updateFactura = async (req, res) => {
       idMedicamento,
       idSuministro,
       fechaFactura,
-      Descripcion
+      descripcionFactura
     });
     res.status(200).json(factura);
   } catch (error) {
