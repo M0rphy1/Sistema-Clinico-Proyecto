@@ -39,7 +39,7 @@
         <h1>
           <a href="/admin_index.html">
             <img
-              src="./static/image/logotipo.png"
+              src="./static/image/logo-sist.clinico.png"
               alt="logo-company"
               class="logo-company"
             />
@@ -60,7 +60,7 @@
         </div>
       </div>
     </header>
-
+    <a href="admin_index.html" class="btn btn-outline-primary mt-3 ml-3">Regresar</a>
     <main class="container mt-5">
       <h1 class="my-5">ADMINISTRADOR DE CITAS MÉDICAS</h1>
       <div class="my-5">
@@ -136,34 +136,7 @@
                     <!-- Opciones llenadas dinámicamente desde JavaScript -->
                   </select>
                 </div>
-                <div class="mb-3">
-                  <label for="idMedicamento" class="form-label"
-                    >Medicamento</label
-                  >
-                  <select
-                    name="idMedicamento"
-                    id="idMedicamento"
-                    class="form-select"
-                    required
-                  >
-                    <option value="">Seleccionar mascota</option>
-                    <!-- Opciones llenadas dinámicamente desde JavaScript -->
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="idSuministro" class="form-label"
-                    >Suministro</label
-                  >
-                  <select
-                    name="idSuministro"
-                    id="idSuministro"
-                    class="form-select"
-                    required
-                  >
-                    <option value="">Seleccionar mascota</option>
-                    <!-- Opciones llenadas dinámicamente desde JavaScript -->
-                  </select>
-                </div>
+                
                 <div class="mb-3">
                   <label for="fechaCita" class="form-label">Fecha Cita</label>
                   <input
@@ -264,28 +237,8 @@
                     required
                   ></select>
                 </div>
-                <div class="mb-3">
-                  <label for="modificarIdMedicamento" class="form-label"
-                    >Medicamento</label
-                  >
-                  <select
-                    name="idMedicamento"
-                    id="modificarIdMedicamento"
-                    class="form-select"
-                    required
-                  ></select>
-                </div>
-                <div class="mb-3">
-                  <label for="modificarIdSuministro" class="form-label"
-                    >Suministro</label
-                  >
-                  <select
-                    name="idSuministro"
-                    id="modificarIdSuministro"
-                    class="form-select"
-                    required
-                  ></select>
-                </div>
+                
+                
                 <div class="mb-3">
                   <label for="modificarFechaCita" class="form-label"
                     >Fecha Cita</label
@@ -384,8 +337,6 @@
               <th scope="col">MASCOTA</th>
               <th scope="col">NOMBRE USUARIO</th>
               <th scope="col">CLIENTE</th>
-              <th scope="col">MEDICAMENTO</th>
-              <th scope="col">SUMINISTRO</th>
               <th scope="col">FECHA CITA</th>
               <th scope="col">MOTIVO</th>
               <th scope="col">HORA CITA</th>
@@ -428,17 +379,6 @@
         console.log("mascotas", mascotas);
         return mascotas;
       }
-      async function fetchMedicamentos() {
-        const response = await fetch("http://localhost:4000/api/medicamentos");
-        const medicamentos = await response.json();
-        return medicamentos;
-      }
-
-      async function fetchSuministros() {
-        const response = await fetch("http://localhost:4000/api/suministros");
-        const suministros = await response.json();
-        return suministros;
-      }
       async function fetchUsuarios() {
         const response = await fetch("http://localhost:4000/api/usuarios");
         const usuarios = await response.json();
@@ -459,8 +399,6 @@
         <td>${cita.idMascota}</td>
         <td>${cita.nombreUsuario}</td>
         <td>${cita.idCliente}</td>
-        <td>${cita.idMedicamento}</td>
-        <td>${cita.idSuministro}</td>
         <td>${cita.fechaCita}</td>
         <td>${cita.motivo}</td>
         <td>${cita.horaCita}</td>
@@ -470,7 +408,7 @@
                   class="btn btn-warning"
                   data-bs-toggle="modal"
                   data-bs-target="#modificarCitaModal"
-                  onclick="populateModificarModal('${cita.idCita}', '${cita.idMascota}', '${cita.nombreUsuario}', '${cita.idCliente}', '${cita.idMedicamento}', '${cita.idSuministro}', '${cita.fechaCita}', '${cita.motivo}', '${cita.horaCita}')"
+                  onclick="populateModificarModal('${cita.idCita}', '${cita.idMascota}', '${cita.nombreUsuario}', '${cita.idCliente}', '${cita.fechaCita}', '${cita.motivo}', '${cita.horaCita}')"
               
                   >
                   Modificar
@@ -556,50 +494,6 @@
             option.textContent = `${cliente.nombreCliente} - ${cliente.correo}`; // Ajusta según la estructura de tus datos
             idClienteSelect2.appendChild(option);
           });
-
-          // Llenar select de ID Medicamento en formulario de crear cita médica
-          const idMedicamentoSelect = document.getElementById("idMedicamento");
-          const idMedicamentoSelect2 = document.getElementById(
-            "modificarIdMedicamento"
-          );
-
-          idMedicamentoSelect.innerHTML = "";
-          idMedicamentoSelect2.innerHTML = "";
-          const medicamentos = await fetchMedicamentos();
-          medicamentos.forEach((medicamento) => {
-            const option = document.createElement("option");
-            option.value = medicamento.idMedicamento;
-            option.textContent = `${medicamento.nombreMedicamento}`; // Ajusta según la estructura de tus datos
-            idMedicamentoSelect.appendChild(option);
-          });
-          medicamentos.forEach((medicamento) => {
-            const option = document.createElement("option");
-            option.value = medicamento.idMedicamento;
-            option.textContent = `${medicamento.nombreMedicamento}`; // Ajusta según la estructura de tus datos
-            idMedicamentoSelect2.appendChild(option);
-          });
-
-          // Llenar select de ID Suministro en formulario de crear cita médica
-          const idSuministroSelect = document.getElementById("idSuministro");
-          const idSuministroSelect2 = document.getElementById(
-            "modificarIdSuministro"
-          );
-
-          idSuministroSelect.innerHTML = "";
-          idSuministroSelect2.innerHTML = "";
-          const suministros = await fetchSuministros();
-          suministros.forEach((suministro) => {
-            const option = document.createElement("option");
-            option.value = suministro.idSuministro;
-            option.textContent = `${suministro.nombreSuministro}`; // Ajusta según la estructura de tus datos
-            idSuministroSelect.appendChild(option);
-          });
-          suministros.forEach((suministro) => {
-            const option = document.createElement("option");
-            option.value = suministro.idSuministro;
-            option.textContent = `${suministro.nombreSuministro}`; // Ajusta según la estructura de tus datos
-            idSuministroSelect2.appendChild(option);
-          });
         } catch (error) {
           console.error("Error al obtener las citas médicas:", error);
         }
@@ -613,8 +507,6 @@
           idMascota: form.get("idMascota"),
           nombreUsuario: form.get("nombreUsuario"),
           idCliente: form.get("idCliente"),
-          idMedicamento: form.get("idMedicamento"),
-          idSuministro: form.get("idSuministro"),
           fechaCita: form.get("fechaCita"),
           motivo: form.get("motivo"),
           horaCita: form.get("horaCita"),
@@ -647,8 +539,6 @@
           idMascota: form.get("idMascota"),
           nombreUsuario: form.get("nombreUsuario"),
           idCliente: form.get("idCliente"),
-          idMedicamento: form.get("idMedicamento"),
-          idSuministro: form.get("idSuministro"),
           fechaCita: form.get("fechaCita"),
           motivo: form.get("motivo"),
           horaCita: form.get("horaCita"),
@@ -702,8 +592,6 @@
         idMascota,
         nombreUsuario,
         idCliente,
-        idMedicamento,
-        idSuministro,
         fechaCita,
         motivo,
         horaCita
@@ -712,8 +600,6 @@
         document.getElementById("modificarIdMascota").value = idMascota;
         document.getElementById("modificarNombreUsuario").value = nombreUsuario;
         document.getElementById("modificarIdCliente").value = idCliente;
-        document.getElementById("modificarIdMedicamento").value = idMedicamento;
-        document.getElementById("modificarIdSuministro").value = idSuministro;
         document.getElementById("modificarFechaCita").value =
           fechaCita.split("T")[0];
         document.getElementById("modificarMotivo").value = motivo;
