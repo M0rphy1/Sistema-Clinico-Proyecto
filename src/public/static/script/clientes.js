@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
           });
           const data = await response.json();
           if (response.ok) {
-            alert(`Cliente ${idCliente ? 'actualizado' : 'registrado'} correctamente`);
+            alert(`Cliente ${idCliente ? 'actualizado' : 'registrado'} correctamente. Por favor recargue la pagina.`);
             $('#registroModal').modal('hide'); // Cerrar modal después de registro exitoso
             cargarClientes(); // Recargar la lista de clientes
             document.getElementById('registroClienteForm').reset(); // Limpiar formulario

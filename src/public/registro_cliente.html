@@ -222,6 +222,37 @@
         const dropdownContent = this.nextElementSibling;
         dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
     });
+    //
+    function ordenarPorNombre() {
+        const table = document.querySelector('.table_id');
+        const rows = Array.from(table.querySelectorAll('tbody tr'));
+        rows.sort((rowA, rowB) => {
+            const nombreA = rowA.cells[0].innerText.toLowerCase();
+            const nombreB = rowB.cells[0].innerText.toLowerCase();
+            return nombreA.localeCompare(nombreB);
+        });
+        rows.forEach(row => table.querySelector('tbody').appendChild(row));
+    }
+    
+    function buscarCliente() {
+        const input = document.getElementById('buscarNombre');
+        const filter = input.value.toLowerCase();
+        const table = document.querySelector('.table_id');
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const nombre = row.cells[0].innerText.toLowerCase();
+            if (nombre.includes(filter)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+    
+    // Ordenar la tabla por nombre al cargar la página
+    window.onload = function() {
+        ordenarPorNombre();
+    };
 </script>
 </body>
 
