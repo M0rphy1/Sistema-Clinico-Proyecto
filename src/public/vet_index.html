@@ -11,17 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./static/style/normalize.css">
     <link rel="stylesheet" href="./static/style/reset.css">
-    <link rel="stylesheet" href="./static/style/base.css">
     <link rel="stylesheet" href="./static/style/header.css">
     <link rel="stylesheet" href="./static/style/section-uno.css">
-    <link rel="stylesheet" href="./static/style/section-dos.css">
-    <link rel="stylesheet" href="./static/style/section-tres.css">
-    <link rel="stylesheet" href="./static/style/section-cuatro.css">
-    <link rel="stylesheet" href="./static/style/section-cinco.css">
-    <link rel="stylesheet" href="./static/style/section-seix.css">
-    <link rel="stylesheet" href="./static/style/section-siete.css">
-    <link rel="stylesheet" href="./static/style/section-ocho.css">
-    <link rel="stylesheet" href="./static/style/footer.css">
+    
     <link rel="stylesheet" href="./static/stylee/grid-gallery.css" />
     <style>
         /* Estilos para el botón del menú en pantallas pequeñas */
@@ -85,7 +77,7 @@
         }
         .dropdown-content a {
             display: block;
-            padding: 12px 20px;
+            padding: 5px 10px;
             text-decoration: none;
             color: #333;
             transition: background-color 0.3s ease;
@@ -102,6 +94,10 @@
                 position: relative;
                 width: 100%;
             }
+        }
+        .submenu-item {
+            font-size: 18px; /* Ajusta el tamaño según lo necesites */
+            padding: 10px; /* Puedes ajustar el padding si lo deseas */
         }
     </style>
     <title>Veterinaria</title>
@@ -127,9 +123,9 @@
                 <div class="dropdown">
                     <button class="menu-item dropdown-btn">Inventario &#9662;</button>
                     <div class="dropdown-content">
-                        <a href="./index_medicamento.html">Medicamentos</a>
-                        <a href="./index_suministro.html">Suministros</a>
-                        <a href="./index_proveedores.html">Proveedores</a>
+                        <a href="./index_medicamento.html" class="submenu-item">Medicamentos</a>
+                        <a href="./index_suministro.html" class="submenu-item">Suministros</a>
+                        <a href="./index_proveedores.html" class="submenu-item">Proveedores</a>
                     </div>
                 </div>
                 <!-- Botón de Cerrar Sesión -->
