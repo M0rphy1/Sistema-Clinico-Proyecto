@@ -1,180 +1,133 @@
-document.addEventListener('DOMContentLoaded', function () {
-      // Función para cargar la lista de clientes al cargar la página
-      cargarClientes();
+function toggleMenu() {
+  const menu = document.querySelector('.menu');
+  menu.classList.toggle('active');
+}
 
-      // Evento para enviar el formulario de registro de cliente
-      document.getElementById('registroClienteForm').addEventListener('submit', async function (event) {
-        event.preventDefault();
-        const formData = {
+document.getElementById('logoutButton').addEventListener('click', function() {
+  fetch('/auth/logout', { method: 'POST' })
+      .then(response => {
+          if (response.ok) {
+              window.location.href = '/index.html';
+          } else {
+              alert('Error al cerrar sesión.');
+          }
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('Error al cerrar sesión.');
+      });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  cargarClientes();
+
+  document.getElementById('registroClienteForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+      const formData = {
           nombreCliente: document.getElementById('nombreCliente').value,
           apellido: document.getElementById('apellidoCliente').value,
           telefono: document.getElementById('telefonoCliente').value,
           direccion: document.getElementById('direccionCliente').value,
           correo: document.getElementById('correoCliente').value
-        };
-        try {
+      };
+      try {
           let url = '/api/clientes';
           let method = 'POST';
           const idCliente = document.getElementById('idCliente').value;
           if (idCliente) {
-            url += `/${idCliente}`;
-            method = 'PUT';
+              url += `/${idCliente}`;
+              method = 'PUT'; // Cambia a PUT si idCliente existe
           }
           const response = await fetch(url, {
-            method: method,
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+              method: method,
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(formData)
           });
           const data = await response.json();
           if (response.ok) {
-            alert(`Cliente ${idCliente ? 'actualizado' : 'registrado'} correctamente. Por favor recargue la pagina.`);
-            $('#registroModal').modal('hide'); // Cerrar modal después de registro exitoso
-            cargarClientes(); // Recargar la lista de clientes
-            document.getElementById('registroClienteForm').reset(); // Limpiar formulario
+              alert(`Cliente ${idCliente ? 'actualizado' : 'registrado'} correctamente.`);
+              $('#registroModal').modal('hide'); // Cierra el modal
+              cargarClientes(); // Recarga la lista de clientes
+              document.getElementById('registroClienteForm').reset(); // Resetea el formulario
           } else {
-            throw new Error(data.error || 'Error al procesar la solicitud');
+              throw new Error(data.error || 'Error al procesar la solicitud');
           }
-        } catch (error) {
+      } catch (error) {
           console.error('Error:', error);
           alert(`Error al ${idCliente ? 'actualizar' : 'registrar'} el cliente`);
-        }
-      });
-    });
-
-    async function verificarCorreoCliente() {
-    const correoCliente = document.getElementById('correoCliente').value;
-
-    try {
-      const response = await fetch(`/api/clientes/verificar-correo?correo=${correoCliente}`);
-      if (response.ok) {
-        document.getElementById('errorCorreoCliente').style.display = 'none';
-        alert('El correo electrónico está disponible.');
-      } else {
-        document.getElementById('errorCorreoCliente').style.display = 'block';
       }
-    } catch (error) {
+  });
+});
+
+async function cargarClientes() {
+  const response = await fetch('/api/clientes');
+  const clientes = await response.json();
+  const clientesList = document.getElementById('clientesList');
+  clientesList.innerHTML = '';
+  clientes.forEach(cliente => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+          <td>${cliente.nombreCliente}</td>
+          <td>${cliente.apellido}</td>
+          <td>${cliente.direccion}</td>
+          <td>${cliente.telefono}</td>
+          <td>${cliente.correo}</td>
+          <td>
+              <button class="btn btn-warning" onclick="editarCliente('${cliente.idCliente}')">Editar</button>
+              <button class="btn btn-danger" onclick="eliminarCliente('${cliente.idCliente}')">Eliminar</button>
+          </td>
+      `;
+      clientesList.appendChild(row);
+  });
+}
+
+async function editarCliente(idCliente) {
+  try {
+      const response = await fetch(`/api/clientes/${idCliente}`);
+      const cliente = await response.json();
+      document.getElementById('nombreCliente').value = cliente.nombreCliente;
+      document.getElementById('apellidoCliente').value = cliente.apellido || '';
+      document.getElementById('direccionCliente').value = cliente.direccion || '';
+      document.getElementById('telefonoCliente').value = cliente.telefono || '';
+      document.getElementById('correoCliente').value = cliente.correo || '';
+      document.getElementById('idCliente').value = cliente.idCliente; // Establece el idCliente en el campo oculto
+      $('#registroModal').modal('show'); // Muestra el modal
+  } catch (error) {
       console.error('Error:', error);
-    }
+      alert('Error al cargar los datos del cliente');
   }
+}
 
-    // Función para cargar la lista de clientes desde la API
-    async function cargarClientes() {
+async function eliminarCliente(idCliente) {
+  if (confirm('¿Estás seguro de que deseas eliminar este cliente?')) {
       try {
-        const response = await fetch('/api/clientes');
-        const data = await response.json();
-        const clientesList = document.getElementById('clientesList');
-        clientesList.innerHTML = ''; // Limpiar lista actual
-        data.forEach(cliente => {
-          const row = document.createElement('tr');
-          row.id = `cliente-${cliente.idCliente}`; // Agregar id único a cada fila
-          row.innerHTML = `
-
-            <td>${cliente.nombreCliente}</td>
-            <td>${cliente.apellido || ''}</td>
-            <td>${cliente.telefono || ''}</td>
-            <td>${cliente.direccion || ''}</td>
-            <td>${cliente.correo || ''}</td>
-            <td>
-              <button class="btn btn-sm btn-info" onclick="editarCliente(${cliente.idCliente})">Editar</button>
-              <button class="btn btn-sm btn-danger" onclick="eliminarCliente(${cliente.idCliente})">Eliminar</button>
-            </td>
-          `;
-          clientesList.appendChild(row);
-        });
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error al cargar la lista de clientes');
-      }
-    }
-
-    // Función para eliminar un cliente
-    async function eliminarCliente(idCliente) {
-      if (confirm('¿Estás seguro de eliminar este cliente?')) {
-        try {
           const response = await fetch(`/api/clientes/${idCliente}`, {
-            method: 'DELETE'
+              method: 'DELETE'
           });
-          if (!response.ok) {
-            throw new Error('Cliente no encontrado');
+          if (response.ok) {
+              alert('Cliente eliminado correctamente.');
+              cargarClientes(); // Recarga la lista de clientes
+          } else {
+              throw new Error('Error al eliminar el cliente');
           }
-          alert('Cliente eliminado correctamente');
-          console.log('Cliente eliminado');
-          document.getElementById(`cliente-${idCliente}`).remove(); // Eliminar fila del cliente eliminado
-        } catch (error) {
+      } catch (error) {
           console.error('Error:', error);
           alert('Error al eliminar el cliente');
-        }
       }
-    }
+  }
+}
 
-    // Función para editar un cliente
-    async function editarCliente(idCliente) {
-      try {
-        const response = await fetch(`/api/clientes/${idCliente}`);
-        const cliente = await response.json();
-
-        document.getElementById('nombreCliente').value = cliente.nombreCliente;
-        document.getElementById('apellidoCliente').value = cliente.apellido || '';
-        document.getElementById('direccionCliente').value = cliente.direccion || '';
-        document.getElementById('telefonoCliente').value = cliente.telefono || '';
-        document.getElementById('correoCliente').value = cliente.correo || '';
-        $('#registroModal').modal('show');
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error al cargar los datos del cliente');
+function buscarCliente() {
+  const input = document.getElementById('buscarNombre').value.toLowerCase();
+  const rows = document.querySelectorAll('#clientesList tr');
+  rows.forEach(row => {
+      const nombre = row.cells[0].textContent.toLowerCase();
+      if (nombre.includes(input)) {
+          row.style.display = '';
+      } else {
+          row.style.display = 'none';
       }
-    }
-
-    // Función para actualizar fila de cliente
-    function actualizarFilaCliente(cliente) {
-      const row = document.getElementById(`cliente-${cliente.idCliente}`);
-      row.innerHTML = `
-
-        <td>${cliente.nombreCliente}</td>
-        <td>${cliente.apellido || ''}</td>
-        <td>${cliente.telefono || ''}</td>
-        <td>${cliente.direccion || ''}</td>
-        <td>${cliente.correo || ''}</td>
-        <td>
-          <button class="btn btn-sm btn-info" onclick="editarCliente(${cliente.idCliente})">Editar</button>
-          <button class="btn btn-sm btn-danger" onclick="eliminarCliente(${cliente.idCliente})">Eliminar</button>
-        </td>
-      `;
-    }
-
-    // Función para buscar cliente por nombre
-    async function buscarCliente() {
-      const nombre = document.getElementById('buscarNombre').value;
-      try {
-        const response = await fetch(`/api/clientes/buscar?nombre=${nombre}`);
-        const data = await response.json();
-        const clientesList = document.getElementById('clientesList');
-        clientesList.innerHTML = ''; // Limpiar lista actual
-        if (data.length > 0) {
-          data.forEach(cliente => {
-            const row = document.createElement('tr');
-            row.id = `cliente-${cliente.idCliente}`;
-            row.innerHTML = `
-
-            <td>${cliente.nombreCliente}</td>
-            <td>${cliente.apellido || ''}</td>
-            <td>${cliente.telefono || ''}</td>
-            <td>${cliente.direccion || ''}</td>
-            <td>${cliente.correo || ''}</td>
-            <td>
-                <button class="btn btn-sm btn-info" onclick="editarCliente(${cliente.idCliente})">Editar</button>
-                <button class="btn btn-sm btn-danger" onclick="eliminarCliente(${cliente.idCliente})">Eliminar</button>
-            </td>
-            `;
-            clientesList.appendChild(row);
-          });
-        } else {
-          clientesList.innerHTML = '<tr><td colspan="7" class="text-center">No se encontraron clientes con ese nombre</td></tr>';
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error al buscar el cliente');
-      }
-    }
+  });
+}
