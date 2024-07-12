@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
           });
           const data = await response.json();
           if (response.ok) {
-              alert(`Cliente ${idCliente ? 'actualizado' : 'registrado'} correctamente.`);
+              alert(`Cliente ${idCliente ? 'actualizado' : 'registrado'} correctamente. Por favor, recargue la página.`);
               $('#registroModal').modal('hide'); // Cierra el modal
               cargarClientes(); // Recarga la lista de clientes
               document.getElementById('registroClienteForm').reset(); // Resetea el formulario
@@ -64,6 +64,14 @@ document.addEventListener('DOMContentLoaded', function () {
 async function cargarClientes() {
   const response = await fetch('/api/clientes');
   const clientes = await response.json();
+
+  // Ordena los clientes por nombreCliente
+  clientes.sort((a, b) => {
+      const nombreA = a.nombreCliente.toLowerCase();
+      const nombreB = b.nombreCliente.toLowerCase();
+      return nombreA.localeCompare(nombreB);
+  });
+
   const clientesList = document.getElementById('clientesList');
   clientesList.innerHTML = '';
   clientes.forEach(cliente => {
@@ -107,7 +115,7 @@ async function eliminarCliente(idCliente) {
               method: 'DELETE'
           });
           if (response.ok) {
-              alert('Cliente eliminado correctamente.');
+              alert('Cliente eliminado correctamente. Por favor, recargue la página.');
               cargarClientes(); // Recarga la lista de clientes
           } else {
               throw new Error('Error al eliminar el cliente');
@@ -131,3 +139,4 @@ function buscarCliente() {
       }
   });
 }
+
