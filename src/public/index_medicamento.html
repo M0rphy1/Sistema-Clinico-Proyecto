@@ -6,10 +6,123 @@
   <title>Índice de Medicamentos</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="./static/stylee/medicamentos.css">
+  <link rel="stylesheet" href="./static/style/header.css">
+  <style>
+    /* Estilos para el botón del menú en pantallas pequeñas */
+    .menu-toggle {
+        display: block;
+        cursor: pointer;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+    .menu-toggle div {
+        width: 25px;
+        height: 3px;
+        background-color: #333;
+        margin: 5px;
+    }
+    /* Estilos para el menú */
+    .menu {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        padding: 0;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 200px;
+        height: 100%;
+        transition: right 0.3s ease;
+    }
+    .menu.active {
+        right: 0;
+    }
+    .menu-item {
+        padding: 15px 20px;
+        text-decoration: none;
+        color: #333;
+        transition: background-color 0.3s ease;
+    }
+    .menu-item:hover {
+        background-color: #f0f0f0;
+    }
+    /* Submenú desplegable */
+    .dropdown {
+        position: relative;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+        width: 100%;
+    }
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+    .dropdown-content a {
+        display: block;
+        padding: 12px 20px;
+        text-decoration: none;
+        color: #333;
+        transition: background-color 0.3s ease;
+    }
+    .dropdown-content a:hover {
+        background-color: #f0f0f0;
+    }
+    @media (max-width: 768px) {
+        .menu {
+            width: 70%;
+        }
+        .dropdown-content {
+            position: relative;
+            width: 100%;
+        }
+    }
+  </style>
 </head>
 <body>
+  <header id="header">
+    <nav>
+        <h1>
+            <a href="#header">
+                <img src="./static/image/logo-sist.clinico.png" alt="logo-company" class="logo-company">
+            </a>
+        </h1>
+        <div class="menu">
+            <a class="menu-item" href="./registro_cliente.html">Clientes</a>
+            <a class="menu-item" href="./registro_mascota.html">Mascotas</a>
+            <a class="menu-item" href="./registro_historial.html">Historial</a>
+            <a class="menu-item" href="./registro_citas.html">Citas</a>
+            <a class="menu-item" href="./generar_reporte.html">Informes</a>
+            <a class="menu-item" href="./factura.html">Factura</a>
+            <div class="dropdown">
+                <button class="menu-item dropdown-btn">Inventario &#9662;</button>
+                <div class="dropdown-content">
+                    <a href="./index_medicamento.html">Medicamentos</a>
+                    <a href="./index_suministro.html">Suministros</a>
+                    <a href="./index_proveedores.html">Proveedores</a>
+                </div>
+            </div>
+            <button class="menu-item" id="logoutButton">Cerrar Sesión</button>
+        </div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </nav>
+  </header>
   <a href="vet_index.html" class="btn btn-outline-primary mt-3 ml-3">Regresar</a>
   <div class="container mt-5">
+    <a href="vet_index.html" class="btn btn-outline-primary mt-3 ml-3">Regresar</a>
     <h1>Índice de Medicamentos</h1>
 
     <!-- Formulario de búsqueda -->
@@ -78,5 +191,32 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="./static/script/medicamentos.js"></script>
+  <script>
+    function toggleMenu() {
+        const menu = document.querySelector('.menu');
+        menu.classList.toggle('active');
+    }
+
+    document.getElementById('logoutButton').addEventListener('click', function() {
+        fetch('/auth/logout', { method: 'POST' })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/index.html'; // Redireccionar al inicio de sesión
+                } else {
+                    alert('Error al cerrar sesión.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al cerrar sesión.');
+            });
+    });
+
+    // Script para abrir y cerrar el submenú de inventario
+    document.querySelector('.dropdown-btn').addEventListener('click', function() {
+        const dropdownContent = this.nextElementSibling;
+        dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+    });
+</script>
 </body>
 </html>
