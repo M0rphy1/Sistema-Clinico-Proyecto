@@ -9,6 +9,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./assets/musicstyle.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -147,7 +149,28 @@
             </div>
         </div>
     </div>
-
+    <title>Mini Music Player</title>
+    <div class="music-player-container">
+        <div class="container">
+            <div class="song-info">
+                <div class="artist-name"></div>
+                <div class="song-name"></div>
+                <div class="progress-bar">
+                    <div class="fill-bar"></div>
+                </div>
+                <div class="time">0:00 - 0:00</div>
+            </div>
+            <div class="disk">
+                <div class="circle"></div>
+                <div id="cover" class="cover"></div>
+            </div>
+            <div class="controls">
+                <i id="prev" class="prev-btn fa-solid fa-backward"></i>
+                <i id="play" class="play-btn fa-solid fa-play"></i>
+                <i id="next" class="next-btn fa-solid fa-forward"></i>
+            </div>
+        </div>
+    </div>
     <!-- Importación y configuración del chatbot de Google Gemini -->
     <script type="importmap">
         {
@@ -232,5 +255,6 @@
             });
         });
     </script>
+    <script src="./assets/musicscript.js"></script>
 </body>
 </html>
