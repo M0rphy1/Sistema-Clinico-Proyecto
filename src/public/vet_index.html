@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="./static/style/section-uno.css">
     
     <link rel="stylesheet" href="./static/stylee/grid-gallery.css" />
+    <link rel="stylesheet" href="./static/stylee/calendario.css" />
     <style>
         /* Estilos para el botón del menú en pantallas pequeñas */
         .menu-toggle {
@@ -200,6 +201,24 @@
                 background-image: url('https://img.freepik.com/foto-gratis/cerca-veterinario-cuidando-perro_23-2149100223.jpg?uid=R155140979&ga=GA1.2.1892814119.1720189873&semt=ais_user');
               "></div>
       </div>
+      <div class="calendar-container">
+        <div class="planner">
+            <h1>Event Calendar</h1>
+            <div id="calendar" class="calendar-grid"></div>
+        </div>
+    
+        <button class="add-task-btn" onclick="showAddTaskModal()">Agregue Tarea</button>
+    
+        <div id="addTaskModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAddTaskModal()">&times;</span>
+                <h2>Agregue Tarea</h2>
+                <input type="date" id="task-date">
+                <input type="text" id="task-desc" placeholder="Task Description" autocomplete="off">
+                <button onclick="addTask()">agregue Tarea</button>
+            </div>
+        </div>
+    </div>
     <!-- Script para Cerrar Sesión y toggle de menú -->
     <script>
         function toggleMenu() {
@@ -228,6 +247,7 @@
             dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
         });
     </script>
+    <script src="./static/script/calendario.js"></script>
 </body>
 </html>
 
