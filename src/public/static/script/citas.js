@@ -74,13 +74,13 @@ document.getElementById('registroCitaForm').addEventListener('submit', function(
             })
             .catch((error) => {
                 console.error('Error al registrar la cita:', error);
-                mostrarMensaje('Error al registrar la cita. Verifica la consola para más detalles.', 'danger');
+                mostrarMensaje('Error al registrar la cita. Ha ingresado un dato incorrecto en el campo.', 'danger');
             });
         }
     })
     .catch((error) => {
         console.error('Error al obtener las citas:', error);
-        mostrarMensaje('Error al obtener las citas. Verifica la consola para más detalles.', 'danger');
+        mostrarMensaje('Error al obtener las citas. No se encontró la cita.', 'danger');
     });
 });
 

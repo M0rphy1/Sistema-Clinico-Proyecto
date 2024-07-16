@@ -7,87 +7,137 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="./static/stylee/citas.css">
     <link rel="stylesheet" href="./static/style/header.css">
-  <style>
-    /* Estilos para el botón del menú en pantallas pequeñas */
-    .menu-toggle {
-        display: block;
-        cursor: pointer;
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 1000;
-    }
-    .menu-toggle div {
-        width: 25px;
-        height: 3px;
-        background-color: #333;
-        margin: 5px;
-    }
-    /* Estilos para el menú */
-    .menu {
-        display: flex;
-        flex-direction: column;
-        list-style: none;
-        padding: 0;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        position: fixed;
-        top: 0;
-        right: -100%; /* Inicialmente oculto */
-        width: 200px; /* Ancho del menú */
-        height: 100%; /* Altura completa para cubrir la pantalla */
-        transition: right 0.3s ease;
-    }
-    .menu.active {
-        right: 0; /* Mostrar el menú */
-    }
-    .menu-item {
-        padding: 15px 20px;
-        text-decoration: none;
-        color: #333;
-        transition: background-color 0.3s ease;
-    }
-    .menu-item:hover {
-        background-color: #f0f0f0;
-    }
-    /* Submenú desplegable */
-    .dropdown {
-        position: relative;
-    }
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        z-index: 1;
-        width: 100%;
-    }
-    .dropdown:hover .dropdown-content {
-        display: block;
-    }
-    .dropdown-content a {
-        display: block;
-        padding: 12px 20px;
-        text-decoration: none;
-        color: #333;
-        transition: background-color 0.3s ease;
-    }
-    .dropdown-content a:hover {
-        background-color: #f0f0f0;
-    }
-    /* Estilos responsivos */
-    @media (max-width: 768px) {
-        .menu {
-            width: 70%; /* Ancho del menú en pantallas pequeñas */
+    <style>
+        /* Estilos específicos para los botones */
+        .menu-item {
+            padding: 12px;
+            font-size: 10px;
+            margin-bottom: 10px;
+            width: 80%;
+            max-width: 120px;
+            border-radius: 8px;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-        .dropdown-content {
+    
+        .menu-item:hover {
+            background-color: #45a049;
+        }
+    
+        .dropdown-btn {
+            background-color: #4caf8e;
+            color: #fff;
+            border: none;
+        }
+    
+        .dropdown-btn:hover {
+            background-color: #45a049;
+        }
+    
+        #logoutButton {
+            background-color: #4caf8e;
+            color: #fff;
+            border: none;
+        }
+    
+        #logoutButton:hover {
+            background-color: #45a049;
+        }
+    
+        /* Estilos para el botón del menú en pantallas pequeñas */
+        .menu-toggle {
+            display: block;
+            cursor: pointer;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    
+        .menu-toggle div {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 5px;
+        }
+    
+        /* Estilos para el menú */
+        .menu {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            padding: 0;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 200px;
+            height: 100%;
+            transition: right 0.3s ease;
+        }
+    
+        .menu.active {
+            right: 0;
+        }
+    
+        .menu-item {
+            padding: 15px 20px;
+            color: #333;
+            transition: background-color 0.3s ease;
+            font-size: 18px;
+            text-decoration: none; /* Elimina la subrayado */
+        }
+    
+        .menu-item:hover {
+            background-color: #f0f0f0;
+        }
+    
+        /* Submenú desplegable */
+        .dropdown {
             position: relative;
+        }
+    
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 5%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(210, 208, 208, 0.1);
+            z-index: 1;
             width: 100%;
         }
-    }
-</style>
+    
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    
+        .dropdown-content a {
+            display: block;
+            padding: 12px 20px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+    
+        .dropdown-content a:hover {
+            background-color: #f0f0f0;
+        }
+    
+        @media (max-width: 768px) {
+            .menu {
+                width: 70%;
+            }
+    
+            .dropdown-content {
+                position: relative;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
