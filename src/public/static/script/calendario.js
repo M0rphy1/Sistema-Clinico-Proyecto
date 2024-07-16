@@ -1,10 +1,10 @@
-// Function to call generate calendar on load
+// Función que se llama al cargar la página
 window.onload = function () {
     generateCalendar();
-    loadTasks(); // Load tasks from localStorage
+    loadTasks(); // Cargar tareas desde localStorage
 };
 
-// Function to generate the calendar
+// Función para generar el calendario
 function generateCalendar() {
     const calendar = document.getElementById('calendar');
     const currentDate = new Date();
@@ -15,26 +15,26 @@ function generateCalendar() {
     const firstDayOfWeek = firstDayOfMonth.getDay();
     const totalDays = lastDayOfMonth.getDate();
 
-    // Clear previous calendar
+    // Limpiar el calendario anterior
     calendar.innerHTML = '';
 
-    // Add blank div elements for the days before the first day of the month
+    // Agregar elementos en blanco para los días antes del primer día del mes
     for (let i = 0; i < firstDayOfWeek; i++) {
         let blankDay = document.createElement("div");
         calendar.appendChild(blankDay);
     }
 
-    // Add div elements for each day of the month
+    // Agregar elementos para cada día del mes
     for (let day = 1; day <= totalDays; day++) {
         let daySquare = document.createElement("div");
         daySquare.className = "calendar-day";
-        daySquare.textContent = day;
+        daySquare.textContent = day; // Mostrar el número del día
         daySquare.id = `day-${day}`;
         calendar.appendChild(daySquare);
     }
 }
 
-// Function to load tasks from localStorage
+// Función para cargar tareas desde localStorage
 function loadTasks() {
     const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
     for (const [date, taskList] of Object.entries(tasks)) {
@@ -47,15 +47,15 @@ function loadTasks() {
                 taskElement.className = "task";
                 taskElement.textContent = taskDesc;
 
-                // Add event listener for right-click to delete task
+                // Agregar evento para clic derecho para eliminar tarea
                 taskElement.addEventListener("contextmenu", function (event) {
                     event.preventDefault();
                     deleteTask(taskElement, taskDate);
                 });
 
-                // Add event listener for regular click to edit task
+                // Agregar evento para clic normal para editar tarea
                 taskElement.addEventListener('click', function () {
-                    editTask(taskElement);
+                    editTask(taskElement, taskDate);
                 });
 
                 dayElement.appendChild(taskElement);
@@ -64,25 +64,25 @@ function loadTasks() {
     }
 }
 
-// Function to show the add task modal
+// Función para mostrar la modal de agregar tarea
 function showAddTaskModal() {
     document.getElementById('addTaskModal').style.display = 'block';
 }
 
-// Function to close the add task modal
+// Función para cerrar la modal de agregar tarea
 function closeAddTaskModal() {
     document.getElementById('addTaskModal').style.display = 'none';
 }
 
-// Function to delete a task
+// Función para eliminar una tarea
 function deleteTask(taskElement, taskDate) {
-    if (confirm("Are you sure you want to delete this task?")) {
-        const dateKey = taskDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+    if (confirm("¿Estás seguro de que quieres eliminar esta tarea?")) {
+        const dateKey = taskDate.toISOString().split('T')[0]; // Formato de fecha como YYYY-MM-DD
         const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
         if (tasks[dateKey]) {
             tasks[dateKey] = tasks[dateKey].filter(task => task !== taskElement.textContent);
             if (tasks[dateKey].length === 0) {
-                delete tasks[dateKey]; // Remove the date entry if no tasks left
+                delete tasks[dateKey]; // Eliminar la entrada de fecha si no quedan tareas
             }
             localStorage.setItem('tasks', JSON.stringify(tasks));
         }
@@ -90,36 +90,35 @@ function deleteTask(taskElement, taskDate) {
     }
 }
 
-// Function to edit a task
-function editTask(taskElement) {
-    const newTaskDesc = prompt("Edit your task:", taskElement.textContent);
+// Función para editar una tarea
+function editTask(taskElement, taskDate) {
+    const newTaskDesc = prompt("Edita tu tarea:", taskElement.textContent);
     if (newTaskDesc !== null && newTaskDesc.trim() !== "") {
-        const dateKey = taskElement.parentNode.id.split('-')[1];
+        const dateKey = taskDate.toISOString().split('T')[0];
         const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
-        const taskDate = new Date(new Date().getFullYear(), new Date().getMonth(), dateKey);
-        const formattedDate = taskDate.toISOString().split('T')[0];
-
-        if (tasks[formattedDate]) {
-            const taskIndex = tasks[formattedDate].indexOf(taskElement.textContent);
+        
+        // Actualizar la tarea en el objeto de tareas
+        if (tasks[dateKey]) {
+            const taskIndex = tasks[dateKey].indexOf(taskElement.textContent);
             if (taskIndex !== -1) {
-                tasks[formattedDate][taskIndex] = newTaskDesc; // Update the task description
+                tasks[dateKey][taskIndex] = newTaskDesc; // Actualizar la descripción de la tarea
                 localStorage.setItem('tasks', JSON.stringify(tasks));
             }
         }
-        taskElement.textContent = newTaskDesc;
+        taskElement.textContent = newTaskDesc; // Actualizar el elemento visualmente
     }
 }
 
-// Function to add a task
+// Función para agregar una tarea
 function addTask() {
     const taskDate = new Date(document.getElementById('task-date').value);
     const taskDesc = document.getElementById('task-desc').value.trim();
 
     if (taskDesc && !isNaN(taskDate.getDate())) {
-        const dateKey = taskDate.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+        const dateKey = taskDate.toISOString().split('T')[0]; // Formato de fecha como YYYY-MM-DD
         const tasks = JSON.parse(localStorage.getItem('tasks')) || {};
 
-        // Add the task to the tasks object
+        // Agregar la tarea al objeto de tareas
         if (!tasks[dateKey]) {
             tasks[dateKey] = [];
         }
@@ -139,13 +138,14 @@ function addTask() {
             });
 
             taskElement.addEventListener('click', function () {
-                editTask(taskElement);
+                editTask(taskElement, taskDate);
             });
 
             dayElement.appendChild(taskElement);
         }
         closeAddTaskModal();
     } else {
-        alert("Please enter a valid date and task description!");
+        alert("¡Por favor ingresa una fecha y una descripción de tarea válidas!");
     }
 }
+
