@@ -25,6 +25,12 @@
           <input
             type="button"
             value="Registrarse"
+            onclick="window.location.href = 'registro.html';"
+          />
+          <br>
+          <input
+            type="button"
+            value="Regresar"
             onclick="window.location.href = 'index.html';"
           />
         </div>
@@ -109,8 +115,10 @@
             alert(`Inicio de sesión exitoso, ${data.nombreUsuario}`);
             // Redirigir a la página principal o realizar alguna acción
             window.location.href = "/vet_index.html";
+            event.target.reset();
           } else {
             alert(data.message);
+            event.target.reset();
           }
         });
 
@@ -139,8 +147,10 @@
             );
             // Redirigir a la página de administrador o realizar alguna acción
             window.location.href = "/admin_index.html";
+            event.target.reset();
           } else {
             alert(data.message);
+            event.target.reset();
           }
         });
     </script>

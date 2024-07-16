@@ -18,7 +18,7 @@ body {
     display: flex;
     border-radius: 50px;
     box-shadow: 0 5px 7px rgba(0, 0, 0, 1);
-    height: 700px; /* Aumentar el tamaño de la altura */
+    height: 500px; /* Aumentar el tamaño de la altura */
     max-width: 1000px; /* Aumentar el tamaño del ancho */
     transition: all 0.3s ease;
     margin: 10px;

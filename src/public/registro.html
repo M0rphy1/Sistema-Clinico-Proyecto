@@ -27,17 +27,23 @@
             value="Iniciar Sesión"
             onclick="window.location.href = 'login.html';"
           />
+          <br>
+          <input
+            type="button"
+            value="Regresar"
+            onclick="window.location.href = 'index.html';"
+          />
         </div>
       </div>
       <div class="form-information">
         <div class="form-information-childs">
           <h2>Crear una cuenta</h2>
           <div class="icons">
-            <i class="bx bxl-google"></i>
-            <i class="bx bxl-github"></i>
-            <i class="bx bx-unlink"></i>
+            <!-- <i class="bx bxl-google"></i> -->
+            <!-- <i class="bx bxl-github"></i> -->
+            <!-- <i class="bx bx-unlink"></i> -->
           </div>
-          <p>o usa tu email para registrarte</p>
+          <!-- <p>o usa tu email para registrarte</p> -->
           <form id="registerForm">
             <label>
               <i class="bx bx-user"></i>
@@ -48,7 +54,7 @@
                 required
               />
             </label>
-            <label>
+            <label><br>
               <i class="bx bx-envelope"></i>
               <input
                 type="email"
@@ -56,7 +62,7 @@
                 placeholder="Correo Electrónico"
                 required
               />
-            </label>
+            </label><br>
             <label>
               <i class="bx bxs-lock-alt"></i>
               <input
@@ -66,11 +72,11 @@
                 required
               />
             </label>
-            <label>
+            <label><br>
               <i class="bx bx-user"></i>
               <input type="text" name="nombre" placeholder="Nombre" required />
             </label>
-            <label>
+            <label><br>
               <i class="bx bx-user"></i>
               <input
                 type="text"
@@ -79,7 +85,7 @@
                 required
               />
             </label>
-            <label>
+            <label><br>
               <i class="bx bx-phone"></i>
               <input
                 type="text"
@@ -88,7 +94,7 @@
                 required
               />
             </label>
-            <label>
+            <label><br>
               <i class="bx bx-home"></i>
               <input
                 type="text"
@@ -96,7 +102,7 @@
                 placeholder="Dirección"
                 required
               />
-            </label>
+            </label><br>
             <input type="submit" value="Registrarse" />
           </form>
         </div>
@@ -117,7 +123,7 @@
                 required
               />
             </label>
-            <label>
+            <label><br>
               <i class="bx bx-envelope"></i>
               <input
                 type="email"
@@ -126,7 +132,7 @@
                 required
               />
             </label>
-            <label>
+            <label><br>
               <i class="bx bxs-lock-alt"></i>
               <input
                 type="password"
@@ -135,11 +141,11 @@
                 required
               />
             </label>
-            <label>
+            <label><br>
               <i class="bx bx-user"></i>
               <input type="text" name="nombre" placeholder="Nombre" required />
             </label>
-            <label>
+            <label><br>
               <i class="bx bx-user"></i>
               <input
                 type="text"
@@ -148,7 +154,7 @@
                 required
               />
             </label>
-            <label>
+            <label><br>
               <i class="bx bx-phone"></i>
               <input
                 type="text"
@@ -157,7 +163,7 @@
                 required
               />
             </label>
-            <label>
+            <label><br>
               <i class="bx bx-home"></i>
               <input
                 type="text"
@@ -165,7 +171,7 @@
                 placeholder="Dirección"
                 required
               />
-            </label>
+            </label><br>
             <input type="submit" value="Registrarse" />
           </form>
         </div>
@@ -209,8 +215,10 @@
             alert(`Registro exitoso, Bienvenido ${nombreUsuario}`);
             // Redirigir a la página de inicio de sesión
             window.location.href = "login.html";
+            event.target.reset();
           } else {
             alert(data.message);
+            event.target.reset();
           }
         });
 
@@ -251,8 +259,10 @@
             alert(`Registro exitoso, Bienvenido ${nombreUsuario}`);
             // Redirigir a la página de inicio de sesión
             window.location.href = "login.html";
+            event.target.reset();
           } else {
             alert(data.message);
+            event.target.reset();
           }
         });
     </script>
