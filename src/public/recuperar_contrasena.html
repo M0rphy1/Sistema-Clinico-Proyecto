@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperar Contraseña</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Recuperar Contraseña</h2>
+        <form id="reset-password-form">
+            <div class="form-group">
+                <label for="email">Correo Electrónico:</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+        <div id="message" class="mt-3"></div>
+    </div>
+
+    <script>
+        document.getElementById('reset-password-form').addEventListener('submit', async function (e) {
+            e.preventDefault(); // Prevenir el envío por defecto
+
+            const email = document.getElementById('email').value;
+
+            try {
+                const response = await fetch('/api/reset-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.text();
+                document.getElementById('message').innerText = data;
+            } catch (error) {
+                document.getElementById('message').innerText = 'Error al enviar el correo.';
+            }
+        });
+    </script>
+</body>
+</html>

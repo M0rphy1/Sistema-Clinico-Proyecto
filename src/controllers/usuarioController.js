@@ -78,6 +78,34 @@ const deleteUsuario = async (req, res) => {
   }
 };
 
+// userController.js
+const { sendPasswordResetEmail } = require('../utils/mailer');
+
+const resetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  // Generar una nueva contraseña temporal
+  const tempPassword = Math.random().toString(36).slice(-8);
+
+  try {
+      // Buscar el usuario por correo
+      const usuario = await Usuario.findOne({ where: { correo: email } });
+      if (!usuario) {
+          return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+
+      // Actualizar la contraseña en la base de datos
+      await usuario.update({ contrasena: tempPassword });
+
+      // Enviar el correo de restablecimiento
+      await sendPasswordResetEmail(email, tempPassword);
+      res.status(200).send('Correo de recuperación enviado');
+  } catch (error) {
+      console.error("Error al restablecer la contraseña:", error);
+      res.status(500).send('Error al enviar el correo');
+  }
+};
+
 module.exports = {
   createUsuario,
   getUsuarios,
@@ -85,4 +113,5 @@ module.exports = {
   updateUsuario,
   deleteUsuario,
   getUsuarioByNombreUsuario,
+  resetPassword,
 };

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const usuarioController = require("../controllers/usuarioController");
 const authController = require("../controllers/authController");
+// const { resetPassword } = require('../controllers/usuarioController');
 
 // Rutas para CRUD de usuarios
 router.post("/", usuarioController.createUsuario);
@@ -18,5 +19,6 @@ router.get(
 // Rutas para autenticación
 router.post("/signup", authController.register);
 router.post("/login", authController.login);
+router.post('/reset-password', usuarioController.resetPassword);
 
 module.exports = router;

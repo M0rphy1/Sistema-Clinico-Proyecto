@@ -1,28 +1,32 @@
+// mailer.js
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.MAILER_USER,
-    pass: process.env.MAILER_PASSWORD,
-  },
+    service: 'gmail',
+    auth: {
+        user: 'gianklodd@gmail.com', // Tu correo
+        pass: 'gszg scqy gvdd kcpn' // Tu contraseña o contraseña de aplicación
+    }
 });
 
-const sendEmail = (to, subject, html) => {
+const sendPasswordResetEmail = async (email, tempPassword) => {
   const mailOptions = {
-    from: process.env.MAILER_USER,
-    to,
-    subject,
-    html,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error(error);
-    } else {
-      console.log(`Email sent: ${info.response}`);
-    }
-  });
+    from: 'gianklodd@gmail.com', // Tu correo
+    to: email, // Asegúrate de que este sea un correo receptor válido
+    subject: 'Restablecimiento de contraseña',
+    text: `Tu nueva contraseña temporal es: ${tempPassword}. Por favor, cámbiala después de iniciar sesión.`,
 };
 
-module.exports = { sendEmail };
+  try {
+      await transporter.sendMail(mailOptions);
+      console.log('Correo enviado correctamente');
+  } catch (error) {
+      console.error('Error al enviar el correo:', error.message); // Registra el mensaje de error
+      throw new Error('Error al enviar el correo');
+  }
+  
+};
+
+module.exports = {
+    sendPasswordResetEmail,
+};

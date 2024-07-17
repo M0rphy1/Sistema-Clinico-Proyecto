@@ -16,7 +16,7 @@ const medicamentoRoutes = require('./routes/medicamentoRoutes');
 const reporteRoutes = require('./routes/reporteRoutes');
 const citaRoutes = require('./routes/citaRoutes');
 const facturaRoutes = require('./routes/facturaRoutes');
-
+const resetPasswordRoutes = require('./routes/usuarioRoutes');
 const app = express();
 
 // Middleware para manejar JSON en las solicitudes
@@ -30,6 +30,8 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false } // Asegúrate de que `secure` esté configurado correctamente según tu entorno
 }));
+
+app.use('/api', resetPasswordRoutes); // Asegúrate de que la ruta esté registrada
 
 // Middleware para servir archivos estáticos desde la carpeta 'public'
 app.use(express.static(path.join(__dirname, 'public')));
