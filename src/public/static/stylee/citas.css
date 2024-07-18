@@ -1,4 +1,12 @@
 /* Estilos para hacer responsive el diseño */
+#mensajeResultado {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1050; /* Asegúrate de que sea más alto que el z-index del modal */
+    display: none;
+}
 
 /* Ajuste general */
 body {

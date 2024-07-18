@@ -6,7 +6,7 @@
             mensajeResultado.style.display = 'block';
             setTimeout(() => {
                 mensajeResultado.style.display = 'none';
-            }, 3000);
+            }, 5000);
         }
         
         // Función para buscar una factura por ID y mostrar en la tabla

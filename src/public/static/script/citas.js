@@ -4,6 +4,9 @@
         mensajeResultado.textContent = mensaje;
         mensajeResultado.className = `alert alert-${tipo}`;
         mensajeResultado.style.display = 'block';
+        setTimeout(() => {
+            mensajeResultado.style.display = 'none';
+        }, 5000); // Mantener la notificación visible por 5 segundos
     }
     // Función para manejar el envío del formulario de registro de cita
 document.getElementById('registroCitaForm').addEventListener('submit', function(event) {
