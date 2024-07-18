@@ -40,26 +40,41 @@
 
       /* Estilos para el menú */
       .menu {
-          display: flex;
-          list-style: none;
-          padding: 0;
-      }
-
-      .menu-item {
-          margin: 0 15px;
-          text-decoration: none;
-          color: #333;
-      }
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            padding: 0;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            right: -100%; /* Inicialmente oculto */
+            width: 170px; /* Ancho del menú */
+            height: 100%; /* Altura completa para cubrir la pantalla */
+            transition: right 0.3s ease;
+        }
+        .menu.active {
+            right: 0; /* Mostrar el menú */
+        }
+        .menu-item {
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+        .menu-item:hover {
+            background-color: #f0f0f0;
+        }
 
       /* Estilos responsivos */
-      @media (max-width: 768px) {
+      @media (max-width: 500px) {
           .menu {
               display: none;
               flex-direction: column;
-              width: 100%;
+              width: 40%;
               position: fixed;
               top: 60px; /* Ajustar top para que no se superponga con el botón */
-              left: 0;
+              left: 150;
               background-color: #fff;
               z-index: 999;
           }
@@ -139,7 +154,7 @@
             Nos dedicamos al cuidado de tus peluditos.
           </h3>
           <div class="button-section1">
-            <a href="#contact" class="button-1">Contactanos</a>
+            <a href="#contact" class="button-1">Contactanos</a><br><br><br><br>
             <a href="#service" class="button-2">Nuestros Servicios</a>
           </div>
         </div>
