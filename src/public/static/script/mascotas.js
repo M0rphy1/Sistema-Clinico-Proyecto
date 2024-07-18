@@ -97,3 +97,16 @@ async function editarMascota(idMascota) {
       console.error('Error:', error);
   }
 }
+
+function buscarMascota() {
+    const input = document.getElementById('buscarNombre').value.toLowerCase();
+    const rows = document.querySelectorAll('#mascotasList tr');
+    rows.forEach(row => {
+        const nombre = row.cells[0].textContent.toLowerCase();
+        if (nombre.includes(input)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+  }
