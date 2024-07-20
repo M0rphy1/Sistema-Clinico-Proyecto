@@ -92,6 +92,40 @@
               display: block;
           }
       }
+       /* Estilos para la sección de Preguntas Frecuentes */
+       .faq-section {
+            padding: 50px 20px;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+        .faq-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2em;
+        }
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            background: #fff;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .faq-question {
+            cursor: pointer;
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .faq-answer {
+            display: none;
+            padding: 10px 0;
+            border-top: 1px solid #ddd;
+            margin-top: 10px;
+            font-size: 1em;
+        }
   </style>
     <title>Veterinaria</title>
     
@@ -253,6 +287,37 @@
         </div>
       </section>
       <!-- termina section 5  -->
+       <!-- inicia sección de preguntas frecuentes (FAQ) -->
+       <section class="faq-section">
+        <h2 class="faq-title">Preguntas Frecuentes</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <h3 class="faq-question">¿Cuál es el horario de atención?</h3>
+                <div class="faq-answer">
+                    <p>Nuestro horario de atención es de lunes a viernes de 8:00 AM a 6:00 PM y sábados de 9:00 AM a 1:00 PM.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <h3 class="faq-question">¿Necesito hacer una cita previa?</h3>
+                <div class="faq-answer">
+                    <p>Sí, es recomendable hacer una cita previa para asegurarnos de que podamos atenderte sin demoras.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <h3 class="faq-question">¿Ofrecen servicios de emergencia?</h3>
+                <div class="faq-answer">
+                    <p>Sí, ofrecemos servicios de emergencia 24/7. Puedes contactarnos en cualquier momento.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <h3 class="faq-question">¿Qué tipos de mascotas atienden?</h3>
+                <div class="faq-answer">
+                    <p>Atendemos principalmente perros y gatos, pero también podemos atender otras mascotas pequeñas como conejos y hurones.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- termina sección de preguntas frecuentes (FAQ) -->
     </main>
 
     <!-- inicia footer -->
@@ -301,6 +366,12 @@
         const menu = document.querySelector('.menu');
         menu.classList.toggle('active');
       }
+      document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', () => {
+                const answer = item.nextElementSibling;
+                answer.style.display = answer.style.display === 'none' || answer.style.display === '' ? 'block' : 'none';
+            });
+        });
     </script>
   </body>
 </html>

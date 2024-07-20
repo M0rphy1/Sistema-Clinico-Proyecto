@@ -75,7 +75,31 @@
                 <p>Bienvenido al servicio de registro de citas.</p>
             </div>
         </div>
-
+<!-- Guía Inicial en un Modal -->
+<!-- Modal para el tutorial del chatbot -->
+<div class="modal fade" id="onboardingModal" tabindex="-1" role="dialog" aria-labelledby="onboardingModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="onboardingModalLabel">Bienvenido a la Plataforma</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6>¿Cómo usar el chatbot?</h6>
+                <p>Para hablar con el chatbot, escribe tu mensaje en el campo de texto y presiona "Generar".</p>
+                <h6>¿Cómo reproducir música?</h6>
+                <p>Utiliza los controles del reproductor de música para reproducir, pausar o saltar pistas.</p>
+                <h6>¿Cómo registrar una cita?</h6>
+                <p>Haz clic en "Registrar Cita" para abrir el formulario. Completa los campos necesarios y presiona "Registrar" para guardar la cita.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="closeOnboarding">Entendido</button>
+            </div>
+        </div>
+    </div>
+</div>
         <!-- Botón para abrir el modal de Registro de Cita -->
         <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#registroCitaModal">
             Registrar Cita
@@ -254,6 +278,15 @@
                 alert('Error al registrar la cita. Ha ingresado un dato incorrecto en el campo.');
             });
         });
+
+         $(document).ready(function() {
+        $('#onboardingModal').modal('show');
+    });
+
+    // Cerrar el modal de guía al hacer clic en el botón "Entendido"
+    $('#closeOnboarding').click(function() {
+        $('#onboardingModal').modal('hide');
+    });
     </script>
     <script src="./assets/musicscript.js"></script>
 </body>

@@ -201,7 +201,7 @@ document.getElementById('buscarCitaForm').addEventListener('submit', async funct
         const data = await response.json();
         const resultado = document.getElementById('buscarCitaResultado');
         resultado.innerHTML = `
-            <h5>ID Cita: ${data.id}</h5>
+            <h5>ID Cita: ${data.idCita}</h5>
             <p>Nombre Mascota: ${data.Mascotum ? data.Mascotum.nombreMascota : 'No especificado'}</p>
             <p>Nombre Usuario: ${data.Usuario ? data.Usuario.nombreUsuario : 'No especificado'}</p>
             <p>Nombre Cliente: ${data.Cliente ? data.Cliente.nombreCliente : 'No especificado'}</p>
