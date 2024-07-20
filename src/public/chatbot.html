@@ -11,6 +11,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="./assets/musicstyle.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Incluye el CSS de Intro.js en el <head> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/6.0.0/introjs.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -287,7 +289,54 @@
     $('#closeOnboarding').click(function() {
         $('#onboardingModal').modal('hide');
     });
+    //
+    // Función para iniciar Intro.js
+    function startIntro() {
+        var intro = introJs();
+        intro.setOptions({
+            steps: [
+                {
+                    element: '#nombreMascota',
+                    intro: 'Introduce el nombre de la mascota aquí.',
+                    position: 'right'
+                },
+                {
+                    element: '#nombreUsuario',
+                    intro: 'Introduce el nombre del usuario aquí.',
+                    position: 'right'
+                },
+                {
+                    element: '#nombreCliente',
+                    intro: 'Introduce el nombre del cliente aquí.',
+                    position: 'right'
+                },
+                {
+                    element: '#fechaCita',
+                    intro: 'Selecciona la fecha de la cita aquí.',
+                    position: 'right'
+                },
+                {
+                    element: '#motivo',
+                    intro: 'Escribe el motivo de la cita aquí.',
+                    position: 'right'
+                },
+                {
+                    element: '#horaCita',
+                    intro: 'Selecciona la hora de la cita aquí.',
+                    position: 'right'
+                }
+            ]
+        });
+        intro.start();
+    }
+
+    // Inicia el tutorial cuando se abre el modal de registro de cita
+    $('#registroCitaModal').on('shown.bs.modal', function () {
+        startIntro();
+    })
     </script>
+    <!-- Incluye el script de Intro.js antes del cierre del <body> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/6.0.0/intro.min.js"></script>
     <script src="./assets/musicscript.js"></script>
 </body>
 </html>
