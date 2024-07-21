@@ -45,6 +45,9 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       const response = await fetch('/api/proveedores');
       const data = await response.json();
+      // Ordenar alfabéticamente por nombreMascota
+      data.sort((a, b) => a.nombreProveedor.localeCompare(b.nombreProveedor));
+
       const proveedoresList = document.getElementById('proveedoresList');
       proveedoresList.innerHTML = '';
       data.forEach(proveedor => {

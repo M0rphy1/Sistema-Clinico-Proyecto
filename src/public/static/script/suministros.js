@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   //
   async function verificarNombreSuministro() {
-  const nombreMedicamento = document.getElementById('nombreSuministro').value;
+  const nombreSuministro = document.getElementById('nombreSuministro').value;
 
   try {
     const response = await fetch(`/api/suministros/verificar-nombre?nombre=${nombreSuministro}`);
@@ -59,6 +59,9 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       const response = await fetch('/api/suministros');
       const data = await response.json();
+      // Ordenar alfabéticamente por nombreMascota
+      data.sort((a, b) => a.nombreSuministro.localeCompare(b.nombreSuministro));
+
       const suministrosList = document.getElementById('suministrosList');
       suministrosList.innerHTML = '';
       data.forEach(suministro => {
@@ -77,6 +80,11 @@ document.addEventListener('DOMContentLoaded', function () {
           </td>
         `;
         suministrosList.appendChild(row);
+
+        // Verificar el stock y mostrar alerta si es 5 o menos
+        if (suministro.stock <= 5) {
+          alert(`El stock del suministro ${suministro.nombreSuministro} es bajo (${suministro.stock}). Por favor, reponer.`);
+        }
       });
     } catch (error) {
       console.error('Error:', error);

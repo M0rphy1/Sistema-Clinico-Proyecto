@@ -43,6 +43,9 @@ document.addEventListener('DOMContentLoaded', function () {
     try {
       const response = await fetch('/api/medicamentos');
       const data = await response.json();
+      // Ordenar alfabéticamente por nombreMascota
+      data.sort((a, b) => a.nombreMedicamento.localeCompare(b.nombreMedicamento));
+
       const medicamentosList = document.getElementById('medicamentosList');
       medicamentosList.innerHTML = '';
       data.forEach(medicamento => {
