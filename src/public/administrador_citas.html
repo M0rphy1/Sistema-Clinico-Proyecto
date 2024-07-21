@@ -25,7 +25,79 @@
     <link rel="stylesheet" href="./static/style/reset.css" />
     <link rel="stylesheet" href="./static/style/base.css" />
     <link rel="stylesheet" href="./static/style/header.css" />
-    <link rel="stylesheet" href="./static/style/admin_index.css" />
+    <link rel="stylesheet" href="./static/stylee/admin_index.css" />
+    <style>
+      /* Estilos para el botón del menú en pantallas pequeñas */
+      .menu-toggle {
+          display: block;
+          cursor: pointer;
+          position: fixed;
+          top: 25px;
+          right: 20px;
+          z-index: 1000;
+      }
+      .menu-toggle div {
+          width: 25px;
+          height: 3px;
+          background-color: #333;
+          margin: 5px;
+      }
+
+      /* Estilos para el menú */
+      .menu {
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            padding: 0;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            right: -100%; /* Inicialmente oculto */
+            width: 200px; /* Ancho del menú */
+            height: 35%; /* Altura completa para cubrir la pantalla */
+            transition: right 0.3s ease;
+        }
+        .menu.active {
+            right: 0; /* Mostrar el menú */
+        }
+        .menu-item {
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+        .menu-item:hover {
+            background-color: #f0f0f0;
+        }
+
+      /* Estilos responsivos */
+      @media (max-width: 500px) {
+          .menu {
+              display: none;
+              flex-direction: column;
+              width: 40%;
+              position: fixed;
+              top: 60px; /* Ajustar top para que no se superponga con el botón */
+              left: 150;
+              background-color: #fff;
+              z-index: 999;
+          }
+
+          .menu-item {
+              padding: 15px;
+              border-bottom: 1px solid #ddd;
+          }
+
+          .menu.active {
+              display: flex;
+          }
+
+          .menu-toggle {
+              display: block;
+          }
+      }
+  </style>
     <!-- Estilo específico para admin_index -->
     <title>Administrador del Sistema</title>
   </head>
@@ -45,16 +117,21 @@
             />
           </a>
         </h1>
-        <div class="mt-2">
+        <div class="menu-toggle" onclick="toggleMenu()">
+          <div></div>
+          <div></div>
+          <div></div>
+      </div>
+        <div class="menu">
           <!-- Enlaces de navegación -->
           <!-- <a class="menu-item" href="/configuracion_sistema.html"
           >Administración del sistema</a
           > -->
           <a class="menu-item" href="/administrador_usuarios.html"
-            >Administración de usuarios</a
+            >Gestión Usuarios</a
           >
           <a class="menu-item" href="/administrador_citas.html"
-            >Administración de citas</a
+            >Gestión Citas</a
           >
           <a class="menu-item" href="/reportes.html">Reportes</a>
         </div>
@@ -367,6 +444,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+      function toggleMenu() {
+        const menu = document.querySelector('.menu');
+        menu.classList.toggle('active');
+      }
       async function fetchClientes() {
         const response = await fetch("http://localhost:4000/api/clientes");
         const clientes = await response.json();
