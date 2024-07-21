@@ -150,10 +150,40 @@ const loginAdmin = async (req, res) => {
     res.status(500).json({ message: "Error al iniciar sesión" });
   }
 };
+//
+const { sendPasswordResetEmail } = require('../utils/mailer');
+const resetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  // Generar una nueva contraseña temporal
+  const tempPassword = Math.random().toString(36).slice(-8);
+
+  try {
+    // Buscar el usuario por correo
+    const usuario = await Usuario.findOne({ where: { correo: email } });
+    if (!usuario) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    // Encriptar la contraseña temporal
+    const hashedPassword = await bcrypt.hash(tempPassword, 10);
+
+    // Actualizar la contraseña en la base de datos
+    await usuario.update({ contrasena: hashedPassword });
+
+    // Enviar el correo de restablecimiento
+    await sendPasswordResetEmail(email, tempPassword);
+    res.status(200).send('Correo de recuperación enviado');
+  } catch (error) {
+    console.error("Error al restablecer la contraseña:", error);
+    res.status(500).send('Error al enviar el correo');
+  }
+};
 
 module.exports = {
   register,
   login,
   loginAdmin,
   registerAdmin,
+  resetPassword,
 };

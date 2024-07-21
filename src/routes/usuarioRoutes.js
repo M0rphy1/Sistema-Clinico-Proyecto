@@ -19,6 +19,6 @@ router.get(
 // Rutas para autenticación
 router.post("/signup", authController.register);
 router.post("/login", authController.login);
-router.post('/reset-password', usuarioController.resetPassword);
+// router.post('/reset-password', usuarioController.resetPassword);
 
 module.exports = router;

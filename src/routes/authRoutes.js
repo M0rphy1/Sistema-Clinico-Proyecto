@@ -6,6 +6,7 @@ router.post("/register", authController.register);
 router.post("/register/admin", authController.registerAdmin);
 router.post("/login", authController.login);
 router.post("/admin/login", authController.loginAdmin);
+router.post('/reset-password', authController.resetPassword);
 
 router.post("/logout", (req, res) => {
   req.session.destroy((err) => {

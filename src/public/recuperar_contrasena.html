@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+    <a href="login.html" class="btn btn-outline-primary mt-3 ml-3">Regresar</a>
     <div class="container">
         <h2>Recuperar Contraseña</h2>
         <form id="reset-password-form">
@@ -25,7 +26,7 @@
             const email = document.getElementById('email').value;
 
             try {
-                const response = await fetch('/api/reset-password', {
+                const response = await fetch('/auth/reset-password', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
