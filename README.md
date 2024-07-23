@@ -35,9 +35,11 @@ El sistema clínico veterinario en desarrollo tiene como principal objetivo opti
 Dentro de las funciones clave del software se incluyen:
 <ul>
 <li>El registro de pacientes animales</li>
-<li>La gestión de historias clínicas y seguimiento de tratamientos</li>
+<li>El registro de los dueños de los pacientes</li>
+<li>La gestión de historias clínicas</li>
 <li>La programación de citas veterinarias</li>
 <li>La generación de informes y registrar facturación</li>
+<li>Acceso a dos chats uno con IA de Gemini y otro para hablar con el médico veterinario</li>
 <li>La administración del inventario de medicamentos y suministros veterinarios</li>
 </ul>
 Cada una de estas funcionalidades está diseñada para mejorar la eficiencia y calidad de la atención veterinaria, asegurando una gestión completa y efectiva de la información clínica de las mascotas atendidas en la clínica veterinaria.<br>
